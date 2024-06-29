@@ -1,3 +1,4 @@
+import 'package:call_match/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -5,10 +6,34 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Column(
-        children: [Center(child: Text("data")),Text("hello"),Text("haii")],
+    //delay fuction
+    Future.delayed(const Duration(seconds: 10), () {
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
+    });
+
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      decoration:  const BoxDecoration(
+        color: Color(0xffb42c44)
       ),
+      child: const Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: Text(
+                  "Call Match",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

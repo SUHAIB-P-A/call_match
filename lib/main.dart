@@ -1,3 +1,4 @@
+import 'package:call_match/core/routemap.dart';
 import 'package:call_match/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const SplashScreen(),
+      routes: routers,
     );
   }
 }
