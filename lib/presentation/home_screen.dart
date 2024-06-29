@@ -6,6 +6,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text("home screen"),),);
+    return const Scaffold(
+      body: DecoratedBox(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/homeimage.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+         child: SizedBox.expand(),
+      ),
+    );
   }
 }

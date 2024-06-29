@@ -7,16 +7,14 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //delay fuction
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
     });
 
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration:  const BoxDecoration(
-        color: Color(0xffb42c44)
-      ),
+      decoration: const BoxDecoration(color: Color(0xffb42c44)),
       child: const Scaffold(
           backgroundColor: Colors.transparent,
           body: Column(
@@ -27,8 +25,8 @@ class SplashScreen extends StatelessWidget {
                   "Call Match",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 70,
+                    fontFamily: "Anokha",
                   ),
                 ),
               ),
