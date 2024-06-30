@@ -25,13 +25,23 @@ class HomeScreen extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 70),
                 child: Center(
-                  child: Text(
-                    "call match",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40,
-                      fontFamily: "Anokha",
-                    ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 69,
+                        top: -1,
+                        child: Text("💕",
+                        style: TextStyle(fontSize: 14,),
+                        ),),
+                      Text(
+                        "Call Match",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 40,
+                          fontFamily: "Anokha",
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -40,14 +50,35 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Center(
-                      child: Text("Lets gets closer"),
+                      child: Text(
+                        "Lets gets closer! 💕",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          fontFamily: "Montserrat",
+                        ),
+                      ),
                     ),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.pushNamed(context, LoginScreen.routeName);
                         },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffb42c44),
+                          minimumSize: const Size(
+                            300,
+                            40,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              5,
+                            ),
+                          ),
+                        ),
                         child: const Text("Get started"),
+                       
                       ),
                     ),
                   ],
