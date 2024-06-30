@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:call_match/presentation/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routename = "home-screen";
@@ -43,7 +44,9 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, LoginScreen.routeName);
+                        },
                         child: const Text("Get started"),
                       ),
                     ),
