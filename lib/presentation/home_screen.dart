@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 70),
                 child: Center(
                   child: Text(
-                    "call match",
+                    "Call Match",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 40,
@@ -40,10 +40,11 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     const Center(
                       child: Text(
-                        "Lets gets closer!",
+                        "Lets gets closer!💕",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
                           fontFamily: "Montserrat",
                         ),
                       ),
