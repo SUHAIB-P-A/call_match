@@ -39,12 +39,37 @@ class HomeScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const Center(
-                      child: Text("Lets gets closer"),
+                      child: Text(
+                        "Lets gets closer!",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 35,
+                          fontFamily: "Montserrat",
+                        ),
+                      ),
                     ),
                     Center(
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xffb42c44),
+                          minimumSize: const Size(
+                            300,
+                            40,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              5,
+                            ),
+                          ),
+                        ),
                         onPressed: () {},
-                        child: const Text("Get started"),
+                        child: const Text(
+                          "GET STARTED",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
                     ),
                   ],
