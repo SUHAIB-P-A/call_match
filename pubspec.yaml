@@ -79,5 +79,23 @@ flutter:
     - family: MyriadPro
       fonts:
         - asset: fonts/MyriadPro-Regular.otf
+    - family: Montserrat
+      fonts:
+        - asset: fonts/Montserrat-Medium.ttf
+    - family: Poppins-Bold
+      fonts:
+        - asset: fonts\Poppins-Bold.ttf
+    - family: Poppins-Light
+      fonts:
+        - asset: fonts\Poppins-Light.ttf
+    - family: Poppins-Medium
+      fonts:
+        - asset: fonts\Poppins-Medium.ttf
+    - family: Poppins-Regular
+      fonts:
+        - asset: fonts\Poppins-Regular.ttf
+    - family: Poppins-SemiBold
+      fonts:
+        - asset: fonts\Poppins-SemiBold.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
