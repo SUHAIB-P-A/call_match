@@ -24,13 +24,23 @@ class HomeScreen extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.symmetric(vertical: 70),
                 child: Center(
-                  child: Text(
-                    "Call Match",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 40,
-                      fontFamily: "Anokha",
-                    ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: 69,
+                        top: -1,
+                        child: Text("💕",
+                        style: TextStyle(fontSize: 14,),
+                        ),),
+                      Text(
+                        "Call Match",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 40,
+                          fontFamily: "Anokha",
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -40,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     const Center(
                       child: Text(
-                        "Lets gets closer!💕",
+                        "Lets gets closer! 💕",
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
