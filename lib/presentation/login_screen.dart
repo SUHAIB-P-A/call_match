@@ -1,3 +1,4 @@
+import 'package:call_match/presentation/main_home_pages/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
@@ -138,6 +139,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                           onPressed: () {
                             // Add functionality for the button here
+                            Navigator.of(context).pushReplacementNamed(MainHome.routeName);
                           },
                           child: const Text(
                             'Continue',
