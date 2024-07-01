@@ -12,17 +12,22 @@ class LoginScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 100.0, left: 20.0, right: 20.0),
+            padding: const EdgeInsets.only(top: 100.0, left: 30.0, right: 20.0),
             child: RichText(
               text: const TextSpan(
                 text: "Login to meet ",
                 style: TextStyle(
-                  fontSize: 45,
+                  fontFamily: "Poppins-light",
+                  fontSize: 38,
                   color: Colors.black, // Maintain text color
                 ),
                 children: [
                   TextSpan(
-                    text: "your partner!",
+                    text: "your ",
+                    style: TextStyle(),
+                  ),
+                  TextSpan(
+                    text: "partner!",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -33,12 +38,12 @@ class LoginScreen extends StatelessWidget {
           ),
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Enter your mobile number',
+                  '  Enter your mobile number',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -47,23 +52,31 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 3),
-                TextField(
-                  decoration: InputDecoration(
-                    contentPadding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 25.0), // Adjust padding
-                    border: InputBorder.none, // Remove border
-                    filled: true,
-                    fillColor: Colors.grey[
-                        300], // Optional: Background color for the text field
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius:
-                          BorderRadius.circular(20.0), // Round corners
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius:
-                          BorderRadius.circular(20.0), // Round corners
+                Material(
+                  elevation: 5,
+                  shadowColor: Colors.black,
+                  borderRadius: BorderRadius.circular(20),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "0000000000",
+                      hintStyle:
+                          const TextStyle(letterSpacing: 10, color: Colors.grey),
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20.0), // Adjust padding
+                      border: InputBorder.none, // Remove border
+                      filled: true,
+                      fillColor: Colors.grey[
+                          300], // Optional: Background color for the text field
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius:
+                            BorderRadius.circular(20.0), // Round corners
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide.none,
+                        borderRadius:
+                            BorderRadius.circular(20.0), // Round corners
+                      ),
                     ),
                   ),
                 ),
@@ -147,21 +160,80 @@ class LoginScreen extends StatelessWidget {
                     },
                   ),
                 ),
-                const Positioned(
-                  bottom: 300.0, // Adjust the position of the text
+            
+                Positioned(
+                  bottom: 250.0, // Adjust the position of the text
                   right: 0, // Align the text to the right
-                  left: 0, // Ensure the text spans the full width
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Center(
-                      child: Text(
-                        'By Signing up, you agree to our Terms, see how we use your data in our privacy policy,',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Color.fromARGB(255, 150, 147, 147),
+                  left: 15, // Ensure the text spans the full width
+                  child: Center(
+                    child: Column(
+                      
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'By Signing up, you agree to',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 150, 147, 147),
+                              ),
+                            ),
+                            TextButton(
+                              style: ButtonStyle(
+                                textStyle: WidgetStateProperty.all<TextStyle>(
+                                  const TextStyle(
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                foregroundColor:
+                                    WidgetStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 150, 147, 147),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text("our Terms"),
+                            ),
+                            const Text(
+                              "see how",
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 150, 147, 147),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
+                        
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "we use your data in our",
+                              style: TextStyle(
+                                fontSize: 11,
+                                color: Color.fromARGB(255, 150, 147, 147),
+                              ),
+                            ),
+                            TextButton(
+                              style: ButtonStyle(
+                                textStyle: WidgetStateProperty.all<TextStyle>(
+                                  const TextStyle(
+                                    fontSize: 11,
+                                  ),
+                                ),
+                                foregroundColor:
+                                    WidgetStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 150, 147, 147),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text(
+                                "privacy policy.",
+                              ),
+                            ),
+                          ],)
+                      ],
                     ),
                   ),
                 ),

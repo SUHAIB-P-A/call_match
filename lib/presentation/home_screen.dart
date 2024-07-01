@@ -30,9 +30,13 @@ class HomeScreen extends StatelessWidget {
                       Positioned(
                         left: 69,
                         top: -1,
-                        child: Text("💕",
-                        style: TextStyle(fontSize: 14,),
-                        ),),
+                        child: Text(
+                          "💕",
+                          style: TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
                       Text(
                         "Call Match",
                         style: TextStyle(
@@ -77,8 +81,12 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        child: const Text("Get started"),
-                       
+                        child: const Text(
+                          "GET STARTED",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ],
