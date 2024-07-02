@@ -7,7 +7,7 @@ class StoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffffdce0),
+      backgroundColor: Colors.grey[100],
       body: Column(
         children: [
           Row(
@@ -89,15 +89,26 @@ class StoreScreen extends StatelessWidget {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
+                height: 50,
+                width: 50,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(""),
+                    fit: BoxFit.cover,
+                    image: AssetImage("assets/images/coin2.png"),
                   ),
                 ),
               ),
-              const Text("100 Coins"),
+              const Text(
+                "100 Coins",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
             ],
           ),
         ],
