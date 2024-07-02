@@ -9,7 +9,7 @@ class ListViewUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-          height: 450,
+          height: 439,
           width: 300,
           decoration: BoxDecoration(
             color: Colors.white,
