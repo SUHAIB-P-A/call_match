@@ -13,7 +13,7 @@ class AddCoinDisplayUI extends StatelessWidget {
         ElevatedButton(
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all<Color>(
-              const Color(0xffe9275b),
+              const Color(0xffD02D4E),
             ),
           ),
           onPressed: () {},
@@ -34,7 +34,7 @@ class AddCoinDisplayUI extends StatelessWidget {
               ),
               const Text(
                 "ADD COIN",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Color.fromARGB(255, 245, 245, 245)),
               ),
             ],
           ),
@@ -47,7 +47,7 @@ class AddCoinDisplayUI extends StatelessWidget {
             return Container(
               height: 39,
               decoration: const BoxDecoration(
-                color: Colors.white70,
+                color: Color.fromARGB(179, 236, 235, 235),
                 borderRadius: BorderRadius.all(
                   Radius.elliptical(20, 20),
                 ),
@@ -72,7 +72,7 @@ class AddCoinDisplayUI extends StatelessWidget {
                     width: 10,
                   ),
                   const Text(
-                    "0",
+                    "10",
                     style: TextStyle(
                       fontFamily: "Poppins-Regular",
                       fontSize: 16,
