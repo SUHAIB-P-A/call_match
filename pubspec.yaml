@@ -68,6 +68,8 @@ flutter:
     - assets/images/git_splash.gif
     - assets/images/love_symbol.png
     - assets/images/Gold_Coin_Transparent_PNG_Clipart7.png
+    - assets/images/coin2.png
+    - assets/images/image.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
