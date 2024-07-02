@@ -1,4 +1,4 @@
-import 'package:call_match/presentation/main_home_pages/screens/home/widgets/add_coin_and_display.dart';
+import 'package:call_match/presentation/main_home_pages/widgets/profile_add_coin.dart';
 import 'package:flutter/material.dart';
 
 class StoreScreen extends StatelessWidget {
@@ -32,23 +32,7 @@ class StoreScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                height: 40,
-                width: 40,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage("assets/images/profile.png"),
-                  ),
-                ),
-              ),
-              const AddCoinDisplayUI()
-            ],
-          ),
+          const ProfileUI(),
           const SizedBox(
             height: 40,
           ),

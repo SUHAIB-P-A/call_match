@@ -58,13 +58,14 @@ class AddCoinDisplayUI extends StatelessWidget {
                     width: 10,
                   ),
                   Container(
-                    height: 20,
-                    width: 20,
+                    height: 30,
+                    width: 30,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(20)),
                       image: DecorationImage(
+                        fit: BoxFit.cover,
                         image: AssetImage(
-                            "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
+                            "assets/images/PROTOTYPE CALLMATCH 003-03.png"),
                       ),
                     ),
                   ),
