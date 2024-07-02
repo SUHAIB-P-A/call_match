@@ -34,7 +34,7 @@ class BottomNavWidget extends StatelessWidget {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage(
-                        "assets/images/chat.png",
+                        "assets/images/home.png",
                       ),
                     ),
                   ),
@@ -42,13 +42,13 @@ class BottomNavWidget extends StatelessWidget {
                 label: ""),
             BottomNavigationBarItem(
                 icon: Container(
-                   height: 30,
-                  width: 30,
+                  height: 35,
+                  width: 35,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: AssetImage(
-                        "assets/images/chat.png",
+                        "assets/images/shopping-bag.png",
                       ),
                     ),
                   ),
@@ -56,8 +56,8 @@ class BottomNavWidget extends StatelessWidget {
                 label: ""),
             BottomNavigationBarItem(
                 icon: Container(
-                   height: 30,
-                  width: 30,
+                  height: 35,
+                  width: 35,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.cover,
