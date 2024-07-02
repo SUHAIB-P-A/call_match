@@ -42,44 +42,50 @@ class AddCoinDisplayUI extends StatelessWidget {
         const SizedBox(
           width: 15,
         ),
-        Container(
-          height: 39,
-          width: 80,
-          decoration: const BoxDecoration(
-            color: Colors.white70,
-            borderRadius: BorderRadius.all(
-              Radius.elliptical(20, 20),
-            ),
-          ),
-          child: Row(
-            children: [
-              const SizedBox(
-                width: 10,
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return Container(
+              height: 39,
+              decoration: const BoxDecoration(
+                color: Colors.white70,
+                borderRadius: BorderRadius.all(
+                  Radius.elliptical(20, 20),
+                ),
               ),
-              Container(
-                height: 20,
-                width: 20,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  image: DecorationImage(
-                    image: AssetImage(
-                        "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 10,
                   ),
-                ),
+                  Container(
+                    height: 20,
+                    width: 20,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      image: DecorationImage(
+                        image: AssetImage(
+                            "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  const Text(
+                    "0",
+                    style: TextStyle(
+                      fontFamily: "Poppins-Regular",
+                      fontSize: 16,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                ],
               ),
-              const SizedBox(
-                width: 15,
-              ),
-              const Text(
-                "0",
-                style: TextStyle(
-                  fontFamily: "Poppins-Regular",
-                  fontSize: 16,
-                ),
-              ),
-            ],
-          ),
-        ),
+            );
+          },
+        )
       ],
     );
   }
