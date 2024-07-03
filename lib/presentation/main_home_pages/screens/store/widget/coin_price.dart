@@ -39,31 +39,46 @@ class CoinPriceUI extends StatelessWidget {
                   Text(
                     "$coins coin",
                     style: const TextStyle(
-                      fontSize: 20,
+                      fontSize: 16,
                       fontWeight: FontWeight.w700,
                       color: Colors.black,
                     ),
                   )
                 ],
               ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xffb42c44),
-                  minimumSize: const Size(
-                    100,
-                    25,
+              Container(
+                height: 25,
+                width: 105,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xff59982B),
+                      Color(0xff99DD43),
+                    ], // Your gradient colors here
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      11,
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    minimumSize: const Size(
+                      100,
+                      25,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        11,
+                      ),
                     ),
                   ),
-                ),
-                child: Text(
-                  "Rs. $coinprice",
-                  style: const TextStyle(
-                    color: Colors.white,
+                  child: Text(
+                    "Rs. $coinprice",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

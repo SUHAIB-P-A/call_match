@@ -141,7 +141,7 @@ class StoreScreen extends StatelessWidget {
                         const Text(
                           "4000 coin",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: 16,
                             fontWeight: FontWeight.w700,
                             color: Colors.black,
                           ),
@@ -158,24 +158,39 @@ class StoreScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xffb42c44),
-                        minimumSize: const Size(
-                          100,
-                          25,
+                    Container(
+                      height: 25,
+                      width: 105,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color(0xff59982B),
+                            Color(0xff99DD43),
+                          ], // Your gradient colors here
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            11,
+                        borderRadius: BorderRadius.circular(11),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          minimumSize: const Size(
+                            100,
+                            25,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              11,
+                            ),
                           ),
                         ),
-                      ),
-                      child: const Text(
-                        "Rs. 3999",
-                        style: TextStyle(
-                          color: Colors.white,
+                        child: const Text(
+                          "Rs. 3999",
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),

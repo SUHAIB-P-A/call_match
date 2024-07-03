@@ -1,8 +1,7 @@
 import 'package:call_match/presentation/main_home_pages/screens/home/widgets/add_coin_and_display.dart';
+import 'package:call_match/presentation/main_home_pages/screens/home/widgets/curve_ui_widget.dart';
 import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
-import 'package:call_match/presentation/main_home_pages/screens/store/widget/scaech_menu.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ProfileHome extends StatelessWidget {
   const ProfileHome({super.key});
