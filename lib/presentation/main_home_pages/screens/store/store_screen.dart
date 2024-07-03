@@ -1,4 +1,5 @@
 import 'package:call_match/presentation/main_home_pages/screens/store/widget/coin_price.dart';
+import 'package:call_match/presentation/main_home_pages/screens/store/widget/scaech_menu.dart';
 import 'package:call_match/presentation/main_home_pages/widgets/profile_add_coin.dart';
 import 'package:flutter/material.dart';
 
@@ -11,25 +12,7 @@ class StoreScreen extends StatelessWidget {
       backgroundColor: Colors.grey[100],
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.search,
-                  color: Colors.red,
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.menu,
-                  color: Colors.red,
-                ),
-              ),
-            ],
-          ),
+          const SearchAndMenu(),
           const SizedBox(
             height: 20,
           ),
@@ -207,3 +190,5 @@ class StoreScreen extends StatelessWidget {
     );
   }
 }
+
+
