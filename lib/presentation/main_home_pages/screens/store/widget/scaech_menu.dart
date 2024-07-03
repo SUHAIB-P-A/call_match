@@ -10,6 +10,7 @@ class SearchAndMenu extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        //search icon
         IconButton(
           onPressed: () {},
           icon: const Icon(
@@ -17,6 +18,7 @@ class SearchAndMenu extends StatelessWidget {
             color: Colors.red,
           ),
         ),
+        //menu icon
         IconButton(
           onPressed: () {},
           icon: const Icon(
