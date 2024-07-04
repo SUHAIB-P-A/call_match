@@ -165,40 +165,28 @@ class LoginScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Positioned(
-                            top:
-                                -20.0, // Adjust the position of the icon buttons
-                            right:
-                                200.0, // Adjust the position of the search icon button
-                            child: IconButton(
-                              icon: Image.asset(
-                                'assets/images/search.png',
-                                width: 120.0,
-                                height: 120.0,
-                              ),
-                              onPressed: () {
-                                // Add functionality for the search icon button here
-                              },
+                          IconButton(
+                            icon: Image.asset(
+                              'assets/images/search.png',
+                              width: 120.0,
+                              height: 120.0,
                             ),
+                            onPressed: () {
+                              // Add functionality for the search icon button here
+                            },
                           ),
                           const SizedBox(
                             width: 50,
                           ),
-                          Positioned(
-                            top:
-                                -20.0, // Adjust the position of the icon buttons
-                            right:
-                                50.0, // Adjust the position of the fb icon button
-                            child: IconButton(
-                              icon: Image.asset(
-                                'assets/images/fb.png',
-                                width: 120.0,
-                                height: 120.0,
-                              ),
-                              onPressed: () {
-                                // Add functionality for the fb icon button here
-                              },
+                          IconButton(
+                            icon: Image.asset(
+                              'assets/images/fb.png',
+                              width: 120.0,
+                              height: 120.0,
                             ),
+                            onPressed: () {
+                              // Add functionality for the fb icon button here
+                            },
                           ),
                         ],
                       ),
