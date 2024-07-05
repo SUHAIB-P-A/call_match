@@ -1,6 +1,5 @@
 import 'package:call_match/core/routemap.dart';
 import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/payment.dart';
-import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/paymentnew.dart';
 import 'package:flutter/material.dart';
 
 void main() {
