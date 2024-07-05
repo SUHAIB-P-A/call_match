@@ -4,6 +4,7 @@ import 'package:call_match/presentation/main_home_pages/widgets/profile_add_coin
 import 'package:flutter/material.dart';
 
 class PaymentScreenUI extends StatelessWidget {
+  static const routename = "payment-screen";
   const PaymentScreenUI({super.key});
 
   @override
@@ -12,27 +13,30 @@ class PaymentScreenUI extends StatelessWidget {
       backgroundColor: Color(0xffffdce0),
       body: Column(
         children: [
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               SearchAndMenu(),
             ],
           ),
-          SizedBox(height: 45,),
+          SizedBox(
+            height: 45,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ProfileUI(),
             ],
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           GatewayList(),
         ],
       ),
     );
   }
 }
-
-
-

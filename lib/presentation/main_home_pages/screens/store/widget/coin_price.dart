@@ -1,3 +1,4 @@
+import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/payment.dart';
 import 'package:flutter/material.dart';
 
 class CoinPriceUI extends StatelessWidget {
@@ -61,7 +62,10 @@ class CoinPriceUI extends StatelessWidget {
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushReplacementNamed(PaymentScreenUI.routename);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     minimumSize: const Size(

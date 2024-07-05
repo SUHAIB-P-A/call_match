@@ -1,3 +1,4 @@
+import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/payment.dart';
 import 'package:call_match/presentation/main_home_pages/screens/store/widget/coin_price.dart';
 import 'package:call_match/presentation/main_home_pages/screens/store/widget/scaech_menu.dart';
 import 'package:call_match/presentation/main_home_pages/widgets/profile_add_coin.dart';
@@ -173,7 +174,9 @@ class StoreScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(11),
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed(PaymentScreenUI.routename);
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           minimumSize: const Size(
