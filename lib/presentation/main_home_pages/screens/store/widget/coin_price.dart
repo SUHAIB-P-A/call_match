@@ -63,9 +63,12 @@ class CoinPriceUI extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        .pushReplacementNamed(PaymentScreenUI.routename);
-                  },
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) =>
+                             PaymentScreenUI(coinpriceone: coinprice),
+                      ),
+                    );                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     minimumSize: const Size(

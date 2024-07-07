@@ -7,5 +7,5 @@ final routers = {
   HomeScreen.routename: (ctx) => const HomeScreen(),
   LoginScreen.routeName: (ctx) => const LoginScreen(),
   MainHome.routeName: (ctx) => MainHome(),
-  PaymentScreenUI.routename: (ctx) => const PaymentScreenUI(),
+  PaymentScreenUI.routename: (ctx) => const PaymentScreenUI(coinpriceone: PaymentScreenUI.routename,),
 };

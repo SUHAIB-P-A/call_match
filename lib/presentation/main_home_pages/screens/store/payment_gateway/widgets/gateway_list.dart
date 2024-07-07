@@ -1,9 +1,13 @@
+import 'dart:core';
+import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/widgets/button_and_coin.dart';
 import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/widgets/list_tile_for_app.dart';
 import 'package:flutter/material.dart';
 
 class GatewayList extends StatelessWidget {
+  final String coins;
   const GatewayList({
     super.key,
+    required this.coins
   });
 
   @override
@@ -16,9 +20,10 @@ class GatewayList extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
-        
         children: [
-          const SizedBox(height: 05,),
+          const SizedBox(
+            height: 05,
+          ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 13),
             child: Row(
@@ -27,7 +32,10 @@ class GatewayList extends StatelessWidget {
                 Text(
                   'Cards, UPI & More',
                   textAlign: TextAlign.start,
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
@@ -89,43 +97,8 @@ class GatewayList extends StatelessWidget {
               child: Text("Paytm & Freecharge"),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    const Text("₹ 6,000"),
-                    GestureDetector(
-                      onTap: () {},
-                      child: const Text("View details"),
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xffb42c44),
-                    minimumSize: const Size(
-                      150,
-                      40,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                        5,
-                      ),
-                    ),
-                  ),
-                  child: const Text(
-                    "Pay Now",
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+           PayButtonCoins(
+            coinprice: coins,
           ),
         ],
       ),
