@@ -4,11 +4,13 @@ class CoinPriceUI extends StatelessWidget {
   final String coinprice;
   final String coins;
   final String? imagepath;
+  final VoidCallback onPressed;
   const CoinPriceUI({
     super.key,
     required this.coinprice,
     required this.coins,
     this.imagepath,
+    required this.onPressed,
   });
 
   @override
@@ -61,7 +63,15 @@ class CoinPriceUI extends StatelessWidget {
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: onPressed,
+                  // onPressed: () {
+                  //   // Navigator.of(context).push(
+                  //   //   MaterialPageRoute(
+                  //   //     builder: (context) =>
+                  //   //         PaymentScreenUI(coinpriceone: coinprice),
+                  //   //   ),
+                  //   // );
+                  // },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
                     minimumSize: const Size(
