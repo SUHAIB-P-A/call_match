@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:upi_india/upi_india.dart';
 
 class PaymentOption extends StatelessWidget {
   final String imgpath;
@@ -80,17 +81,45 @@ class PaymentOption extends StatelessWidget {
   }
 
 // UPI APP ACTION FUNCTION
-  void _handlePaymentOptionTap(BuildContext context, String optionName) {
+  Future<void> _handlePaymentOptionTap(
+      BuildContext context, String optionName) async {
     // Handle the payment request based on the option name
+    UpiApp? upiapp;
+    UpiIndia upiindia = UpiIndia();
+    UpiResponse? transaction;
     if (optionName == 'Google Pay') {
       // Send request to Google Pay
+      upiapp = UpiApp.googlePay;
     } else if (optionName == 'PhonePe') {
       // Send request to PhonePe
+      upiapp = UpiApp.phonePe;
     } else if (optionName == 'Paytm') {
       // Send request to Paytm
+      upiapp = UpiApp.paytm;
     } else if (optionName == 'Others') {
       // Handle other payment options
     }
     // You can add logic to send requests or navigate to specific pages.
+
+    transaction = await upiindia.startTransaction(
+      app: upiapp!, // Or use UpiIndiaApp.GooglePay, UpiIndiaApp.PhonePe, etc.
+      receiverUpiId: "",
+      receiverName: 'CALL MATCH',
+      transactionRefId: 'TXN123456',
+      transactionNote: 'Payment for order TXN123456',
+      amount: 1.00, // Replace with the amount you want to transact
+    );
+
+    if (transaction.status == UpiPaymentStatus.SUCCESS) {
+      // Payment was successful
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Transaction Successful!')),
+      );
+    } else {
+      // Payment failed
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Transaction Failed!')),
+      );
+    }
   }
 }
