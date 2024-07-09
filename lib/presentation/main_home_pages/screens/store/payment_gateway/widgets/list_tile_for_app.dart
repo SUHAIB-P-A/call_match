@@ -51,25 +51,46 @@ class PaymentOption extends StatelessWidget {
             children: subOptions!
                 .map((option) => Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage(option["imgpath"] ?? ""),
+                      child: GestureDetector(
+                        onTap: () {
+                          _handlePaymentOptionTap(
+                              context, option["name"] ?? "");
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(option["imgpath"] ?? ""),
+                                ),
                               ),
                             ),
-                          ),
-                          Text(option['name'] ?? ""),
-                        ],
+                            Text(option['name'] ?? ""),
+                          ],
+                        ),
                       ),
                     ))
                 .toList(),
           ),
       ],
     );
+  }
+
+// UPI APP ACTION FUNCTION
+  void _handlePaymentOptionTap(BuildContext context, String optionName) {
+    // Handle the payment request based on the option name
+    if (optionName == 'Google Pay') {
+      // Send request to Google Pay
+    } else if (optionName == 'PhonePe') {
+      // Send request to PhonePe
+    } else if (optionName == 'Paytm') {
+      // Send request to Paytm
+    } else if (optionName == 'Others') {
+      // Handle other payment options
+    }
+    // You can add logic to send requests or navigate to specific pages.
   }
 }

@@ -5,10 +5,7 @@ import 'package:flutter/material.dart';
 
 class GatewayList extends StatelessWidget {
   final String coins;
-  const GatewayList({
-    super.key,
-    required this.coins
-  });
+  const GatewayList({super.key, required this.coins});
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +65,10 @@ class GatewayList extends StatelessWidget {
                   'imgpath': 'assets/images/AI_Image7.png',
                   'name': 'Google Pay',
                 },
-                {'imgpath': 'assets/images/AI_Image6.png', 'name': 'PhonePe'},
+                {
+                  'imgpath': 'assets/images/AI_Image6.png',
+                  'name': 'PhonePe',
+                },
                 {
                   'imgpath': 'assets/images/AI_Image5.png',
                   'name': 'Paytm',
@@ -97,7 +97,7 @@ class GatewayList extends StatelessWidget {
               child: Text("Paytm & Freecharge"),
             ),
           ),
-           PayButtonCoins(
+          PayButtonCoins(
             coinprice: coins,
           ),
         ],
