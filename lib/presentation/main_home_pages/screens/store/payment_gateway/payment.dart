@@ -6,14 +6,11 @@ import 'package:flutter/material.dart';
 class PaymentScreenUI extends StatelessWidget {
   static const routename = "payment-screen";
   final String coinpriceone;
-  const PaymentScreenUI({
-    super.key,
-    required this.coinpriceone
-    });
+  const PaymentScreenUI({super.key, required this.coinpriceone});
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: const Color(0xffffdce0),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -21,10 +18,19 @@ class PaymentScreenUI extends StatelessWidget {
           const SizedBox(
             height: 10,
           ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SearchAndMenu(),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.backspace_outlined,
+                  color: Colors.red,
+                ),
+              ),
+              const SearchAndMenu(),
             ],
           ),
           const SizedBox(
@@ -39,7 +45,9 @@ class PaymentScreenUI extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          GatewayList(coins: coinpriceone,),
+          GatewayList(
+            coins: coinpriceone,
+          ),
           //const SizedBox(height: 10,),
         ],
       ),
