@@ -12,44 +12,47 @@ class PaymentScreenUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffffdce0),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.backspace_outlined,
-                  color: Colors.red,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(
+                    Icons.backspace_outlined,
+                    color: Colors.red,
+                  ),
                 ),
-              ),
-              const SearchAndMenu(),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProfileUI(),
-            ],
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          GatewayList(
-            coins: coinpriceone,
-          ),
-          //const SizedBox(height: 10,),
-        ],
+                const SearchAndMenu(),
+              ],
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ProfileUI(),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            GatewayList(
+              coins: coinpriceone,
+            ),
+            //const SizedBox(height: 10,),
+          ],
+        ),
       ),
     );
   }
