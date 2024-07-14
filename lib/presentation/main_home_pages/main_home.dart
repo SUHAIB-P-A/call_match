@@ -1,7 +1,8 @@
-import 'package:call_match/presentation/main_home_pages/screens/chat/chat_screen.dart';
+// import 'package:call_match/presentation/main_home_pages/screens/chat/chat_screen.dart';
 import 'package:call_match/presentation/main_home_pages/screens/home/profile_home.dart';
 import 'package:call_match/presentation/main_home_pages/screens/store/store_screen.dart';
 import 'package:call_match/presentation/main_home_pages/widgets/bottam_nav_widget.dart';
+import 'package:call_match/presentation/main_home_pages/screens/chat/contact_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class MainHome extends StatelessWidget {
@@ -10,7 +11,7 @@ class MainHome extends StatelessWidget {
   final _pages = [
     const ProfileHome(),
     const StoreScreen(),
-    const ChatScreen(),
+    const ContactListScreen(),
   ];
   @override
   Widget build(BuildContext context) {
