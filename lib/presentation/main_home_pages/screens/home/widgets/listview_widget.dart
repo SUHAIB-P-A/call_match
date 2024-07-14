@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ListViewUI extends StatelessWidget {
+  final double height;
+  final double width;
   const ListViewUI({
     super.key,
+    required this.height,
+    required this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-          height: 439,
-          width: 300,
+          height: height - 370,
+          width: width - 85,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),

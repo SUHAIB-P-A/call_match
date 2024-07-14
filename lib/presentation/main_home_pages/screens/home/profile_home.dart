@@ -8,6 +8,7 @@ class ProfileHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       backgroundColor: const Color(0xffffdce0),
@@ -17,9 +18,12 @@ class ProfileHome extends StatelessWidget {
           CurveShapeUI(width: width),
           //ADD COIN AND DISPLAY
           const AddCoinDisplayUI(),
-          
+
           //USER LISTVIEW UIs
-          const ListViewUI(),
+          ListViewUI(
+            height: height,
+            width: width,
+          ),
           const SizedBox(
             height: 10,
           ),
@@ -28,4 +32,3 @@ class ProfileHome extends StatelessWidget {
     );
   }
 }
-

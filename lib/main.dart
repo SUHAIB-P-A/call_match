@@ -2,13 +2,13 @@ import 'package:call_match/core/routemap.dart';
 import 'package:call_match/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:call_match/core/agora_chat_initializer.dart'; // Import Agora Chat Initializer
+//import 'package:call_match/core/agora_chat_initializer.dart'; // Import Agora Chat Initializer
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Agora Chat SDK
-  AgoraChatInitializer.initializeAgoraChat().then((_) {
+  //AgoraChatInitializer.initializeAgoraChat().then((_) {
     // Set preferred orientations after initializing Agora Chat
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
@@ -16,7 +16,8 @@ void main() {
     ]).then((_) {
       runApp(const MyApp());
     });
-  });
+  //}
+  //);
 }
 
 class MyApp extends StatelessWidget {
