@@ -27,6 +27,7 @@ class BottomNavWidget extends StatelessWidget {
           unselectedIconTheme: const IconThemeData(color: Colors.red),
           items: [
             BottomNavigationBarItem(
+                tooltip: "Home",
                 icon: Container(
                   height: 30,
                   width: 30,
@@ -41,6 +42,7 @@ class BottomNavWidget extends StatelessWidget {
                 ),
                 label: ""),
             BottomNavigationBarItem(
+                tooltip: "Store",
                 icon: Container(
                   height: 35,
                   width: 35,
@@ -55,6 +57,7 @@ class BottomNavWidget extends StatelessWidget {
                 ),
                 label: ""),
             BottomNavigationBarItem(
+                tooltip: "Chats",
                 icon: Container(
                   height: 35,
                   width: 35,
