@@ -3,7 +3,6 @@ import 'package:call_match/presentation/main_home_pages/screens/home/profile_hom
 import 'package:call_match/presentation/main_home_pages/screens/store/store_screen.dart';
 import 'package:call_match/presentation/main_home_pages/widgets/bottam_nav_widget.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/contact_list_screen.dart';
-import 'package:call_match/presentation/main_home_pages/widgets/bottom_nav_bar_clipper.dart';
 import 'package:flutter/material.dart';
 
 class MainHome extends StatelessWidget {
@@ -16,8 +15,8 @@ class MainHome extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    final double height = MediaQuery.sizeOf(context).height;
-    final double width = MediaQuery.sizeOf(context).width;
+    //final double height = MediaQuery.sizeOf(context).height;
+    //final double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 209, 202, 202),
         body: SafeArea(
