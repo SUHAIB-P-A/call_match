@@ -5,11 +5,12 @@ import 'package:flutter/material.dart';
 
 class AudioOutgoingUI extends StatelessWidget {
   static const routeName = "outgoing-screen";
-  const AudioOutgoingUI({
+  AudioOutgoingUI({
     super.key,
     required this.contactname,
-    });
+  });
   final String contactname;
+  final ValueNotifier<bool> callAcceptedNotifier = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +23,19 @@ class AudioOutgoingUI extends StatelessWidget {
         children: [
           const TopButtons(),
           ImageAndNameUI(
-              height: height,
-              width: width,
-              name: contactname,
-              calltype: "Calling..."),
-          const AfterAcceptCall()
+            height: height,
+            width: width,
+            name: contactname,
+            calltype: "Calling...",
+            callAcceptedNotifier: callAcceptedNotifier,
+          ),
+          AfterAcceptCall(
+            callAccepted: callAcceptedNotifier,
+            onEnd: () {
+              
+              Navigator.of(context).pop();
+            },
+          )
         ],
       ),
     );

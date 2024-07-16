@@ -5,7 +5,7 @@ import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaud
 import 'package:flutter/material.dart';
 
 class AudioIncommingUI extends StatelessWidget {
-   AudioIncommingUI({super.key, required this.name});
+  AudioIncommingUI({super.key, required this.name});
 
   final String name;
   final ValueNotifier<bool> callAccepted = ValueNotifier<bool>(false);
@@ -25,17 +25,27 @@ class AudioIncommingUI extends StatelessWidget {
             width: width,
             name: name,
             calltype: "Incomming call...",
+            callAcceptedNotifier: callAccepted,
           ),
           ValueListenableBuilder<bool>(
             valueListenable: callAccepted,
             builder: (context, accepted, child) {
               return accepted
-                  ? const AfterAcceptCall()
+                  ? AfterAcceptCall(
+                      onEnd: () {
+                        
+                        Navigator.of(context).pop();
+                      },
+                    )
                   : AttentAndEndCall(
                       height: height,
                       width: width,
                       onAccept: () {
                         callAccepted.value = true;
+                      },
+                      onEndCall: () {
+                        callAccepted.value = false;
+                        Navigator.of(context).pop();
                       },
                     );
             },
@@ -45,4 +55,3 @@ class AudioIncommingUI extends StatelessWidget {
     );
   }
 }
-

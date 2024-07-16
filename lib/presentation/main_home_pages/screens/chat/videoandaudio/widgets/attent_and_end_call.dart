@@ -6,11 +6,14 @@ class AttentAndEndCall extends StatelessWidget {
     required this.height,
     required this.width,
     required this.onAccept,
+    required this.onEndCall,
   });
 
   final double height;
   final double width;
   final VoidCallback onAccept;
+    final VoidCallback onEndCall;
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +38,7 @@ class AttentAndEndCall extends StatelessWidget {
         ),
         //END CALL
         GestureDetector(
-          onTap: () {
-            
-          },
+          onTap: onEndCall,
           child: Container(
             height: height - 720,
             width: width - 320,
