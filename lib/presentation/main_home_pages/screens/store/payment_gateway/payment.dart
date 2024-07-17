@@ -34,7 +34,7 @@ class PaymentScreenUI extends StatelessWidget {
                       onBack();
                     },
                     icon: const Icon(
-                      Icons.backspace_outlined,
+                      Icons.arrow_back_ios_new,
                       color: Colors.red,
                     ),
                   ),
