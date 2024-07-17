@@ -6,52 +6,59 @@ import 'package:flutter/material.dart';
 class PaymentScreenUI extends StatelessWidget {
   static const routename = "payment-screen";
   final String coinpriceone;
-  const PaymentScreenUI({super.key, required this.coinpriceone});
+  final VoidCallback onBack;
+  const PaymentScreenUI({super.key, required this.coinpriceone, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffffdce0),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(
-                    Icons.backspace_outlined,
-                    color: Colors.red,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (canPop) {
+        onBack();
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xffffdce0),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      onBack();
+                    },
+                    icon: const Icon(
+                      Icons.backspace_outlined,
+                      color: Colors.red,
+                    ),
                   ),
-                ),
-                const SearchAndMenu(),
-              ],
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ProfileUI(),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            GatewayList(
-              coins: coinpriceone,
-            ),
-            //const SizedBox(height: 10,),
-          ],
+                  const SearchAndMenu(),
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ProfileUI(),
+                ],
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              GatewayList(
+                coins: coinpriceone,
+              ),
+              //const SizedBox(height: 10,),
+            ],
+          ),
         ),
       ),
     );
