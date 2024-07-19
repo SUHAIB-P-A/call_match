@@ -1,3 +1,5 @@
+import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_incomming.dart';
+import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -177,6 +179,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _startVideoCall() {
     // Implement video call logic
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return AudioIncommingUI(name: widget.contactName);
+      },
+    ));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Starting video call...')),
     );
@@ -184,7 +191,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _startVoiceCall() {
     // Implement voice call logic
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) {
+        return AudioOutgoingUI(contactname: widget.contactName);
+      },
+    ));
     ScaffoldMessenger.of(context).showSnackBar(
+      
       const SnackBar(content: Text('Starting voice call...')),
     );
   }

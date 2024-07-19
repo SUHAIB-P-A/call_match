@@ -15,17 +15,32 @@ class MainHome extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    //final double height = MediaQuery.sizeOf(context).height;
+    //final double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 209, 202, 202),
-      body: SafeArea(
-        child: ValueListenableBuilder(
-          valueListenable: indexchangenotifier,
-          builder: (context, int index, _) {
-            return _pages[index];
-          },
+        backgroundColor: const Color.fromARGB(255, 209, 202, 202),
+        body: SafeArea(
+          child: ValueListenableBuilder(
+            valueListenable: indexchangenotifier,
+            builder: (context, int index, _) {
+              return _pages[index];
+            },
+          ),
         ),
-      ),
-      bottomNavigationBar: const BottomNavWidget(),
-    );
+         bottomNavigationBar: const BottomNavWidget()
+        // Stack(
+        //   children: [
+        //     Container(
+        //       height: height - 735,
+        //       width: width,
+        //       color: const Color(0xffffdce0),
+        //     ),
+        //     ClipPath(
+        //       clipper: CurvedBottomClipper(),
+        //       child: const BottomNavWidget(),
+        //     ),
+        //   ],
+        // )
+        );
   }
 }
