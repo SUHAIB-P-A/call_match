@@ -89,26 +89,21 @@ class ListViewUI extends StatelessWidget {
                 icon: const Icon(Icons.call, color: Colors.green),
                 onPressed: () {
                   // Implement call functionality
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-                    return AudioOutgoingUI(contactname: "name");
-                  },));
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return AudioOutgoingUI(contactname: "name");
+                    },
+                  ));
                 },
               ),
               const SizedBox(width: 10),
               Container(
-                height: 23,
-                width: 23,
+                height: 16,
+                width: 16,
                 decoration: const BoxDecoration(
-                    color: Colors.white,
                     shape: BoxShape.circle,
-                    border: Border.fromBorderSide(BorderSide())),
-                child: const Center(
-                  child: Icon(
-                    Icons.circle,
-                    color: Colors.red,
-                    size: 20,
-                  ),
-                ),
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/online.png"))),
               ),
             ],
           ),
