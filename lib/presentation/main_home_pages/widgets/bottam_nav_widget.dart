@@ -33,6 +33,7 @@ class BottomNavWidget extends StatelessWidget {
                   width: 30,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
+                      
                       fit: BoxFit.cover,
                       image: AssetImage(
                         "assets/images/home.png",
