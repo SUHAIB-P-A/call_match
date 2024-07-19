@@ -1,4 +1,6 @@
+import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ListViewUI extends StatelessWidget {
   final double height;
@@ -29,12 +31,11 @@ class ListViewUI extends StatelessWidget {
         ),
         child: Column(
           children: [
-            TabBar(
+            const TabBar(
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,
-              indicatorColor:
-                  const Color(0xffb42c44), // Primary color of the app
-              tabs: const [
+              indicatorColor: Color(0xffb42c44), // Primary color of the app
+              tabs: [
                 Tab(text: 'All'),
                 Tab(text: 'Malayalam'),
                 Tab(text: 'Tamil'),
@@ -88,21 +89,24 @@ class ListViewUI extends StatelessWidget {
                 icon: const Icon(Icons.call, color: Colors.green),
                 onPressed: () {
                   // Implement call functionality
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+                    return AudioOutgoingUI(contactname: "name");
+                  },));
                 },
               ),
               const SizedBox(width: 10),
               Container(
-                height: 30,
-                width: 30,
+                height: 23,
+                width: 23,
                 decoration: const BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(20),
-                  ),
-                  image: DecorationImage(
-                    alignment: Alignment.center,
-                    scale: 0.5,
-                    image: AssetImage("assets/images/love_symbol.png"),
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.fromBorderSide(BorderSide())),
+                child: const Center(
+                  child: Icon(
+                    Icons.circle,
+                    color: Colors.red,
+                    size: 20,
                   ),
                 ),
               ),
