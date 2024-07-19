@@ -123,6 +123,7 @@ class ProfilePage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               const TextField(
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Phone Number',
                   prefixIcon: Icon(Icons.phone),
