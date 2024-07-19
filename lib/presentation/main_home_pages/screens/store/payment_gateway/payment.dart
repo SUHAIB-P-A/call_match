@@ -7,7 +7,8 @@ class PaymentScreenUI extends StatelessWidget {
   static const routename = "payment-screen";
   final String coinpriceone;
   final VoidCallback onBack;
-  const PaymentScreenUI({super.key, required this.coinpriceone, required this.onBack});
+  const PaymentScreenUI(
+      {super.key, required this.coinpriceone, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class PaymentScreenUI extends StatelessWidget {
                 height: 10,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   IconButton(
                     onPressed: () {
@@ -38,16 +39,6 @@ class PaymentScreenUI extends StatelessWidget {
                       color: Colors.red,
                     ),
                   ),
-                  const SearchAndMenu(),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ProfileUI(),
                 ],
               ),
               const SizedBox(

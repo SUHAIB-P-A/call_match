@@ -17,26 +17,26 @@ class AudioOutgoingUI extends StatelessWidget {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const TopButtons(),
-          ImageAndNameUI(
-            height: height,
-            width: width,
-            name: contactname,
-            calltype: "Calling...",
-            callAcceptedNotifier: callAcceptedNotifier,
-          ),
-          AfterAcceptCall(
-            callAccepted: callAcceptedNotifier,
-            onEnd: () {
-              
-              Navigator.of(context).pop();
-            },
-          )
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ImageAndNameUI(
+              height: height,
+              width: width,
+              name: contactname,
+              calltype: "Calling...",
+              callAcceptedNotifier: callAcceptedNotifier,
+            ),
+            AfterAcceptCall(
+              callAccepted: callAcceptedNotifier,
+              onEnd: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        ),
       ),
     );
   }
