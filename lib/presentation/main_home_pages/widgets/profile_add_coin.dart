@@ -15,11 +15,13 @@ class ProfileUI extends StatelessWidget {
           height: 40,
           width: 40,
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage("assets/images/profile.png"),
-            ),
+            shape: BoxShape.circle,
+            color: Color(0xFFD93755),
+          ),
+          child: const Icon(
+            Icons.account_circle,
+            size: 40,
+            color: Colors.white,
           ),
         ),
         const SizedBox(width: 15,),
