@@ -18,11 +18,15 @@ class ProfileHome extends StatelessWidget {
           CurveShapeUI(width: width),
           //ADD COIN AND DISPLAY
           const AddCoinDisplayUI(),
-
-          //USER LISTVIEW UIs
-          ListViewUI(
-            height: height,
-            width: width,
+          //USER LISTVIEW UIs with Tabs
+          Expanded(
+            child: DefaultTabController(
+              length: 3, // Number of tabs
+              child: ListViewUI(
+                height: height,
+                width: width,
+              ),
+            ),
           ),
           const SizedBox(
             height: 10,
