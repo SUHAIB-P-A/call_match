@@ -15,7 +15,7 @@ class SearchAndMenu extends StatelessWidget {
           onPressed: () {},
           icon: const Icon(
             Icons.search,
-            color: Colors.red,
+            color: Color(0xFFD93755),
           ),
         ),
         //menu icon
@@ -23,7 +23,7 @@ class SearchAndMenu extends StatelessWidget {
           onPressed: () {},
           icon: const Icon(
             Icons.menu,
-            color: Colors.red,
+            color: Color(0xFFD93755),
           ),
         ),
       ],

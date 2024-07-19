@@ -37,6 +37,7 @@ dependencies:
   agora_rtc_engine: ^6.3.2
   upi_india: ^3.0.1
   agora_chat_sdk: ^1.2.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
