@@ -1,4 +1,3 @@
-import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_incomming.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
           onPressed: () {
             Navigator.pop(context); // Navigate back to the previous screen
           },
@@ -33,13 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         backgroundColor: const Color(0xffb42c44),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.video_call, color: Colors.white),
-            onPressed: () {
-              // Implement video call functionality
-              _startVideoCall();
-            },
-          ),
+          
           IconButton(
             icon: const Icon(Icons.phone, color: Colors.white),
             onPressed: () {
@@ -177,23 +170,13 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void _startVideoCall() {
-    // Implement video call logic
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-        return AudioIncommingUI(name: widget.contactName);
-      },
-    ));
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Starting video call...')),
-    );
-  }
+  
 
   void _startVoiceCall() {
     // Implement voice call logic
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
-        return AudioOutgoingUI(contactname: widget.contactName);
+        return AudioOutgoingUI(contactname: widget.contactName,uid: 1);
       },
     ));
     ScaffoldMessenger.of(context).showSnackBar(

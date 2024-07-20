@@ -19,7 +19,6 @@ class AudioIncommingUI extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const TopButtons(),
           ImageAndNameUI(
             height: height,
             width: width,
@@ -33,7 +32,6 @@ class AudioIncommingUI extends StatelessWidget {
               return accepted
                   ? AfterAcceptCall(
                       onEnd: () {
-                        
                         Navigator.of(context).pop();
                       },
                     )

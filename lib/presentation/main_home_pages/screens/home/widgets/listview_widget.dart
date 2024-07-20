@@ -1,10 +1,10 @@
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ListViewUI extends StatelessWidget {
   final double height;
   final double width;
+
   const ListViewUI({
     super.key,
     required this.height,
@@ -13,11 +13,16 @@ class ListViewUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sample data based on category
-    final List<Map<String, String>> items = [
-      {'name': 'Name 1', 'location': 'Mumbai', 'category': 'All'},
-      {'name': 'Name 2', 'location': 'Kochi', 'category': 'Malayalam'},
-      {'name': 'Name 3', 'location': 'Chennai', 'category': 'Tamil'},
+    // Sample data with UIDs
+    final List<Map<String, dynamic>> items = [
+      {'name': 'Name 1', 'location': 'Mumbai', 'category': 'All', 'uid': 0},
+      {
+        'name': 'Name 2',
+        'location': 'Kochi',
+        'category': 'Malayalam',
+        'uid': 1
+      },
+      {'name': 'Name 3', 'location': 'Chennai', 'category': 'Tamil', 'uid': 2},
       // Add more items as needed
     ];
 
@@ -44,9 +49,9 @@ class ListViewUI extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  _buildListView(items, 'All'),
-                  _buildListView(items, 'Malayalam'),
-                  _buildListView(items, 'Tamil'),
+                  _buildListView(items, 'All', context),
+                  _buildListView(items, 'Malayalam', context),
+                  _buildListView(items, 'Tamil', context),
                 ],
               ),
             ),
@@ -56,7 +61,8 @@ class ListViewUI extends StatelessWidget {
     );
   }
 
-  Widget _buildListView(List<Map<String, String>> items, String category) {
+  Widget _buildListView(
+      List<Map<String, dynamic>> items, String category, BuildContext context) {
     // Filter items based on the selected category
     final filteredItems = items.where((item) {
       if (category == 'All') {
@@ -88,10 +94,15 @@ class ListViewUI extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.call, color: Colors.green),
                 onPressed: () {
-                  // Implement call functionality
+                  // Assuming we are testing, and we know the UIDs to use:
+                  // Emulator will use UID 0, Physical device will use UID 1
+                  int callerUid = 0; // Set UID for the caller
+                  int receiverUid = item['uid']; // UID for the receiver
+
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
-                      return AudioOutgoingUI(contactname: "name");
+                      return AudioOutgoingUI(
+                          contactname: item['name']!, uid: callerUid);
                     },
                   ));
                 },

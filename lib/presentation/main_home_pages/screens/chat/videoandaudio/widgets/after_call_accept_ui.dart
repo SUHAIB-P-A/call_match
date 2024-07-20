@@ -41,6 +41,7 @@ final VoidCallback onEnd;
               ),
             ),
             const SizedBox(width: 10,),
+            //call end button
             InkWell(
               onTap: () {
                 onEnd();
