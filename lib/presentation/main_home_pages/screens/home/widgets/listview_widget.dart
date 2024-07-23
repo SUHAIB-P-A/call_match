@@ -55,103 +55,107 @@ class ListViewUI extends StatelessWidget {
 
     return Center(
       child: Container(
-        height: height - 370,
-        width: width - 85,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(
-          children: [
-            const TabBar(
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Color(0xffb42c44), // Primary color of the app
-              tabs: [
-                Tab(text: "alll"),
-                Tab(text: 'Malayalam'),
-                Tab(text: 'Tamil'),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
+          height: height - 370,
+          width: width - 85,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: ValueListenableBuilder(
+            valueListenable: _listAgentNotifier,
+            builder: (
+              context,
+              value,
+              _,
+            ) {
+              return Column(
                 children: [
-                  _buildListView(items, 'All', context),
-                  _buildListView(items, 'Malayalam', context),
-                  _buildListView(items, 'Tamil', context),
+                  const TabBar(
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor:
+                        Color(0xffb42c44), // Primary color of the app
+                    tabs: [
+                      Tab(text: "alll"),
+                      Tab(text: 'Malayalam'),
+                      Tab(text: 'Tamil'),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        _buildListView(value, 'All', context),
+                        _buildListView(value, 'Malayalam', context),
+                        _buildListView(value, 'Tamil', context),
+                      ],
+                    ),
+                  ),
                 ],
-              ),
-            ),
-          ],
-        ),
-      ),
+              );
+            },
+          )),
     );
   }
 
   Widget _buildListView(
-      List<Map<String, dynamic>> items, String category, BuildContext context) {
+      List<ModelAgentList> agentList, String category, BuildContext context) {
     // Filter items based on the selected category
-    final filteredItems = items.where((item) {
+    final filteredItems = agentList.where((agent) {
       if (category == 'All') {
         return true;
       }
-      return item['category'] == category;
+      return agent.languages?.toLowerCase() == category.toLowerCase();
     }).toList();
 
-    return ValueListenableBuilder(
-      valueListenable: _listAgentNotifier,
-      builder: (context, agentNotifier, _) {
-        return ListView.builder(
-          itemBuilder: (context, index) {
-            final item = filteredItems[index];
-            return ListTile(
-              title: Text(
-                "agentNotifier",
-                style: const TextStyle(fontFamily: "Poppins-Regular"),
-              ),
-              subtitle: Text(
-                item['location']!,
-                style: const TextStyle(fontFamily: "Poppins-Regular"),
-              ),
-              leading: const CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://i.pinimg.com/736x/7a/57/08/7a5708d3347e1965a6df017fdb960965.jpg"),
-                radius: 23,
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.call, color: Colors.green),
-                    onPressed: () {
-                      // Here you pass both UIDs to the calling screen
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) {
-                          return AudioOutgoingUI(
-                            contactname: item['name']!,
-                            callerUid: '40', // Replace with actual caller UID
-                            receiverUid: item['uid'], // Receiver UID
-                          );
-                        },
-                      ));
+    return ListView.builder(
+      itemBuilder: (context, index) {
+        final item = filteredItems[index];
+        return ListTile(
+          title: Text(
+            "${item.customerFirstName}",
+            style: const TextStyle(fontFamily: "Poppins-Regular"),
+          ),
+          subtitle: Text(
+            "${item.customerEmail}",
+            style: const TextStyle(fontFamily: "Poppins-Regular"),
+          ),
+          leading: const CircleAvatar(
+            backgroundImage: NetworkImage(
+                "https://i.pinimg.com/736x/7a/57/08/7a5708d3347e1965a6df017fdb960965.jpg"),
+            radius: 23,
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.call, color: Colors.green),
+                onPressed: () {
+                  // Here you pass both UIDs to the calling screen
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return AudioOutgoingUI(
+                        contactname: "${item.customerFirstName}",
+                        callerUid: '40', // Replace with actual caller UID
+                        receiverUid: "${item.customerId}", // Receiver UID
+                      );
                     },
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    height: 16,
-                    width: 16,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: AssetImage("assets/images/online.png"))),
-                  ),
-                ],
+                  ));
+                },
               ),
-            );
-          },
-          itemCount: agentNotifier.length,
+              const SizedBox(width: 10),
+              Container(
+                height: 16,
+                width: 16,
+                decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage("assets/images/online.png"))),
+              ),
+            ],
+          ),
         );
       },
+      itemCount: filteredItems.length,
     );
   }
 }
