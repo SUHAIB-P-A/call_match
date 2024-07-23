@@ -24,7 +24,9 @@ class ProfileUI extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        const SizedBox(width: 15,),
+        const SizedBox(
+          width: 15,
+        ),
         const AddCoinDisplayUI()
       ],
     );

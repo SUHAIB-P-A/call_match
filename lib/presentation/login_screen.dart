@@ -139,7 +139,8 @@ class LoginScreen extends StatelessWidget {
                           ),
                           onPressed: () {
                             // Add functionality for the button here
-                            Navigator.of(context).pushReplacementNamed(MainHome.routeName);
+                            Navigator.of(context)
+                                .pushReplacementNamed(MainHome.routeName);
                           },
                           child: const Text(
                             'Continue',

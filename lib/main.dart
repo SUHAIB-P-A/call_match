@@ -10,19 +10,18 @@ void main() {
 
   // Initialize Agora Chat SDK
   //AgoraChatInitializer.initializeAgoraChat().then((_) {
-    // Set preferred orientations after initializing Agora Chat
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]).then((_) {
-      runApp(const MyApp());
-    });
+  // Set preferred orientations after initializing Agora Chat
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const MyApp());
+  });
   //}
   //);
 }
 
 class MyApp extends StatelessWidget {
-  
   const MyApp({super.key});
 
   @override
@@ -33,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:   const SplashScreen(),
+      home: const SplashScreen(),
       routes: routers,
     );
   }

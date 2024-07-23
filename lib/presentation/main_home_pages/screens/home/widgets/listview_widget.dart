@@ -109,8 +109,8 @@ class ListViewUI extends StatelessWidget {
                     builder: (context) {
                       return AudioOutgoingUI(
                         contactname: item['name']!,
-                        callerUid: '40', // Replace with actual caller UID
-                        receiverUid: item['uid'], // Receiver UID
+                        callerUid: '45', // Replace with actual caller UID
+                        receiverUid: item['uid'], contactName: '', // Receiver UID
                       );
                     },
                   ));

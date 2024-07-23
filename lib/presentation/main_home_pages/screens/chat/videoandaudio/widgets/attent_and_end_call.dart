@@ -12,8 +12,7 @@ class AttentAndEndCall extends StatelessWidget {
   final double height;
   final double width;
   final VoidCallback onAccept;
-    final VoidCallback onEndCall;
-
+  final VoidCallback onEndCall;
 
   @override
   Widget build(BuildContext context) {

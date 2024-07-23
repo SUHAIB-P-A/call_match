@@ -27,7 +27,7 @@ class MainHome extends StatelessWidget {
             },
           ),
         ),
-         bottomNavigationBar: const BottomNavWidget()
+        bottomNavigationBar: const BottomNavWidget()
         // Stack(
         //   children: [
         //     Container(

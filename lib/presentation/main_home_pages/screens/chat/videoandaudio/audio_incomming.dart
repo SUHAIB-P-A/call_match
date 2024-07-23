@@ -24,7 +24,7 @@ class AudioIncommingUI extends StatelessWidget {
             width: width,
             name: name,
             calltype: "Incomming call...",
-            callAcceptedNotifier: callAccepted,
+            callAcceptedNotifier: callAccepted, callType: '',
           ),
           ValueListenableBuilder<bool>(
             valueListenable: callAccepted,
