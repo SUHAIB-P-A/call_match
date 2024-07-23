@@ -55,47 +55,56 @@ class ListViewUI extends StatelessWidget {
 
     return Center(
       child: Container(
-        height: height - 370,
-        width: width - 85,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(30),
-        ),
-        child: Column(
-          children: [
-            const TabBar(
-              labelColor: Colors.black,
-              unselectedLabelColor: Colors.grey,
-              indicatorColor: Color(0xffb42c44), // Primary color of the app
-              tabs: [
-                Tab(text: "alll"),
-                Tab(text: 'Malayalam'),
-                Tab(text: 'Tamil'),
-              ],
-            ),
-            Expanded(
-              child: TabBarView(
+          height: height - 370,
+          width: width - 85,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: ValueListenableBuilder(
+            valueListenable: _listAgentNotifier,
+            builder: (
+              context,
+              value,
+              _,
+            ) {
+              return Column(
                 children: [
-                  _buildListView(items, 'All', context),
-                  _buildListView(items, 'Malayalam', context),
-                  _buildListView(items, 'Tamil', context),
+                  const TabBar(
+                    labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
+                    indicatorColor:
+                        Color(0xffb42c44), // Primary color of the app
+                    tabs: [
+                      Tab(text: "alll"),
+                      Tab(text: 'Malayalam'),
+                      Tab(text: 'Tamil'),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        _buildListView(value, 'All', context),
+                        _buildListView(value, 'Malayalam', context),
+                        _buildListView(value, 'Tamil', context),
+                      ],
+                    ),
+                  ),
                 ],
-              ),
-            ),
-          ],
-        ),
-      ),
+              );
+            },
+          )),
     );
   }
 
   Widget _buildListView(
-      List<Map<String, dynamic>> items, String category, BuildContext context) {
+      List<ModelAgentList> agentList, String category, BuildContext context) {
     // Filter items based on the selected category
-    final filteredItems = items.where((item) {
+    final filteredItems = agentList.where((agent) {
       if (category == 'All') {
         return true;
       }
-      return item['category'] == category;
+      return agent.languages?.toLowerCase() == category.toLowerCase();
     }).toList();
 
     return ListView.builder(
@@ -103,11 +112,11 @@ class ListViewUI extends StatelessWidget {
         final item = filteredItems[index];
         return ListTile(
           title: Text(
-            item['name']!,
+            "${item.customerFirstName}",
             style: const TextStyle(fontFamily: "Poppins-Regular"),
           ),
           subtitle: Text(
-            item['location']!,
+            "${item.customerEmail}",
             style: const TextStyle(fontFamily: "Poppins-Regular"),
           ),
           leading: const CircleAvatar(
@@ -125,9 +134,9 @@ class ListViewUI extends StatelessWidget {
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
                       return AudioOutgoingUI(
-                        contactname: item['name']!,
+                        contactname: "${item.customerFirstName}",
                         callerUid: '40', // Replace with actual caller UID
-                        receiverUid: item['uid'], contactName: '', // Receiver UID
+                        receiverUid: "${item.customerId}", // Receiver UID
                       );
                     },
                   ));
