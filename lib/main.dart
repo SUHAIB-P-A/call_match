@@ -1,4 +1,5 @@
 import 'package:call_match/core/routemap.dart';
+import 'package:call_match/data/agentlist/data.dart';
 //import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_incomming.dart';
 import 'package:call_match/presentation/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ApiCallFunctions.instance.getAgentModelList();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

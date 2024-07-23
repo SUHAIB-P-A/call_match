@@ -1,18 +1,35 @@
+import 'dart:developer';
+
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ListViewUI extends StatelessWidget {
+  final ValueNotifier<List<ModelAgentList>> _listAgentNotifier =
+      ValueNotifier([]);
   final double height;
   final double width;
 
-  const ListViewUI({
+  ListViewUI({
     super.key,
     required this.height,
     required this.width,
   });
-
+  final List<ModelAgentList> _listagent = [];
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        final agentlist = await ApiCallFunctions.instance.getAgentModelList();
+        agentlist.toList();
+        log(agentlist.toString());
+        print(agentlist.toList());
+        _listAgentNotifier.value = agentlist;
+      },
+    );
     // Sample data with UIDs
     final List<Map<String, dynamic>> items = [
       {
@@ -51,7 +68,7 @@ class ListViewUI extends StatelessWidget {
               unselectedLabelColor: Colors.grey,
               indicatorColor: Color(0xffb42c44), // Primary color of the app
               tabs: [
-                Tab(text: 'All'),
+                Tab(text: "alll"),
                 Tab(text: 'Malayalam'),
                 Tab(text: 'Tamil'),
               ],
@@ -109,8 +126,8 @@ class ListViewUI extends StatelessWidget {
                     builder: (context) {
                       return AudioOutgoingUI(
                         contactname: item['name']!,
-                        callerUid: '45', // Replace with actual caller UID
-                        receiverUid: item['uid'], contactName: '', // Receiver UID
+                        callerUid: '40', // Replace with actual caller UID
+                        receiverUid: item['uid'], // Receiver UID
                       );
                     },
                   ));

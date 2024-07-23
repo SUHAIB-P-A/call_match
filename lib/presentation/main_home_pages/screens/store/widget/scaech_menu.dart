@@ -1,3 +1,4 @@
+import 'package:call_match/data/agentlist/data.dart';
 import 'package:flutter/material.dart';
 
 class SearchAndMenu extends StatelessWidget {
@@ -12,7 +13,9 @@ class SearchAndMenu extends StatelessWidget {
       children: [
         //search icon
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            ApiCallFunctions.instance.getAgentModelList();
+          },
           icon: const Icon(
             Icons.search,
             color: Color(0xFFD93755),

@@ -173,11 +173,7 @@ class _ChatScreenState extends State<ChatScreen> {
     // Implement voice call logic
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
-        return AudioOutgoingUI(
-          contactname: widget.contactName,
-          callerUid: "25",
-          receiverUid: "2", contactName: '',
-        );
+        return AudioOutgoingUI(contactname: widget.contactName,callerUid: "25",receiverUid: "2", contactName: '',);
       },
     ));
     ScaffoldMessenger.of(context).showSnackBar(
