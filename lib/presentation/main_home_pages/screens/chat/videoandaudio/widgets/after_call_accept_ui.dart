@@ -45,6 +45,7 @@ final VoidCallback onEnd;
             InkWell(
               onTap: () {
                 onEnd();
+               
                 callAccepted!.value = false;
                 
               },

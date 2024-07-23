@@ -6,14 +6,19 @@ import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaud
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'audio_incomming.dart'; // Import your AudioIncommingUI widget
+import 'audio_incomming.dart';
 
 class AudioOutgoingUI extends StatefulWidget {
   static const routeName = "outgoing-screen";
   final String contactname;
-  final int uid;
+  final String callerUid;
+  final String receiverUid;
 
-  AudioOutgoingUI({super.key, required this.contactname, required this.uid});
+  AudioOutgoingUI(
+      {super.key,
+      required this.contactname,
+      required this.callerUid,
+      required this.receiverUid});
 
   @override
   _AudioOutgoingUIState createState() => _AudioOutgoingUIState();
@@ -73,14 +78,14 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
       ),
     );
 
-    final token = generateToken("test-channel",
-        widget.uid.toString()); // Generate token for the local user
+    final token = generateToken("test-channel", widget.callerUid);
 
     await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
-    await _engine.joinChannel(
+    await _engine.joinChannelWithUserAccount(
       token: token,
-      channelId: "test-channel",
-      uid: widget.uid,
+      channelId:
+          "test-channel", // Ensure the channel name is unique for each call
+      userAccount: widget.callerUid,
       options: const ChannelMediaOptions(),
     );
   }

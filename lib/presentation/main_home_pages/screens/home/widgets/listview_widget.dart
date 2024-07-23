@@ -15,14 +15,24 @@ class ListViewUI extends StatelessWidget {
   Widget build(BuildContext context) {
     // Sample data with UIDs
     final List<Map<String, dynamic>> items = [
-      {'name': 'Name 1', 'location': 'Mumbai', 'category': 'All', 'uid': 0},
+      {
+        'name': 'Name 1',
+        'location': 'Mumbai',
+        'category': 'All',
+        'uid': 'user1_uid'
+      },
       {
         'name': 'Name 2',
         'location': 'Kochi',
         'category': 'Malayalam',
-        'uid': 1
+        'uid': 'user2_uid'
       },
-      {'name': 'Name 3', 'location': 'Chennai', 'category': 'Tamil', 'uid': 2},
+      {
+        'name': 'Name 3',
+        'location': 'Chennai',
+        'category': 'Tamil',
+        'uid': 'user3_uid'
+      },
       // Add more items as needed
     ];
 
@@ -94,15 +104,14 @@ class ListViewUI extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.call, color: Colors.green),
                 onPressed: () {
-                  // Assuming we are testing, and we know the UIDs to use:
-                  // Emulator will use UID 0, Physical device will use UID 1
-                  int callerUid = 0; // Set UID for the caller
-                  int receiverUid = item['uid']; // UID for the receiver
-
+                  // Here you pass both UIDs to the calling screen
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
                       return AudioOutgoingUI(
-                          contactname: item['name']!, uid: callerUid);
+                        contactname: item['name']!,
+                        callerUid: '40', // Replace with actual caller UID
+                        receiverUid: item['uid'], // Receiver UID
+                      );
                     },
                   ));
                 },
