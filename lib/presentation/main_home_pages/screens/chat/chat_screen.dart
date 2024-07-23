@@ -32,7 +32,6 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         backgroundColor: const Color(0xffb42c44),
         actions: [
-          
           IconButton(
             icon: const Icon(Icons.phone, color: Colors.white),
             onPressed: () {
@@ -170,17 +169,18 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  
-
   void _startVoiceCall() {
     // Implement voice call logic
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
-        return AudioOutgoingUI(contactname: widget.contactName,callerUid: "25",receiverUid: "2",);
+        return AudioOutgoingUI(
+          contactname: widget.contactName,
+          callerUid: "25",
+          receiverUid: "2",
+        );
       },
     ));
     ScaffoldMessenger.of(context).showSnackBar(
-      
       const SnackBar(content: Text('Starting voice call...')),
     );
   }

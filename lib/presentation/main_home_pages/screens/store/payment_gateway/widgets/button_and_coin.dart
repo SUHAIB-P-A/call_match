@@ -16,7 +16,7 @@ class PayButtonCoins extends StatelessWidget {
         children: [
           Column(
             children: [
-               Text("₹$coinprice"),
+              Text("₹$coinprice"),
               GestureDetector(
                 onTap: () {},
                 child: const Text("View details"),

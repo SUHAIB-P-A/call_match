@@ -6,7 +6,7 @@ class ContactListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width =  MediaQuery.sizeOf(context).width;
+    final width = MediaQuery.sizeOf(context).width;
     final height = MediaQuery.sizeOf(context).height;
     return Scaffold(
         backgroundColor: const Color(0xffffdce0),
@@ -28,8 +28,8 @@ class ContactListScreen extends StatelessWidget {
             ),
             Center(
               child: Container(
-                height: height-274,
-                width: width-85,
+                height: height - 274,
+                width: width - 85,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),

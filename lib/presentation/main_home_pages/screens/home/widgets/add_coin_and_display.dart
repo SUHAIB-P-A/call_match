@@ -80,7 +80,6 @@ class AddCoinDisplayUI extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(
-                    
                     width: 15,
                   ),
                 ],

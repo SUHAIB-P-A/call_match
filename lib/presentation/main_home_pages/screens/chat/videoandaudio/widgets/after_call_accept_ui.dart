@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AfterAcceptCall extends StatelessWidget {
-  const AfterAcceptCall({super.key,this.callAccepted, required this.onEnd});
+  const AfterAcceptCall({super.key, this.callAccepted, required this.onEnd});
 
-final ValueNotifier<bool>? callAccepted;
-final VoidCallback onEnd;
-
+  final ValueNotifier<bool>? callAccepted;
+  final VoidCallback onEnd;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ final VoidCallback onEnd;
           color: const Color(0xffffdce0),
           borderRadius: BorderRadius.circular(30),
         ),
-        child:  Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const CircleAvatar(
@@ -31,23 +30,23 @@ final VoidCallback onEnd;
                 Icons.speaker_phone,
               ),
             ),
-            const SizedBox(width: 10,),
+            const SizedBox(
+              width: 10,
+            ),
             const CircleAvatar(
               radius: 25,
               backgroundColor: Colors.black,
-              child: Icon(
-                color: Colors.grey,
-                Icons.mic_external_off
-              ),
+              child: Icon(color: Colors.grey, Icons.mic_external_off),
             ),
-            const SizedBox(width: 10,),
+            const SizedBox(
+              width: 10,
+            ),
             //call end button
             InkWell(
               onTap: () {
                 onEnd();
-               
+
                 callAccepted!.value = false;
-                
               },
               child: const CircleAvatar(
                 radius: 25,
