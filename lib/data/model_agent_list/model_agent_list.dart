@@ -36,5 +36,15 @@ class ModelAgentList {
     return _$ModelAgentListFromJson(json);
   }
 
+  get firstName => null;
+
+  get lastName => null;
+
+  get uid => null;
+
+  get location => null;
+
+  get category => null;
+
   Map<String, dynamic> toJson() => _$ModelAgentListToJson(this);
 }
