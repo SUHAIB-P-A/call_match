@@ -18,7 +18,8 @@ class AudioOutgoingUI extends StatefulWidget {
       {super.key,
       required this.contactname,
       required this.callerUid,
-      required this.receiverUid});
+      required this.receiverUid,
+      required String contactName});
 
   @override
   _AudioOutgoingUIState createState() => _AudioOutgoingUIState();
@@ -104,6 +105,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
               name: widget.contactname,
               calltype: "Calling...",
               callAcceptedNotifier: callAcceptedNotifier,
+              callType: '',
             ),
             ValueListenableBuilder<bool>(
               valueListenable: callAcceptedNotifier,

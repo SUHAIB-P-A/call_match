@@ -177,6 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
           contactname: widget.contactName,
           callerUid: "25",
           receiverUid: "2",
+          contactName: '',
         );
       },
     ));

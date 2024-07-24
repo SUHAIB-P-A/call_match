@@ -2,10 +2,12 @@ import 'dart:developer';
 
 import 'package:call_match/data/agentlist/url.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
+import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:dio/dio.dart';
 
 abstract class ApiCalls {
   Future<List<ModelAgentList>> getAgentModelList();
+  Future<List<WalletDetails>> getWalletDetails();
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -24,7 +26,7 @@ class ApiCallFunctions extends ApiCalls {
   Future<List<ModelAgentList>> getAgentModelList() async {
     try {
       // Fetch data from the API
-      final response = await dio.get(url.baseUrl +url.agentList);
+      final response = await dio.get(url.baseUrl + url.agentList);
 
       // Check if the response is successful
       if (response.statusCode == 200) {
@@ -43,6 +45,28 @@ class ApiCallFunctions extends ApiCalls {
     } catch (e) {
       // Handle any errors
       throw Exception('Failed to load agent list: $e');
+    }
+  }
+
+   @override
+  Future<List<WalletDetails>> getWalletDetails() async {
+    try {
+      // Fetch data from the API
+      final response = await dio.get(url.baseUrl + url.walletdetails);
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        // Parse the JSON data and convert it to a list of WalletDetails
+        final List<dynamic> data = response.data;
+        final listdata = WalletDetails.listFromJson(data);
+        return listdata;
+      } else {
+        // Handle non-successful response
+        throw Exception('Failed to load wallet details');
+      }
+    } catch (e) {
+      // Handle any errors
+      throw Exception('Failed to load wallet details: $e');
     }
   }
 }
