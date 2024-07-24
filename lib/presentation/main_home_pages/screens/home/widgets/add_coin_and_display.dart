@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:flutter/material.dart';
@@ -6,20 +8,23 @@ class AddCoinDisplayUI extends StatelessWidget {
   AddCoinDisplayUI({
     super.key,
   });
-  final ValueNotifier<List<WalletDetails>> walletnotifier = ValueNotifier([]);
+  final ValueNotifier<WalletDetails?> walletnotifier = ValueNotifier(null);
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
-        final wallet = await ApiCallFunctions.instance.getWalletDetails();
-        
-
-        print(wallet.toList());
-        walletnotifier.value = wallet;
+        try {
+          final wallet = await ApiCallFunctions.instance.getWalletDetails();
+          walletnotifier.value = wallet;
+        } catch (e) {
+          // Handle any errors during fetching
+          print('Failed to load wallet details: $e');
+        }
       },
     );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      
       children: [
         ElevatedButton(
           style: ButtonStyle(
@@ -72,7 +77,7 @@ class AddCoinDisplayUI extends StatelessWidget {
                     height: 30,
                     width: 30,
                     decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.cover,
                         image: AssetImage(
@@ -90,13 +95,23 @@ class AddCoinDisplayUI extends StatelessWidget {
                       value,
                       _,
                     ) {
-                      return Text(
-                        '${value[1].walletCoins}',
-                        style: TextStyle(
-                          fontFamily: "Poppins-Regular",
-                          fontSize: 16,
-                        ),
-                      );
+                       if (value != null) {
+                        return Text(
+                          '${value.walletCoins}',
+                          style: const TextStyle(
+                            fontFamily: "Poppins-Regular",
+                            fontSize: 16,
+                          ),
+                        );
+                      } else {
+                        return const Text(
+                          'Loading...',
+                          style: TextStyle(
+                            fontFamily: "Poppins-Regular",
+                            fontSize: 16,
+                          ),
+                        );
+                      }
                     },
                   ),
                   const SizedBox(

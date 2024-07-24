@@ -49,7 +49,7 @@ class ListViewUI extends StatelessWidget {
                     indicatorColor:
                         Color(0xffb42c44), // Primary color of the app
                     tabs: [
-                      Tab(text: "alll"),
+                      Tab(text: "All"),
                       Tab(text: 'Malayalam'),
                       Tab(text: 'Tamil'),
                     ],

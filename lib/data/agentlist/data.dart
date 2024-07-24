@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 
 abstract class ApiCalls {
   Future<List<ModelAgentList>> getAgentModelList();
-  Future<List<WalletDetails>> getWalletDetails();
+  Future<WalletDetails> getWalletDetails();
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -49,17 +49,17 @@ class ApiCallFunctions extends ApiCalls {
   }
 
    @override
-  Future<List<WalletDetails>> getWalletDetails() async {
+  Future<WalletDetails> getWalletDetails() async {
     try {
       // Fetch data from the API
       final response = await dio.get(url.baseUrl + url.walletdetails);
 
       // Check if the response is successful
       if (response.statusCode == 200) {
-        // Parse the JSON data and convert it to a list of WalletDetails
-        final List<dynamic> data = response.data;
-        final listdata = WalletDetails.listFromJson(data);
-        return listdata;
+        // Parse the JSON data and convert it to a WalletDetails object
+        final Map<String, dynamic> data = response.data;
+        final walletDetails = WalletDetails.fromJson(data);
+        return walletDetails;
       } else {
         // Handle non-successful response
         throw Exception('Failed to load wallet details');
