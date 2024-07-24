@@ -1,11 +1,13 @@
 import 'dart:developer';
-
 import 'package:call_match/data/agentlist/url.dart';
+import 'package:call_match/data/login_with_number/login_with_number.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:dio/dio.dart';
 
 abstract class ApiCalls {
+  Future<LoginedUser> loginWithNumber(String data);
   Future<List<ModelAgentList>> getAgentModelList();
   Future<WalletDetails> getWalletDetails();
 }
@@ -14,13 +16,13 @@ class ApiCallFunctions extends ApiCalls {
   final dio = Dio();
   final url = Url();
 
-// singleton ctration start
+  // Singleton creation start
   ApiCallFunctions._internal();
-  static ApiCallFunctions instance = ApiCallFunctions._internal();
-  ApiCallFunctions factory() {
+  static final ApiCallFunctions instance = ApiCallFunctions._internal();
+  factory ApiCallFunctions() {
     return instance;
   }
-// singleton end
+  // Singleton end
 
   @override
   Future<List<ModelAgentList>> getAgentModelList() async {
@@ -48,7 +50,7 @@ class ApiCallFunctions extends ApiCalls {
     }
   }
 
-   @override
+  @override
   Future<WalletDetails> getWalletDetails() async {
     try {
       // Fetch data from the API
@@ -67,6 +69,32 @@ class ApiCallFunctions extends ApiCalls {
     } catch (e) {
       // Handle any errors
       throw Exception('Failed to load wallet details: $e');
+    }
+  }
+
+
+  @override
+  Future<LoginedUser> loginWithNumber(String data) async {
+    try {
+      final _response = await dio.post(
+        '${url.baseUrl}${url.loginnumber}',
+        data: {'mobile_no': data},
+      );
+
+      if (_response.statusCode == 200) {
+        // Parse the JSON response and return the LoginedUser object
+        final loginWithNumber = LoginWithNumber.fromJson(_response.data);
+        if (loginWithNumber.user != null) {
+          return loginWithNumber.user!;
+        } else {
+          throw Exception('User data is missing in the response');
+        }
+      } else {
+        throw Exception('Failed to log in with number');
+      }
+    } catch (e) {
+      log('Error in loginWithNumber: $e');
+      rethrow;
     }
   }
 }

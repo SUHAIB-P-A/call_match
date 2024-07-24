@@ -24,7 +24,6 @@ class AddCoinDisplayUI extends StatelessWidget {
     );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      
       children: [
         ElevatedButton(
           style: ButtonStyle(
@@ -95,7 +94,7 @@ class AddCoinDisplayUI extends StatelessWidget {
                       value,
                       _,
                     ) {
-                       if (value != null) {
+                      if (value != null) {
                         return Text(
                           '${value.walletCoins}',
                           style: const TextStyle(
@@ -105,7 +104,7 @@ class AddCoinDisplayUI extends StatelessWidget {
                         );
                       } else {
                         return const Text(
-                          'Loading...',
+                          '',
                           style: TextStyle(
                             fontFamily: "Poppins-Regular",
                             fontSize: 16,

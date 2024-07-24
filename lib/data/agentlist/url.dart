@@ -3,4 +3,5 @@ class Url {
 
   String agentList = "all_users/";
   String walletdetails = "wallet/${1}";
+  String loginnumber = "login_user/";
 }

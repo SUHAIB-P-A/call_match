@@ -17,7 +17,7 @@ class ProfileHome extends StatelessWidget {
         children: [
           CurveShapeUI(width: width),
           //ADD COIN AND DISPLAY
-           AddCoinDisplayUI(),
+          AddCoinDisplayUI(),
           //USER LISTVIEW UIs with Tabs
           Expanded(
             child: DefaultTabController(

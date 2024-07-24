@@ -38,10 +38,12 @@ class WalletDetails {
   Map<String, dynamic> toJson() => _$WalletDetailsToJson(this);
 
   // Factory method for converting a list of maps to a list of WalletDetails objects
-  static List<WalletDetails> listFromJson(List<dynamic> jsonList) =>
-      jsonList.map((json) => WalletDetails.fromJson(json as Map<String, dynamic>)).toList();
+  static List<WalletDetails> listFromJson(List<dynamic> jsonList) => jsonList
+      .map((json) => WalletDetails.fromJson(json as Map<String, dynamic>))
+      .toList();
 
   // Method for converting a list of WalletDetails objects to a list of maps
-  static List<Map<String, dynamic>> listToJson(List<WalletDetails> walletDetailsList) =>
+  static List<Map<String, dynamic>> listToJson(
+          List<WalletDetails> walletDetailsList) =>
       walletDetailsList.map((walletDetails) => walletDetails.toJson()).toList();
 }

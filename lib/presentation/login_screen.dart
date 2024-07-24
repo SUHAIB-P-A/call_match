@@ -1,3 +1,4 @@
+import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/presentation/main_home_pages/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -147,6 +148,8 @@ class LoginScreen extends StatelessWidget {
                           onPressed: () {
                             // Add functionality for the button here
                             if (_formKey.currentState!.validate()) {
+                              ApiCallFunctions.instance
+                                  .loginWithNumber(numberfieldcontroller.text);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                     content: Text('Number is valid')),
@@ -254,7 +257,7 @@ class LoginScreen extends StatelessWidget {
 
 //NUMBER VALIDATION FOR TEXTFORMFIELD
   String? validateNumber(String? value) {
-    if (value==null||value.isEmpty) {
+    if (value == null || value.isEmpty) {
       return 'Please enter a number';
     }
     final number = num.tryParse(value);
