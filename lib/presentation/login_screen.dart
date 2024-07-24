@@ -8,6 +8,8 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+    final TextEditingController numberfieldcontroller = TextEditingController();
     return Scaffold(
       body: Stack(
         children: [
@@ -79,39 +81,44 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                         height: 3,
                       ),
-                      Material(
-                        elevation: 5,
-                        shadowColor: Colors.black,
-                        borderRadius: BorderRadius.circular(
-                          20,
-                        ),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            hintText: "0000000000",
-                            hintStyle: const TextStyle(
-                              letterSpacing: 10,
-                              color: Colors.grey,
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10.0,
-                              horizontal: 20.0,
-                            ), // Adjust padding
-                            border: InputBorder.none, // Remove border
-                            filled: true,
-                            fillColor: Colors.grey[
-                                300], // Optional: Background color for the text field
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(
-                                20.0,
-                              ), // Round corners
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(
-                                20.0,
-                              ), // Round corners
+                      Form(
+                        key: _formKey,
+                        child: Material(
+                          elevation: 5,
+                          shadowColor: Colors.black,
+                          borderRadius: BorderRadius.circular(
+                            20,
+                          ),
+                          child: TextFormField(
+                            validator: validateNumber,
+                            controller: numberfieldcontroller,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: "0000000000",
+                              hintStyle: const TextStyle(
+                                letterSpacing: 10,
+                                color: Colors.grey,
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10.0,
+                                horizontal: 20.0,
+                              ), // Adjust padding
+                              border: InputBorder.none, // Remove border
+                              filled: true,
+                              fillColor: Colors.grey[
+                                  300], // Optional: Background color for the text field
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  20.0,
+                                ), // Round corners
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  20.0,
+                                ), // Round corners
+                              ),
                             ),
                           ),
                         ),
@@ -139,8 +146,19 @@ class LoginScreen extends StatelessWidget {
                           ),
                           onPressed: () {
                             // Add functionality for the button here
-                            Navigator.of(context)
-                                .pushReplacementNamed(MainHome.routeName);
+                            if (_formKey.currentState!.validate()) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Number is valid')),
+                              );
+                              Navigator.of(context)
+                                  .pushReplacementNamed(MainHome.routeName);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Number is not valid')),
+                              );
+                            }
                           },
                           child: const Text(
                             'Continue',
@@ -232,5 +250,20 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+//NUMBER VALIDATION FOR TEXTFORMFIELD
+  String? validateNumber(String? value) {
+    if (value==null||value.isEmpty) {
+      return 'Please enter a number';
+    }
+    final number = num.tryParse(value);
+    if (number == null) {
+      return 'Please enter a valid number';
+    }
+    if (value.length != 10) {
+      return 'Number must be exactly 10 digits long';
+    }
+    return null;
   }
 }
