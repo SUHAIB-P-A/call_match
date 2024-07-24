@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class ListViewUI extends StatelessWidget {
   final ValueNotifier<List<ModelAgentList>> _listAgentNotifier =
@@ -18,40 +14,17 @@ class ListViewUI extends StatelessWidget {
     required this.height,
     required this.width,
   });
-  final List<ModelAgentList> _listagent = [];
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
         final agentlist = await ApiCallFunctions.instance.getAgentModelList();
         agentlist.toList();
-        log(agentlist.toString());
-        print(agentlist.toList());
         _listAgentNotifier.value = agentlist;
       },
     );
     // Sample data with UIDs
-    final List<Map<String, dynamic>> items = [
-      {
-        'name': 'Name 1',
-        'location': 'Mumbai',
-        'category': 'All',
-        'uid': 'user1_uid'
-      },
-      {
-        'name': 'Name 2',
-        'location': 'Kochi',
-        'category': 'Malayalam',
-        'uid': 'user2_uid'
-      },
-      {
-        'name': 'Name 3',
-        'location': 'Chennai',
-        'category': 'Tamil',
-        'uid': 'user3_uid'
-      },
-      // Add more items as needed
-    ];
 
     return Center(
       child: Container(
@@ -147,10 +120,12 @@ class ListViewUI extends StatelessWidget {
               Container(
                 height: 16,
                 width: 16,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/online.png"))),
+                decoration:  BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage(item.isOnline == true ?"assets/images/online.png":"assets/images/offline.png"),
+                  ),
+                ),
               ),
             ],
           ),
