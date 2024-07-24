@@ -56,6 +56,7 @@ class ApiCallFunctions extends ApiCalls {
 
       // Check if the response is successful
       if (response.statusCode == 200) {
+        //log('Response data: ${response.data}'); 
         // Parse the JSON data and convert it to a list of WalletDetails
         final List<dynamic> data = response.data;
         final listdata = WalletDetails.listFromJson(data);
