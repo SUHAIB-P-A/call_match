@@ -8,7 +8,8 @@ class ImageAndNameUI extends StatelessWidget {
     required this.width,
     required this.name,
     required this.calltype,
-    this.callAcceptedNotifier, required String callType,
+    this.callAcceptedNotifier,
+    required String callType,
   });
 
   final double height;

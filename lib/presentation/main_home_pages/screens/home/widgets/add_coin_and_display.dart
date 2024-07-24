@@ -1,12 +1,23 @@
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:flutter/material.dart';
 
 class AddCoinDisplayUI extends StatelessWidget {
-  const AddCoinDisplayUI({
+  AddCoinDisplayUI({
     super.key,
   });
-
+  final ValueNotifier<List<WalletDetails>> walletnotifier = ValueNotifier([]);
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        final wallet = await ApiCallFunctions.instance.getWalletDetails();
+        
+
+        print(wallet.toList());
+        walletnotifier.value = wallet;
+      },
+    );
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -72,12 +83,21 @@ class AddCoinDisplayUI extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  const Text(
-                    "10",
-                    style: TextStyle(
-                      fontFamily: "Poppins-Regular",
-                      fontSize: 16,
-                    ),
+                  ValueListenableBuilder(
+                    valueListenable: walletnotifier,
+                    builder: (
+                      context,
+                      value,
+                      _,
+                    ) {
+                      return Text(
+                        '${value[1].walletCoins}',
+                        style: TextStyle(
+                          fontFamily: "Poppins-Regular",
+                          fontSize: 16,
+                        ),
+                      );
+                    },
                   ),
                   const SizedBox(
                     width: 15,
