@@ -49,7 +49,7 @@ class ListViewUI extends StatelessWidget {
                     indicatorColor:
                         Color(0xffb42c44), // Primary color of the app
                     tabs: [
-                      Tab(text: "alll"),
+                      Tab(text: "All"),
                       Tab(text: 'Malayalam'),
                       Tab(text: 'Tamil'),
                     ],
@@ -120,10 +120,12 @@ class ListViewUI extends StatelessWidget {
               Container(
                 height: 16,
                 width: 16,
-                decoration:  BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: AssetImage(item.isOnline == true ?"assets/images/online.png":"assets/images/offline.png"),
+                    image: AssetImage(item.isOnline == true
+                        ? "assets/images/online.png"
+                        : "assets/images/offline.png"),
                   ),
                 ),
               ),

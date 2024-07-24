@@ -27,7 +27,7 @@ class ProfileUI extends StatelessWidget {
         const SizedBox(
           width: 15,
         ),
-         AddCoinDisplayUI()
+        AddCoinDisplayUI()
       ],
     );
   }
