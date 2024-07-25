@@ -1,3 +1,4 @@
+
 import 'dart:developer';
 
 import 'package:call_match/data/agentlist/data.dart';
@@ -18,7 +19,7 @@ class AddCoinDisplayUI extends StatelessWidget {
           walletnotifier.value = wallet;
         } catch (e) {
           // Handle any errors during fetching
-          print('Failed to load wallet details: $e');
+          log('Failed to load wallet details: $e');
         }
       },
     );

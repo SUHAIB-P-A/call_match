@@ -3,7 +3,6 @@ import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens
 import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agent_store/store_screen.dart';
 import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/contact_list_screen.dart';
 import 'package:call_match/presentation/agent_ui/widgets/bottam_nav_widget.dart';
-import 'package:call_match/presentation/main_home_pages/widgets/bottam_nav_widget.dart';
 import 'package:flutter/material.dart';
 
 class MainHomeAgent extends StatelessWidget {

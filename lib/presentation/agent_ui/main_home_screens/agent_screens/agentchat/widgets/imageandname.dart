@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -92,7 +94,7 @@ class ImageAndNameUIAgent extends StatelessWidget {
       if (callAcceptedNotifieragent!.value == true) {
         timerNotifieragent.value += 1;
       } else {
-        print(timerNotifieragent.value.toString());
+        log(timerNotifieragent.value.toString());
         timer.cancel();
       }
     });
