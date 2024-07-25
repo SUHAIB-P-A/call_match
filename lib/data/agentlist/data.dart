@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:call_match/data/ChatMessage/chat_message.dart';
 import 'package:call_match/data/agentlist/url.dart';
 import 'package:call_match/data/login_with_number/login_with_number.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
@@ -12,6 +13,7 @@ abstract class ApiCalls {
   Future<List<ModelAgentList>> getAgentModelList();
   Future<WalletDetails> getWalletDetails();
   Future<List<ModelUserList>> getUserModelList();
+  Future<List<ChatMessage>> getChatMessages(int user1, int user2);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -100,10 +102,10 @@ class ApiCallFunctions extends ApiCalls {
       rethrow;
     }
   }
-  
+
   @override
-  Future<List<ModelUserList>> getUserModelList() async{
-try {
+  Future<List<ModelUserList>> getUserModelList() async {
+    try {
       // Fetch data from the API
       final response = await dio.get(url.baseUrl + url.normaluserList);
 
@@ -112,8 +114,7 @@ try {
         // Parse the JSON data and convert it to a list of ModelAgentList
         final List<dynamic> data = response.data;
         final listdata = data
-            .map(
-                (item) => ModelUserList.fromJson(item as Map<String, dynamic>))
+            .map((item) => ModelUserList.fromJson(item as Map<String, dynamic>))
             .toList();
 //log(listdata.toString());
         return listdata;
@@ -124,5 +125,31 @@ try {
     } catch (e) {
       // Handle any errors
       throw Exception('Failed to load agent list: $e');
-    }  }
+    }
+  }
+
+  @override
+  Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
+    try {
+      // Fetch data from the API
+      final response = await dio.get(url.baseUrl + url.getChat);
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        // Parse the JSON data and convert it to a list of ChatMessage
+        final data = response.data['messages'] as List<dynamic>;
+        final chatMessages = ChatMessage.listFromJson(data);
+        return chatMessages;
+      } else {
+        // Handle non-successful response
+        throw Exception('Failed to load chat messages');
+      }
+    } catch (e) {
+      // Handle any errors
+      throw Exception('Failed to load chat messages: $e');
+    }
+  }
+
+   //sendMessage(String text, userId1, userId12) {}
+
 }

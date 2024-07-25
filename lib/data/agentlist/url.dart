@@ -5,4 +5,5 @@ class Url {
   String normaluserList = "all_users/";
   String walletdetails = "wallet/${1}";
   String loginnumber = "login_user/";
+  String getChat = "get_chat/${1}/${2}";
 }
