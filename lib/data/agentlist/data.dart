@@ -6,6 +6,7 @@ import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 abstract class ApiCalls {
   Future<LoginedUser> loginWithNumber(String data);
@@ -15,7 +16,12 @@ abstract class ApiCalls {
 }
 
 class ApiCallFunctions extends ApiCalls {
-  final dio = Dio();
+  final dio = Dio(
+    BaseOptions(
+      connectTimeout: Durations.extralong3, // 10 seconds
+      receiveTimeout: Durations.extralong3, // 10 seconds
+    ),
+  );
   final url = Url();
 
   // Singleton creation start
@@ -56,7 +62,9 @@ class ApiCallFunctions extends ApiCalls {
   Future<WalletDetails> getWalletDetails() async {
     try {
       // Fetch data from the API
-      final response = await dio.get(url.baseUrl + url.walletdetails);
+      final response = await dio.get(
+        '${url.baseUrl}${url.walletdetails}',
+      );
 
       // Check if the response is successful
       if (response.statusCode == 200) {
@@ -66,11 +74,11 @@ class ApiCallFunctions extends ApiCalls {
         return walletDetails;
       } else {
         // Handle non-successful response
-        throw Exception('Failed to load wallet details');
+        throw Exception('Failed to load wallet details4');
       }
     } catch (e) {
       // Handle any errors
-      throw Exception('Failed to load wallet details: $e');
+      throw Exception('Failed to load wallet details2: $e');
     }
   }
 
@@ -96,10 +104,10 @@ class ApiCallFunctions extends ApiCalls {
       rethrow;
     }
   }
-  
+
   @override
-  Future<List<ModelUserList>> getUserModelList() async{
-try {
+  Future<List<ModelUserList>> getUserModelList() async {
+    try {
       // Fetch data from the API
       final response = await dio.get(url.baseUrl + url.normaluserList);
 
@@ -108,8 +116,7 @@ try {
         // Parse the JSON data and convert it to a list of ModelAgentList
         final List<dynamic> data = response.data;
         final listdata = data
-            .map(
-                (item) => ModelUserList.fromJson(item as Map<String, dynamic>))
+            .map((item) => ModelUserList.fromJson(item as Map<String, dynamic>))
             .toList();
 //log(listdata.toString());
         return listdata;
@@ -120,5 +127,6 @@ try {
     } catch (e) {
       // Handle any errors
       throw Exception('Failed to load agent list: $e');
-    }  }
+    }
+  }
 }

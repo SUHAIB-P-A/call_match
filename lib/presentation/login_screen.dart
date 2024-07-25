@@ -6,6 +6,7 @@ import 'package:call_match/presentation/agent_ui/main_home.dart';
 import 'package:call_match/presentation/main_home_pages/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = "login-screen";
@@ -152,6 +153,17 @@ class LoginScreen extends StatelessWidget {
                                 horizontal: 25.0), // Button padding
                           ),
                           onPressed: () async {
+                            // Save number
+                            log('Saving phone number: ${numberfieldcontroller.text}');
+                            final phonenumber = numberfieldcontroller.text;
+                            final SharedPreferences userNumber =
+                                await SharedPreferences.getInstance();
+                            await userNumber.setString(
+                                "phone_number", phonenumber);
+                            log('Phone number saved successfully');
+
+                            
+                            log('Navigating to the respective home screen');
                             final logindetails = await ApiCallFunctions.instance
                                 .loginWithNumber(numberfieldcontroller.text);
                             //log(logindetailslist.value!.status.toString());
@@ -161,13 +173,13 @@ class LoginScreen extends StatelessWidget {
                             );
                             if (_formKey.currentState!.validate()) {
                               try {
-                                
                                 logindetailslist.value = logindetails;
                                 log('LoginedUser status: ${logindetailslist.value?.status}');
+
+                                // Ensure data is saved and available before navigation
+
                                 if (logindetailslist.value!.status ==
                                     "Normal User") {
-                                  log(logindetailslist.value!.status
-                                      .toString());
                                   Navigator.of(context)
                                       .pushReplacementNamed(MainHome.routeName);
                                 } else if (logindetailslist.value!.status ==
@@ -177,7 +189,7 @@ class LoginScreen extends StatelessWidget {
                                 }
                               } catch (e) {
                                 // Handle any errors during fetching
-                                log('Failed to load wallet details: $e');
+                                log('Failed to load wallet details30: $e');
                               }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(

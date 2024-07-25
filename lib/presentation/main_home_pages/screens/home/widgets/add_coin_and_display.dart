@@ -13,13 +13,13 @@ class AddCoinDisplayUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-      (_) async {
+      (timeStamp) async {
         try {
           final wallet = await ApiCallFunctions.instance.getWalletDetails();
           walletnotifier.value = wallet;
         } catch (e) {
           // Handle any errors during fetching
-          log('Failed to load wallet details: $e');
+          log('Failed to load wallet details 1: $e');
         }
       },
     );

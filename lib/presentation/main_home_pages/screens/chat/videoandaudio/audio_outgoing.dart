@@ -1,11 +1,16 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:call_match/core/agoraconfig.dart';
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
+import 'package:call_match/presentation/login_screen.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/functions/tokengeneration.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'audio_incomming.dart';
 
 class AudioOutgoingUI extends StatefulWidget {
@@ -13,6 +18,9 @@ class AudioOutgoingUI extends StatefulWidget {
   final String contactname;
   final String callerUid;
   final String receiverUid;
+
+  final ValueNotifier<LoginedUser?> logindetailslistcalling =
+      ValueNotifier(null);
 
   AudioOutgoingUI(
       {super.key,
@@ -93,6 +101,16 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        final phoneno = await SharedPreferences.getInstance();
+        final phoneusernumber = phoneno.getString("phone_number");
+        final loginuserdetail = await ApiCallFunctions.instance
+            .loginWithNumber(phoneusernumber.toString());
+        widget.logindetailslistcalling.value = loginuserdetail;
+        log(loginuserdetail.customerFirstName.toString());
+      },
+    );
     return Scaffold(
       body: Center(
         child: Column(

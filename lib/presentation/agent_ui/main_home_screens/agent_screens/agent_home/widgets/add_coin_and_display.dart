@@ -19,7 +19,7 @@ class AddCoinDisplayUIAgent extends StatelessWidget {
           walletnotifier.value = wallet;
         } catch (e) {
           // Handle any errors during fetching
-          log('Failed to load wallet details: $e');
+          log('Failed to load wallet details3: $e');
         }
       },
     );
