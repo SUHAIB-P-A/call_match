@@ -1,10 +1,10 @@
-import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
-import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/attent_and_end_call.dart';
-import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
+import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/widgets/after_call_accept_ui.dart';
+import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/widgets/attent_and_end_call.dart';
+import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/widgets/imageandname.dart';
 import 'package:flutter/material.dart';
 
-class AudioIncommingUI extends StatelessWidget {
-  AudioIncommingUI({super.key, required this.name});
+class AudioIncommingUIAgent extends StatelessWidget {
+  AudioIncommingUIAgent({super.key, required this.name});
 
   final String name;
   final ValueNotifier<bool> callAccepted = ValueNotifier<bool>(false);
@@ -18,24 +18,24 @@ class AudioIncommingUI extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ImageAndNameUI(
+          ImageAndNameUIAgent(
             height: height,
             width: width,
             name: name,
             calltype: "Incomming call...",
-            callAcceptedNotifier: callAccepted,
+            callAcceptedNotifieragent: callAccepted,
             callType: '',
           ),
           ValueListenableBuilder<bool>(
             valueListenable: callAccepted,
             builder: (context, accepted, child) {
               return accepted
-                  ? AfterAcceptCall(
+                  ? AfterAcceptCallAgent(
                       onEnd: () {
                         Navigator.of(context).pop();
                       },
                     )
-                  : AttentAndEndCall(
+                  : AttentAndEndCallAgent(
                       height: height,
                       width: width,
                       onAccept: () {

@@ -3,14 +3,14 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class ImageAndNameUI extends StatelessWidget {
-  ImageAndNameUI({
+class ImageAndNameUIAgent extends StatelessWidget {
+  ImageAndNameUIAgent({
     super.key,
     required this.height,
     required this.width,
     required this.name,
     required this.calltype,
-    this.callAcceptedNotifier,
+    this.callAcceptedNotifieragent,
     required String callType,
   });
 
@@ -18,8 +18,8 @@ class ImageAndNameUI extends StatelessWidget {
   final double width;
   final String name;
   final String calltype;
-  final ValueNotifier<int> timerNotifier = ValueNotifier<int>(0);
-  final ValueNotifier<bool>? callAcceptedNotifier;
+  final ValueNotifier<int> timerNotifieragent = ValueNotifier<int>(0);
+  final ValueNotifier<bool>? callAcceptedNotifieragent;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class ImageAndNameUI extends StatelessWidget {
           ),
         ),
         ValueListenableBuilder(
-          valueListenable: callAcceptedNotifier!,
+          valueListenable: callAcceptedNotifieragent!,
           builder: (
             context,
             accepted,
@@ -47,7 +47,7 @@ class ImageAndNameUI extends StatelessWidget {
             if (accepted == true) {
               startTimer();
               return ValueListenableBuilder(
-                valueListenable: timerNotifier,
+                valueListenable: timerNotifieragent,
                 builder: (
                   context,
                   timerValue,
@@ -91,10 +91,10 @@ class ImageAndNameUI extends StatelessWidget {
 
   void startTimer() {
     Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      if (callAcceptedNotifier!.value == true) {
-        timerNotifier.value += 1;
+      if (callAcceptedNotifieragent!.value == true) {
+        timerNotifieragent.value += 1;
       } else {
-        log(timerNotifier.value.toString());
+        log(timerNotifieragent.value.toString());
         timer.cancel();
       }
     });

@@ -5,7 +5,7 @@ String generateToken(String channelName, String uid) {
   const role =
       RtcRole.publisher; // Use RtcRole.publisher instead of string "publisher"
   final expiry =
-      DateTime.now().add(Duration(minutes: 30)).millisecondsSinceEpoch ~/
+      DateTime.now().add(const Duration(minutes: 30)).millisecondsSinceEpoch ~/
           1000; // Token expires in 30 minutes
 
   return RtcTokenBuilder.build(

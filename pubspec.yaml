@@ -41,6 +41,7 @@ dependencies:
   agora_token_service: ^0.1.2
   dio: ^5.5.0+1
   json_annotation: ^4.9.0
+  agora_rtm: ^1.5.9
 
 dev_dependencies:
   flutter_test:
@@ -96,6 +97,7 @@ flutter:
     - assets/images/AI_Image 2.png
     - assets/images/offline.png
     - assets/images/online.png
+    - assets/images/avatarImage.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

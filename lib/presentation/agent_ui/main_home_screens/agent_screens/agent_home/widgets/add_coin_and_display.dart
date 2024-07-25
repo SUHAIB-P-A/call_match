@@ -5,8 +5,8 @@ import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:flutter/material.dart';
 
-class AddCoinDisplayUI extends StatelessWidget {
-  AddCoinDisplayUI({
+class AddCoinDisplayUIAgent extends StatelessWidget {
+  AddCoinDisplayUIAgent({
     super.key,
   });
   final ValueNotifier<WalletDetails?> walletnotifier = ValueNotifier(null);
