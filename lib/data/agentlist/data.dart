@@ -83,15 +83,11 @@ class ApiCallFunctions extends ApiCalls {
       );
 
       if (response.statusCode == 200) {
-        log('Response data: ${response.data}'); // Log the entire response data
+        //log('Response data: ${response.data}'); // Log the entire response data
         // Parse the JSON response and return the LoginedUser object
-        final loginWithNumber = LoginWithNumber.fromJson(response.data);
-        if (loginWithNumber.user != null) {
-          log('User ID: ${loginWithNumber.user!.customerId}');
-          return loginWithNumber.user!;
-        } else {
-          throw Exception('User data is missing in the response');
-        }
+        final loginedUser = LoginedUser.fromJson(response.data);
+        log('User ID: ${loginedUser.customerId}');
+        return loginedUser;
       } else {
         throw Exception('Failed to log in with number');
       }
