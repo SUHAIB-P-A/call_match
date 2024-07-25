@@ -28,7 +28,8 @@ class AudioOutgoingUIAgent extends StatefulWidget {
 
 class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
   late final RtcEngine _engine;
-  final ValueNotifier<bool> callAcceptedNotifieragent = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> callAcceptedNotifieragent =
+      ValueNotifier<bool>(false);
   final ValueNotifier<bool> localUserJoined = ValueNotifier<bool>(false);
   final ValueNotifier<int?> remoteUid = ValueNotifier<int?>(null);
 
@@ -63,7 +64,8 @@ class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
           // Navigate to the incoming call screen
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => AudioIncommingUIAgent(name: widget.contactname),
+              builder: (context) =>
+                  AudioIncommingUIAgent(name: widget.contactname),
             ),
           );
         },

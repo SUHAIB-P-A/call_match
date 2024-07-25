@@ -155,8 +155,8 @@ class LoginScreen extends StatelessWidget {
                                 const SnackBar(
                                     content: Text('Number is valid')),
                               );
-                              Navigator.of(context)
-                                  .pushReplacementNamed(MainHomeAgent.routeName);
+                              Navigator.of(context).pushReplacementNamed(
+                                  MainHomeAgent.routeName);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

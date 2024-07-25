@@ -1,7 +1,6 @@
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-
 part 'login_with_number.g.dart';
 
 @JsonSerializable()

@@ -1,10 +1,10 @@
 import 'package:call_match/data/agentlist/data.dart';
-import 'package:call_match/data/model_agent_list/model_agent_list.dart';
+import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:flutter/material.dart';
 
 class ListViewUIAgent extends StatelessWidget {
-  final ValueNotifier<List<ModelAgentList>> _listAgentNotifieragent =
+  final ValueNotifier<List<ModelUserList>> _listAgentNotifieragent =
       ValueNotifier([]);
   final double height;
   final double width;
@@ -18,8 +18,8 @@ class ListViewUIAgent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) async {
-        final agentlist = await ApiCallFunctions.instance.getAgentModelList();
+      (_) async {
+        final agentlist = await ApiCallFunctions.instance.getUserModelList();
         agentlist.toList();
         _listAgentNotifieragent.value = agentlist;
       },
@@ -71,7 +71,7 @@ class ListViewUIAgent extends StatelessWidget {
   }
 
   Widget _buildListView(
-      List<ModelAgentList> agentList, String category, BuildContext context) {
+      List<ModelUserList> agentList, String category, BuildContext context) {
     // Filter items based on the selected category
     final filteredItems = agentList.where((agent) {
       if (category == 'All') {

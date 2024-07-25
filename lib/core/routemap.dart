@@ -8,7 +8,7 @@ final routers = {
   HomeScreen.routename: (ctx) => const HomeScreen(),
   LoginScreen.routeName: (ctx) => const LoginScreen(),
   MainHome.routeName: (ctx) => MainHome(),
-  MainHomeAgent.routeName:(ctx)=>MainHomeAgent()
+  MainHomeAgent.routeName: (ctx) => MainHomeAgent()
   //AudioOutgoingUI.routeName:(ctx) => const AudioOutgoingUI(contactname: ""),
   //PaymentScreenUI.routename: (ctx) => const PaymentScreenUI(coinpriceone: PaymentScreenUI.routename,),
 };

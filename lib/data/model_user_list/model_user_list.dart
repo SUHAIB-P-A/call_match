@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'logined_user.g.dart';
+part 'model_user_list.g.dart';
 
 @JsonSerializable()
-class LoginedUser {
+class ModelUserList {
   @JsonKey(name: 'customer_id')
   int? customerId;
   @JsonKey(name: 'customer_first_name')
@@ -25,7 +25,7 @@ class LoginedUser {
   @JsonKey(name: 'adhaar_no')
   String? adhaarNo;
 
-  LoginedUser({
+  ModelUserList({
     this.customerId,
     this.customerFirstName,
     this.customerLastName,
@@ -38,19 +38,9 @@ class LoginedUser {
     this.adhaarNo,
   });
 
-  factory LoginedUser.fromJson(Map<String, dynamic> json) {
-    return _$LoginedUserFromJson(json);
+  factory ModelUserList.fromJson(Map<String, dynamic> json) {
+    return _$ModelUserListFromJson(json);
   }
 
-  Map<String, dynamic> toJson() => _$LoginedUserToJson(this);
-
-  // Factory method for converting a list of maps to a list of logineduser objects
-  static List<LoginedUser> listFromJson(List<dynamic> jsonList) => jsonList
-      .map((json) => LoginedUser.fromJson(json as Map<String, dynamic>))
-      .toList();
-
-  // Method for converting a list of logineduser objects to a list of maps
-  static List<Map<String, dynamic>> listToJson(
-          List<LoginedUser> logineduserList) =>
-      logineduserList.map((loginedUser) => loginedUser.toJson()).toList();
+  Map<String, dynamic> toJson() => _$ModelUserListToJson(this);
 }

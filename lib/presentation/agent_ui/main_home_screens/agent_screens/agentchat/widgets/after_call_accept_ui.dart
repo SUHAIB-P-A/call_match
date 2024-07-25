@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AfterAcceptCallAgent extends StatelessWidget {
-  const AfterAcceptCallAgent({super.key, this.callAccepted, required this.onEnd});
+  const AfterAcceptCallAgent(
+      {super.key, this.callAccepted, required this.onEnd});
 
   final ValueNotifier<bool>? callAccepted;
   final VoidCallback onEnd;
