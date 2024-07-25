@@ -1,16 +1,22 @@
+import 'dart:developer';
+
 import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/presentation/agent_ui/main_home.dart';
+import 'package:call_match/presentation/main_home_pages/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
 class LoginScreen extends StatelessWidget {
   static const routeName = "login-screen";
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+  final ValueNotifier<LoginedUser?> logindetailslist = ValueNotifier(null);
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
     final TextEditingController numberfieldcontroller = TextEditingController();
+
+    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       body: Stack(
         children: [
@@ -145,17 +151,34 @@ class LoginScreen extends StatelessWidget {
                                 vertical: 5.0,
                                 horizontal: 25.0), // Button padding
                           ),
-                          onPressed: () {
+                          onPressed: () async {
+                            final logindetails = await ApiCallFunctions.instance
+                                .loginWithNumber(numberfieldcontroller.text);
+                            //log(logindetailslist.value!.status.toString());
                             // Add functionality for the button here
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Number is valid')),
+                            );
                             if (_formKey.currentState!.validate()) {
-                              ApiCallFunctions.instance
-                                  .loginWithNumber(numberfieldcontroller.text);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Number is valid')),
-                              );
-                              Navigator.of(context).pushReplacementNamed(
-                                  MainHomeAgent.routeName);
+                              try {
+                                
+                                logindetailslist.value = logindetails;
+                                log('LoginedUser status: ${logindetailslist.value?.status}');
+                                if (logindetailslist.value!.status ==
+                                    "Normal User") {
+                                  log(logindetailslist.value!.status
+                                      .toString());
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(MainHome.routeName);
+                                } else if (logindetailslist.value!.status ==
+                                    "Agent User") {
+                                  Navigator.of(context).pushReplacementNamed(
+                                      MainHomeAgent.routeName);
+                                }
+                              } catch (e) {
+                                // Handle any errors during fetching
+                                log('Failed to load wallet details: $e');
+                              }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

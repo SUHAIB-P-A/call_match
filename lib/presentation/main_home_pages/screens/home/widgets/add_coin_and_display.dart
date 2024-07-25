@@ -12,7 +12,7 @@ class AddCoinDisplayUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) async {
+      (_) async {
         try {
           final wallet = await ApiCallFunctions.instance.getWalletDetails();
           walletnotifier.value = wallet;

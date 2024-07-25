@@ -6,7 +6,7 @@ import 'package:call_match/presentation/agent_ui/widgets/bottam_nav_widget.dart'
 import 'package:flutter/material.dart';
 
 class MainHomeAgent extends StatelessWidget {
-  static const routeName = "main_home-screen-agent";
+  static const routeName = "screen-agent";
   MainHomeAgent({super.key});
   final _pagesagent = [
     const ProfileHomeAgent(),
