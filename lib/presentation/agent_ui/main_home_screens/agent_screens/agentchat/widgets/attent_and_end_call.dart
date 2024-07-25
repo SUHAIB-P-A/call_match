@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+
+class AttentAndEndCallAgent extends StatelessWidget {
+  const AttentAndEndCallAgent({
+    super.key,
+    required this.height,
+    required this.width,
+    required this.onAccept,
+    required this.onEndCall,
+  });
+
+  final double height;
+  final double width;
+  final VoidCallback onAccept;
+  final VoidCallback onEndCall;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        //ACCEPT
+        GestureDetector(
+          onTap: onAccept,
+          child: Container(
+            height: height - 720,
+            width: width - 320,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                    "https://image.pngaaa.com/338/619338-middle.png"),
+              ),
+            ),
+          ),
+        ),
+        //END CALL
+        GestureDetector(
+          onTap: onEndCall,
+          child: Container(
+            height: height - 720,
+            width: width - 320,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                    "https://cdn2.iconfinder.com/data/icons/weby-flat-vol-2/512/weby-flat_call_end-call_drop-512.png"),
+              ),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+}

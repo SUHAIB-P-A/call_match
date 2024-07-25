@@ -1,4 +1,5 @@
 import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/presentation/agent_ui/main_home.dart';
 import 'package:call_match/presentation/main_home_pages/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
@@ -155,7 +156,7 @@ class LoginScreen extends StatelessWidget {
                                     content: Text('Number is valid')),
                               );
                               Navigator.of(context)
-                                  .pushReplacementNamed(MainHome.routeName);
+                                  .pushReplacementNamed(MainHomeAgent.routeName);
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

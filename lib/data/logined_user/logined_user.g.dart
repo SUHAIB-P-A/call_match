@@ -15,6 +15,8 @@ LoginedUser _$LoginedUserFromJson(Map<String, dynamic> json) => LoginedUser(
       status: json['status'] as String?,
       isOnline: json['is_online'] as bool?,
       languages: json['languages'] as String?,
+      isExisting: json['is_existing'] as bool?,
+      adhaarNo: json['adhaar_no'] as String?,
     );
 
 Map<String, dynamic> _$LoginedUserToJson(LoginedUser instance) =>
@@ -27,4 +29,6 @@ Map<String, dynamic> _$LoginedUserToJson(LoginedUser instance) =>
       'status': instance.status,
       'is_online': instance.isOnline,
       'languages': instance.languages,
+      'is_existing': instance.isExisting,
+      'adhaar_no': instance.adhaarNo,
     };

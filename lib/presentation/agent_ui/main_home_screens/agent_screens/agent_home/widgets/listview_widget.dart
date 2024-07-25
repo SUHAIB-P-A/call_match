@@ -3,13 +3,13 @@ import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:flutter/material.dart';
 
-class ListViewUI extends StatelessWidget {
-  final ValueNotifier<List<ModelAgentList>> _listAgentNotifier =
+class ListViewUIAgent extends StatelessWidget {
+  final ValueNotifier<List<ModelAgentList>> _listAgentNotifieragent =
       ValueNotifier([]);
   final double height;
   final double width;
 
-  ListViewUI({
+  ListViewUIAgent({
     super.key,
     required this.height,
     required this.width,
@@ -21,7 +21,7 @@ class ListViewUI extends StatelessWidget {
       (timeStamp) async {
         final agentlist = await ApiCallFunctions.instance.getAgentModelList();
         agentlist.toList();
-        _listAgentNotifier.value = agentlist;
+        _listAgentNotifieragent.value = agentlist;
       },
     );
     // Sample data with UIDs
@@ -35,7 +35,7 @@ class ListViewUI extends StatelessWidget {
             borderRadius: BorderRadius.circular(30),
           ),
           child: ValueListenableBuilder(
-            valueListenable: _listAgentNotifier,
+            valueListenable: _listAgentNotifieragent,
             builder: (
               context,
               value,

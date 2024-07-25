@@ -20,6 +20,10 @@ class LoginedUser {
   bool? isOnline;
   @JsonKey(name: 'languages')
   String? languages;
+  @JsonKey(name: 'is_existing')
+  bool? isExisting;
+  @JsonKey(name: 'adhaar_no')
+  String? adhaarNo;
 
   LoginedUser({
     this.customerId,
@@ -30,6 +34,8 @@ class LoginedUser {
     this.status,
     this.isOnline,
     this.languages,
+    this.isExisting,
+    this.adhaarNo,
   });
 
   factory LoginedUser.fromJson(Map<String, dynamic> json) {
