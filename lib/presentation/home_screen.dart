@@ -22,22 +22,26 @@ class HomeScreen extends StatelessWidget {
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 70),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 70),
                 child: Center(
                   child: Stack(
                     children: [
                       Positioned(
-                        left: 69,
-                        top: -1,
-                        child: Text(
-                          "💕",
-                          style: TextStyle(
-                            fontSize: 14,
+                        left: 65,
+                        top: -6,
+                        child: Container(
+                          height: 25,
+                          width: 25,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                  "assets/images/PROTOTYPE CALLMATCH 03-04red.png"),
+                            ),
                           ),
                         ),
                       ),
-                      Text(
+                      const Text(
                         "Call Match",
                         style: TextStyle(
                           color: Colors.black,
@@ -53,15 +57,30 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(bottom: 45),
                 child: Column(
                   children: [
-                    const Center(
-                      child: Text(
-                        "Lets gets closer! 💕",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                          fontFamily: "Montserrat",
-                        ),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Lets gets closer!",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              fontFamily: "Montserrat",
+                            ),
+                          ),
+                          Container(
+                            height: 40,
+                            width: 40,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/PROTOTYPE CALLMATCH 03-04red.png"),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     Center(

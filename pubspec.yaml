@@ -99,7 +99,7 @@ flutter:
     - assets/images/offline.png
     - assets/images/online.png
     - assets/images/avatarImage.png
-
+    - assets/images/PROTOTYPE CALLMATCH 03-04red.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
