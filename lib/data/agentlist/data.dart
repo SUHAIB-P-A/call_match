@@ -132,4 +132,38 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to load agent list: $e');
     }
   }
+
+  @override
+Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
+    log('Entering getChatMessages method');
+    try {
+      log('Fetching chat messages for user1: $user1 and user2: $user2');
+      
+      final chatUrl = url.getChat(user1, user2);
+      final fullUrl = '${url.baseUrl}$chatUrl';
+      
+      log('Chat URL: $fullUrl'); // Log the full URL for debugging
+      
+      final response = await dio.get(fullUrl);
+
+      if (response.statusCode == 200) {
+        log('Chat messages fetched successfully: ${response.data}');
+        final data = response.data['messages'] as List<dynamic>;
+        final chatMessages = ChatMessage.listFromJson(data);
+        log('Exiting getChatMessages method with success');
+        return chatMessages;
+      } else {
+        log('Failed to fetch chat messages: ${response.statusCode}');
+        throw Exception('Failed to load chat messages');
+      }
+    } catch (e) {
+      log('Error in fetching chat messages: $e');
+      throw Exception('Failed to load chat messages: $e');
+    }
+  }
+
+
+
+   //sendMessage(String text, userId1, userId12) {}
+
 }
