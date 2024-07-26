@@ -85,7 +85,7 @@ class ApiCallFunctions extends ApiCalls {
       );
 
       if (response.statusCode == 200) {
-        //log('Response data: ${response.data}'); // Log the entire response data
+        log('Response data: ${response.data}'); // Log the entire response data
         // Parse the JSON response and return the LoginedUser object
         final loginedUser = LoginedUser.fromJson(response.data);
         log('User ID: ${loginedUser.customerId}');
@@ -107,6 +107,7 @@ class ApiCallFunctions extends ApiCalls {
 
       // Check if the response is successful
       if (response.statusCode == 200) {
+        
         // Parse the JSON data and convert it to a list of ModelAgentList
         final List<dynamic> data = response.data;
         final listdata = data
@@ -125,26 +126,35 @@ class ApiCallFunctions extends ApiCalls {
   }
 
   @override
-  Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
+Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
+    log('Entering getChatMessages method');
     try {
-      // Fetch data from the API
-      final response = await dio.get(url.baseUrl + url.getChat);
+      log('Fetching chat messages for user1: $user1 and user2: $user2');
+      
+      final chatUrl = url.getChat(user1, user2);
+      final fullUrl = '${url.baseUrl}$chatUrl';
+      
+      log('Chat URL: $fullUrl'); // Log the full URL for debugging
+      
+      final response = await dio.get(fullUrl);
 
-      // Check if the response is successful
       if (response.statusCode == 200) {
-        // Parse the JSON data and convert it to a list of ChatMessage
+        log('Chat messages fetched successfully: ${response.data}');
         final data = response.data['messages'] as List<dynamic>;
         final chatMessages = ChatMessage.listFromJson(data);
+        log('Exiting getChatMessages method with success');
         return chatMessages;
       } else {
-        // Handle non-successful response
+        log('Failed to fetch chat messages: ${response.statusCode}');
         throw Exception('Failed to load chat messages');
       }
     } catch (e) {
-      // Handle any errors
+      log('Error in fetching chat messages: $e');
       throw Exception('Failed to load chat messages: $e');
     }
   }
+
+
 
    //sendMessage(String text, userId1, userId12) {}
 
