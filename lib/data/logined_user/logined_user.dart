@@ -35,7 +35,7 @@ class LoginedUser {
     this.isOnline,
     this.languages,
     this.isExisting,
-    this.adhaarNo,
+    this.adhaarNo, required String username,
   });
 
   factory LoginedUser.fromJson(Map<String, dynamic> json) {

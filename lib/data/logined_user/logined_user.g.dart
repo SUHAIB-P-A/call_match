@@ -16,7 +16,7 @@ LoginedUser _$LoginedUserFromJson(Map<String, dynamic> json) => LoginedUser(
       isOnline: json['is_online'] as bool?,
       languages: json['languages'] as String?,
       isExisting: json['is_existing'] as bool?,
-      adhaarNo: json['adhaar_no'] as String?,
+      adhaarNo: json['adhaar_no'] as String?, username: '',
     );
 
 Map<String, dynamic> _$LoginedUserToJson(LoginedUser instance) =>
