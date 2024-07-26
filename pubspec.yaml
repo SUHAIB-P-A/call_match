@@ -43,6 +43,7 @@ dependencies:
   json_annotation: ^4.9.0
   agora_rtm: ^1.5.9
   shared_preferences: ^2.2.3
+  audioplayers: ^6.0.0
 
 dev_dependencies:
   flutter_test:

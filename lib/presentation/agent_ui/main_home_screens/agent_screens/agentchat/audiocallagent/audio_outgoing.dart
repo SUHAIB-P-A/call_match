@@ -4,6 +4,7 @@ import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/functions/tokengeneration.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
+import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:permission_handler/permission_handler.dart';
@@ -59,6 +60,7 @@ class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
           debugPrint("Remote user $remoteUid joined");
           this.remoteUid.value = remoteUid;
+          player1.stop();
           callAcceptedNotifier.value = true;
         },
         onUserOffline: (RtcConnection connection, int remoteUid,

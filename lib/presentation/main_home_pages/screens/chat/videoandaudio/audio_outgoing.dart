@@ -1,9 +1,11 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/functions/tokengeneration.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
+import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
 import 'package:permission_handler/permission_handler.dart';
@@ -31,6 +33,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   final ValueNotifier<bool> localUserJoined = ValueNotifier<bool>(false);
   final ValueNotifier<int?> remoteUid = ValueNotifier<int?>(null);
   late RTMService rtmService;
+  final player = AudioPlayer();
 
   @override
   void initState() {
@@ -59,6 +62,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
           debugPrint("Remote user $remoteUid joined");
           this.remoteUid.value = remoteUid;
+          player1.stop();
           callAcceptedNotifier.value = true;
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
@@ -96,6 +100,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
         child: Column(
