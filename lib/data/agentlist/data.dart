@@ -7,6 +7,7 @@ import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 abstract class ApiCalls {
   Future<LoginedUser> loginWithNumber(String data);
@@ -17,7 +18,12 @@ abstract class ApiCalls {
 }
 
 class ApiCallFunctions extends ApiCalls {
-  final dio = Dio();
+  final dio = Dio(
+    BaseOptions(
+      connectTimeout: Durations.extralong3, // 10 seconds
+      receiveTimeout: Durations.extralong3, // 10 seconds
+    ),
+  );
   final url = Url();
 
   // Singleton creation start
@@ -58,7 +64,9 @@ class ApiCallFunctions extends ApiCalls {
   Future<WalletDetails> getWalletDetails() async {
     try {
       // Fetch data from the API
-      final response = await dio.get(url.baseUrl + url.walletdetails);
+      final response = await dio.get(
+        '${url.baseUrl}${url.walletdetails}',
+      );
 
       // Check if the response is successful
       if (response.statusCode == 200) {
@@ -68,11 +76,11 @@ class ApiCallFunctions extends ApiCalls {
         return walletDetails;
       } else {
         // Handle non-successful response
-        throw Exception('Failed to load wallet details');
+        throw Exception('Failed to load wallet details4');
       }
     } catch (e) {
       // Handle any errors
-      throw Exception('Failed to load wallet details: $e');
+      throw Exception('Failed to load wallet details2: $e');
     }
   }
 
@@ -124,38 +132,4 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to load agent list: $e');
     }
   }
-
-  @override
-Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
-    log('Entering getChatMessages method');
-    try {
-      log('Fetching chat messages for user1: $user1 and user2: $user2');
-      
-      final chatUrl = url.getChat(user1, user2);
-      final fullUrl = '${url.baseUrl}$chatUrl';
-      
-      log('Chat URL: $fullUrl'); // Log the full URL for debugging
-      
-      final response = await dio.get(fullUrl);
-
-      if (response.statusCode == 200) {
-        log('Chat messages fetched successfully: ${response.data}');
-        final data = response.data['messages'] as List<dynamic>;
-        final chatMessages = ChatMessage.listFromJson(data);
-        log('Exiting getChatMessages method with success');
-        return chatMessages;
-      } else {
-        log('Failed to fetch chat messages: ${response.statusCode}');
-        throw Exception('Failed to load chat messages');
-      }
-    } catch (e) {
-      log('Error in fetching chat messages: $e');
-      throw Exception('Failed to load chat messages: $e');
-    }
-  }
-
-
-
-   //sendMessage(String text, userId1, userId12) {}
-
 }

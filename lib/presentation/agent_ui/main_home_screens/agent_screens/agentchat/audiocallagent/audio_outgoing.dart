@@ -1,12 +1,12 @@
-import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:agora_rtm/agora_rtm.dart';
 import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/functions/tokengeneration.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
 import 'package:flutter/material.dart';
+import 'dart:core';
 import 'package:permission_handler/permission_handler.dart';
-import 'audio_incomming.dart';
 
 class AudioOutgoingUIAgent extends StatefulWidget {
   static const routeName = "outgoing-screen";
@@ -14,7 +14,7 @@ class AudioOutgoingUIAgent extends StatefulWidget {
   final String callerUid;
   final String receiverUid;
 
-  const AudioOutgoingUIAgent(
+  AudioOutgoingUIAgent(
       {super.key,
       required this.contactname,
       required this.callerUid,
@@ -27,15 +27,16 @@ class AudioOutgoingUIAgent extends StatefulWidget {
 
 class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
   late final RtcEngine _engine;
-  final ValueNotifier<bool> callAcceptedNotifieragent =
-      ValueNotifier<bool>(false);
+  final ValueNotifier<bool> callAcceptedNotifier = ValueNotifier<bool>(false);
   final ValueNotifier<bool> localUserJoined = ValueNotifier<bool>(false);
   final ValueNotifier<int?> remoteUid = ValueNotifier<int?>(null);
+  late RTMService rtmService;
 
   @override
   void initState() {
     super.initState();
     initAgora();
+    startCall(widget.receiverUid); // Start the call and send the RTM message
   }
 
   Future<void> initAgora() async {
@@ -43,7 +44,7 @@ class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
 
     _engine = createAgoraRtcEngine();
     await _engine.initialize(
-      RtcEngineContext(
+      const RtcEngineContext(
         appId: appId,
         channelProfile: ChannelProfileType.channelProfileCommunication,
       ),
@@ -58,21 +59,13 @@ class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
         onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
           debugPrint("Remote user $remoteUid joined");
           this.remoteUid.value = remoteUid;
-          callAcceptedNotifieragent.value = true;
-
-          // Navigate to the incoming call screen
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) =>
-                  AudioIncommingUIAgent(name: widget.contactname),
-            ),
-          );
+          callAcceptedNotifier.value = true;
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
           debugPrint("Remote user $remoteUid left channel");
           this.remoteUid.value = null;
-          callAcceptedNotifieragent.value = false;
+          callAcceptedNotifier.value = false;
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
           debugPrint(
@@ -93,6 +86,14 @@ class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
     );
   }
 
+  Future<void> startCall(String receiverId) async {
+    rtmService = RTMService();
+    await rtmService.initialize(widget.callerUid);
+
+    String callInvitation = "Incoming call from ${widget.contactname}";
+    await rtmService.sendMessage(receiverId, callInvitation);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -106,22 +107,24 @@ class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
               width: MediaQuery.of(context).size.width,
               name: widget.contactname,
               calltype: "Calling...",
-              callAcceptedNotifier: callAcceptedNotifieragent,
+              callAcceptedNotifier: callAcceptedNotifier,
               callType: '',
             ),
             ValueListenableBuilder<bool>(
-              valueListenable: callAcceptedNotifieragent,
+              valueListenable: callAcceptedNotifier,
               builder: (context, callAccepted, child) {
                 return callAccepted
                     ? AfterAcceptCall(
-                        callAccepted: callAcceptedNotifieragent,
+                        callAccepted: callAcceptedNotifier,
                         onEnd: () async {
                           await _engine.leaveChannel();
                           await _engine.release();
                           Navigator.of(context).pop();
                         },
                       )
-                    : AfterAcceptCall(onEnd: () {
+                    : AfterAcceptCall(onEnd: () async {
+                        await _engine.leaveChannel();
+                        await _engine.release();
                         Navigator.of(context).pop();
                       });
               },
@@ -130,5 +133,35 @@ class _AudioOutgoingUIAgentState extends State<AudioOutgoingUIAgent> {
         ),
       ),
     );
+  }
+}
+
+class RTMService {
+  late AgoraRtmClient _rtmClient;
+
+  Function(String message, String peerId)? onMessageReceived;
+
+  Future<void> initialize(String userId) async {
+    _rtmClient = await AgoraRtmClient.createInstance(appId);
+    _rtmClient.onMessageReceived = (RtmMessage message, String peerId) {
+      print("Private message from $peerId: ${message.text}");
+      if (onMessageReceived != null) {
+        onMessageReceived!(message.text, peerId);
+      }
+    };
+
+    await _rtmClient.login(null, userId);
+  }
+
+  Future<void> sendMessage(String peerId, String message) async {
+    RtmMessage rtmMessage = RtmMessage.fromText(message);
+    await _rtmClient.sendMessageToPeer2(
+      peerId,
+      rtmMessage,
+    );
+  }
+
+  void setOnMessageReceived(Function(String message, String peerId) callback) {
+    onMessageReceived = callback;
   }
 }
