@@ -1,20 +1,72 @@
-import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:flutter/material.dart';
+import 'package:call_match/data/ChatMessage/chat_message.dart';
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
+import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
 
 class ChatScreenAgent extends StatefulWidget {
   final String contactName;
+  final int receiverId; // ID of the user
 
-  const ChatScreenAgent({super.key, required this.contactName});
+  const ChatScreenAgent({
+    super.key,
+    required this.contactName,
+    required this.receiverId,
+  });
 
   @override
-  // ignore: library_private_types_in_public_api
   _ChatScreenAgentState createState() => _ChatScreenAgentState();
 }
 
 class _ChatScreenAgentState extends State<ChatScreenAgent> {
-  final List<Map<String, dynamic>> _messages = []; // List to hold messages
+  final List<ChatMessage> _messages = [];
   final TextEditingController _controller = TextEditingController();
-  bool _isComposing = false; // Flag to track if the user is typing
+  bool _isComposing = false;
+  int? _loggedInUserId;
+
+  final ApiCallFunctions apiCallFunctions = ApiCallFunctions();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchLoggedInUserId();
+  }
+
+  Future<void> _fetchLoggedInUserId() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final phoneNumber = prefs.getString("phone_number");
+      if (phoneNumber != null) {
+        final loginUserDetail = await apiCallFunctions.loginWithNumber(phoneNumber);
+        setState(() {
+          _loggedInUserId = loginUserDetail.customerId;
+        });
+        fetchMessages();
+      } else {
+        log('Phone number not found in shared preferences');
+      }
+    } catch (e) {
+      log('Error fetching logged-in user ID: $e');
+    }
+  }
+
+  void fetchMessages() async {
+    if (_loggedInUserId == null) return;
+
+    log('Calling getChatMessages method');
+    try {
+      final messages = await apiCallFunctions.getChatMessages(_loggedInUserId!, widget.receiverId);
+      log('Messages fetched: ${messages.length}');
+      setState(() {
+        _messages.clear(); // Clear old messages
+        _messages.addAll(messages); // Add new messages
+      });
+    } catch (e) {
+      log('Error fetching messages: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +75,7 @@ class _ChatScreenAgentState extends State<ChatScreenAgent> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
           onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
+            Navigator.pop(context);
           },
         ),
         title: Text(
@@ -35,14 +87,12 @@ class _ChatScreenAgentState extends State<ChatScreenAgent> {
           IconButton(
             icon: const Icon(Icons.phone, color: Colors.white),
             onPressed: () {
-              // Implement voice call functionality
               _startVoiceCall();
             },
           ),
           IconButton(
             icon: const Icon(Icons.menu, color: Colors.white),
             onPressed: () {
-              // Open drawer
               Scaffold.of(context).openDrawer();
             },
           ),
@@ -53,20 +103,17 @@ class _ChatScreenAgentState extends State<ChatScreenAgent> {
           Expanded(
             child: ListView.builder(
               itemCount: _messages.length,
-              reverse: true, // To start from the bottom
+              reverse: true,
               itemBuilder: (context, index) {
                 final message = _messages[index];
-                final bool isMe = message['sender'] == 'me'; // Identify sender
+                final bool isMe = message.sender?.customerId == _loggedInUserId;
 
                 return Align(
-                  alignment:
-                      isMe ? Alignment.centerRight : Alignment.centerLeft,
+                  alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                   child: Container(
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     padding: const EdgeInsets.all(12),
-                    constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 0.7),
+                    constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
                     decoration: BoxDecoration(
                       color: isMe ? const Color(0xffb42c44) : Colors.grey[300],
                       borderRadius: BorderRadius.circular(20).subtract(
@@ -77,9 +124,8 @@ class _ChatScreenAgentState extends State<ChatScreenAgent> {
                       ),
                     ),
                     child: Text(
-                      message['text'],
-                      style:
-                          TextStyle(color: isMe ? Colors.white : Colors.black),
+                      message.message ?? '',
+                      style: TextStyle(color: isMe ? Colors.white : Colors.black),
                     ),
                   ),
                 );
@@ -154,30 +200,35 @@ class _ChatScreenAgentState extends State<ChatScreenAgent> {
   void _sendMessage() {
     final String text = _controller.text.trim();
     if (text.isNotEmpty) {
-      // Add message to list (simulating sending)
       setState(() {
-        _messages.insert(0, {'sender': 'me', 'text': text});
+        _messages.insert(0, ChatMessage(
+          sender: LoginedUser(customerId: _loggedInUserId!, username: 'me'),
+          message: text,
+          createdAt: DateTime.now().toString(),
+        ));
       });
       _controller.clear();
-      // For demo, simulate receiving a message after a short delay
+      // For demo purposes, simulate receiving a message after a short delay
       Future.delayed(const Duration(seconds: 1), () {
         setState(() {
-          _messages
-              .insert(0, {'sender': widget.contactName, 'text': 'Hi there!'});
+          _messages.insert(0, ChatMessage(
+            sender: LoginedUser(customerId: widget.receiverId, username: widget.contactName),
+            message: 'Hi there!',
+            createdAt: DateTime.now().toString(),
+          ));
         });
       });
     }
   }
 
   void _startVoiceCall() {
-    // Implement voice call logic
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
         return AudioOutgoingUI(
           contactname: widget.contactName,
-          callerUid: "25",
-          receiverUid: "2",
-          contactName: '',
+          callerUid: _loggedInUserId.toString(),
+          receiverUid: widget.receiverId.toString(),
+          contactName: widget.contactName,
         );
       },
     ));
