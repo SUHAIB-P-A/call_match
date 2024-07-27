@@ -38,18 +38,7 @@ class ModelUserList {
     this.adhaarNo,
   });
 
-  ModelUserList.create({
-    this.customerId,
-    required this.customerFirstName,
-    required this.customerLastName,
-    required this.customerEmail,
-    this.customerContact,
-    this.status,
-    this.isOnline,
-    this.languages,
-    this.isExisting,
-    this.adhaarNo,
-  });
+  
 
   factory ModelUserList.fromJson(Map<String, dynamic> json) {
     return _$ModelUserListFromJson(json);

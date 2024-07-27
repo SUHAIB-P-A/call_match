@@ -35,9 +35,21 @@ class LoginedUser {
     this.isOnline,
     this.languages,
     this.isExisting,
-    this.adhaarNo, required String username,
+    this.adhaarNo,
+    required String username,
   });
-
+  LoginedUser.create({
+    this.customerId,
+    required this.customerFirstName,
+    required this.customerLastName,
+    required this.customerEmail,
+    this.customerContact,
+    this.status,
+    this.isOnline,
+    this.languages,
+    this.isExisting,
+    this.adhaarNo,
+  });
   factory LoginedUser.fromJson(Map<String, dynamic> json) {
     return _$LoginedUserFromJson(json);
   }

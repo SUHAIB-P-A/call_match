@@ -15,7 +15,7 @@ abstract class ApiCalls {
   Future<WalletDetails> getWalletDetails(String data);
   Future<List<ModelUserList>> getUserModelList();
   Future<List<ChatMessage>> getChatMessages(int user1, int user2);
-  Future<LoginedUser> updateptofile(LoginedUser data , int id);
+  Future<LoginedUser> updateptofile(LoginedUser data , String id);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -164,12 +164,21 @@ Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
   }
   
   @override
-  Future<LoginedUser> updateptofile(LoginedUser data, int id) {
-    dio.put("${url.baseUrl}${url.updateptofile}$id");
+  Future<LoginedUser> updateptofile(LoginedUser data, String id) async{
+     try {
+      final response = await dio.post("${url.baseUrl}${url.updateptofile}$id", data: data.toJson());
+      if (response.statusCode == 200) {
+        final updatedUser = LoginedUser.fromJson(response.data);
+        return updatedUser;
+      } else {
+        throw Exception('Failed to update profile');
+      }
+    } catch (e) {
+      throw Exception('Failed to update profile: $e');
+    }
   }
 
 
 
-   //sendMessage(String text, userId1, userId12) {}
-
+   
 }
