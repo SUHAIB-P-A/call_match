@@ -15,7 +15,7 @@ abstract class ApiCalls {
   Future<WalletDetails> getWalletDetails(String data);
   Future<List<ModelUserList>> getUserModelList();
   Future<List<ChatMessage>> getChatMessages(int user1, int user2);
-  Future<LoginedUser> updateptofile(LoginedUser data , int id);
+  
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -163,13 +163,6 @@ Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
     }
   }
   
-  @override
-  Future<LoginedUser> updateptofile(LoginedUser data, int id) {
-    dio.put("${url.baseUrl}${url.updateptofile}$id");
-  }
 
-
-
-   //sendMessage(String text, userId1, userId12) {}
 
 }
