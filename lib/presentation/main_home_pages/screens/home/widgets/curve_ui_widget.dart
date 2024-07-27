@@ -1,4 +1,5 @@
 import 'package:call_match/presentation/main_home_pages/screens/home/widgets/profile_screen.dart';
+import 'package:call_match/presentation/main_home_pages/screens/home/widgets/userdetails.dart';
 import 'package:call_match/presentation/main_home_pages/screens/store/widget/scaech_menu.dart';
 import 'package:flutter/material.dart';
 
@@ -32,10 +33,9 @@ class CurveShapeUI extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
+                  Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ProfilePage(),
+                      builder: (context) => UserDetailsPage(),
                     ),
                   );
                 },
