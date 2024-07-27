@@ -16,6 +16,7 @@ abstract class ApiCalls {
   Future<List<ModelUserList>> getUserModelList();
   Future<List<ChatMessage>> getChatMessages(int user1, int user2);
   Future<LoginedUser> updateptofile(LoginedUser data , String id);
+  Future<void> sendMessage(int user1, int user2, String messageText);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -178,7 +179,32 @@ Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
     }
   }
 
+  Future<void> sendMessage(int user1, int user2, String messageText) async {
+  try {
+    final response = await dio.post(
+      '${url.baseUrl}${url.sendMessage}',
+      data: {
+        'user_1': user1,
+        'user_2': user2,
+        'message': messageText,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      // Message sent successfully
+      log('Message sent successfully');
+    } else {
+      // Handle non-successful response
+      throw Exception('Failed to send message');
+    }
+  } catch (e) {
+    log('Error sending message: $e');
+    rethrow;
+  }
+}
+}
+
 
 
    
-}
+

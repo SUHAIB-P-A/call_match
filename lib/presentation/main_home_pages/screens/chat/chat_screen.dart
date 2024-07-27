@@ -52,20 +52,31 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void fetchMessages() async {
-    if (_loggedInUserId == null) return;
+  if (_loggedInUserId == null) return;
 
-    log('Calling getChatMessages method');
-    try {
-      final messages = await apiCallFunctions.getChatMessages(_loggedInUserId!, widget.receiverId);
-      log('Messages fetched: ${messages.length}');
-      setState(() {
-        _messages.clear(); // Clear old messages
-        _messages.addAll(messages); // Add new messages
-      });
-    } catch (e) {
-      log('Error fetching messages: $e');
+  log('Fetching messages for user $_loggedInUserId with receiver ${widget.receiverId}');
+  try {
+    final messages = await apiCallFunctions.getChatMessages(_loggedInUserId!, widget.receiverId);
+    
+    log('Messages fetched: ${messages.length}');
+    if (messages.isEmpty) {
+      log('No messages found.');
+    } else {
+      // Check the content of messages for debugging
+      for (var message in messages) {
+        log('Message: ${message.message}, Sender: ${message.sender?.customerId}');
+      }
     }
+
+    setState(() {
+      _messages.clear(); // Clear old messages
+      _messages.addAll(messages); // Add new messages
+    });
+  } catch (e) {
+    log('Error fetching messages: $e');
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +94,6 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         backgroundColor: const Color(0xffb42c44),
         actions: [
-          // Removed the voice call button
           IconButton(
             icon: const Icon(Icons.menu, color: Colors.white),
             onPressed: () {
@@ -97,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Expanded(
             child: ListView.builder(
               itemCount: _messages.length,
-              reverse: true,
+              reverse: false, // Ensure messages are displayed in the order they are added
               itemBuilder: (context, index) {
                 final message = _messages[index];
                 final bool isMe = message.sender?.customerId == _loggedInUserId;
@@ -191,27 +201,29 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _sendMessage() {
+  void _sendMessage() async {
     final String text = _controller.text.trim();
     if (text.isNotEmpty) {
+      final newMessage = ChatMessage(
+        sender: LoginedUser(customerId: _loggedInUserId!, username: 'me'),
+        message: text,
+        createdAt: DateTime.now().toString(),
+      );
+
       setState(() {
-        _messages.insert(0, ChatMessage(
-          sender: LoginedUser(customerId: _loggedInUserId!, username: 'me'),
-          message: text,
-          createdAt: DateTime.now().toString(),
-        ));
+        _messages.insert(0, newMessage);
       });
+
       _controller.clear();
-      // For demo purposes, simulate receiving a message after a short delay
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          _messages.insert(0, ChatMessage(
-            sender: LoginedUser(customerId: widget.receiverId, username: widget.contactName),
-            message: 'Hi there!',
-            createdAt: DateTime.now().toString(),
-          ));
-        });
-      });
+
+      try {
+        await apiCallFunctions.sendMessage(_loggedInUserId!, widget.receiverId, text);
+
+        // Optionally fetch messages again to ensure the latest state
+        fetchMessages();
+      } catch (e) {
+        log('Error sending message: $e');
+      }
     }
   }
 }
