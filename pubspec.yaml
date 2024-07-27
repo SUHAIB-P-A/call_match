@@ -101,6 +101,8 @@ flutter:
     - assets/images/online.png
     - assets/images/avatarImage.png
     - assets/images/PROTOTYPE CALLMATCH 03-04red.png
+    - assets/audio/Outgoing.mp3
+    - assets/audio/incomming.mp3
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

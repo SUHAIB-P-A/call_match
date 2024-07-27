@@ -33,7 +33,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   final ValueNotifier<bool> localUserJoined = ValueNotifier<bool>(false);
   final ValueNotifier<int?> remoteUid = ValueNotifier<int?>(null);
   late RTMService rtmService;
-  final player = AudioPlayer();
+  
 
   @override
   void initState() {
@@ -59,11 +59,11 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
           debugPrint("Local user ${connection.localUid} joined");
           localUserJoined.value = true;
         },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) async{
           debugPrint("Remote user $remoteUid joined");
           this.remoteUid.value = remoteUid;
-          player1.stop();
           callAcceptedNotifier.value = true;
+          await player1.stop();
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
@@ -100,7 +100,6 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Center(
         child: Column(
@@ -122,12 +121,14 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
                     ? AfterAcceptCall(
                         callAccepted: callAcceptedNotifier,
                         onEnd: () async {
+                          await player1.stop();
                           await _engine.leaveChannel();
                           await _engine.release();
                           Navigator.of(context).pop();
                         },
                       )
                     : AfterAcceptCall(onEnd: () async {
+                        await player1.stop();
                         await _engine.leaveChannel();
                         await _engine.release();
                         Navigator.of(context).pop();
