@@ -12,9 +12,10 @@ import 'package:flutter/material.dart';
 abstract class ApiCalls {
   Future<LoginedUser> loginWithNumber(String data);
   Future<List<ModelAgentList>> getAgentModelList();
-  Future<WalletDetails> getWalletDetails();
+  Future<WalletDetails> getWalletDetails(String data);
   Future<List<ModelUserList>> getUserModelList();
   Future<List<ChatMessage>> getChatMessages(int user1, int user2);
+  Future<LoginedUser> updateptofile(LoginedUser data , int id);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -61,11 +62,11 @@ class ApiCallFunctions extends ApiCalls {
   }
 
   @override
-  Future<WalletDetails> getWalletDetails() async {
+  Future<WalletDetails> getWalletDetails(String data) async {
     try {
       // Fetch data from the API
       final response = await dio.get(
-        '${url.baseUrl}${url.walletdetails}',
+        '${url.baseUrl}${url.walletdetails}$data',
       );
 
       // Check if the response is successful
@@ -160,6 +161,11 @@ Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
       log('Error in fetching chat messages: $e');
       throw Exception('Failed to load chat messages: $e');
     }
+  }
+  
+  @override
+  Future<LoginedUser> updateptofile(LoginedUser data, int id) {
+    dio.put("${url.baseUrl}${url.updateptofile}$id");
   }
 
 

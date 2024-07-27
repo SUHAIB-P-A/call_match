@@ -1,12 +1,18 @@
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
+import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
 
   final ValueNotifier<File?> _imageNotifier = ValueNotifier<File?>(null);
-
+  final ValueNotifier<LoginedUser?> logindetailslistcalling =
+      ValueNotifier(null);
   Future<void> _pickImage(ImageSource source) async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: source);
@@ -18,6 +24,18 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController firstnamecontroller = TextEditingController();
+    final TextEditingController lastnamecontroller = TextEditingController();
+    final TextEditingController emailcontroller = TextEditingController();
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        final phoneno = await SharedPreferences.getInstance();
+        final phoneusernumber = phoneno.getString("phone_number");
+        final loginuserdetail = await ApiCallFunctions.instance
+            .loginWithNumber(phoneusernumber.toString());
+        logindetailslistcalling.value = loginuserdetail;
+      },
+    );
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -98,43 +116,50 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: firstnamecontroller,
+                decoration: const InputDecoration(
                   labelText: 'First Name',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 20),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: lastnamecontroller,
+                decoration: const InputDecoration(
                   labelText: 'Last Name',
                   prefixIcon: Icon(Icons.person),
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 20),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: emailcontroller,
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   prefixIcon: Icon(Icons.email),
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 20),
-              const TextField(
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                  prefixIcon: Icon(Icons.phone),
-                  border: OutlineInputBorder(),
-                ),
-              ),
               const SizedBox(height: 30),
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () {
                     // Handle save action
+                    final String fname = firstnamecontroller.text;
+                    final String lname = lastnamecontroller.text;
+                    final String email = emailcontroller.text;
+
+                    logindetailslistcalling.value!.customerFirstName = fname;
+                    logindetailslistcalling.value!.customerLastName = lname;
+
+                    ModelUserList.create(
+                      customerFirstName: fname,
+                      customerLastName: lname,
+                      customerEmail: email,
+                    );
                   },
                   icon: const Icon(Icons.save),
                   label: const Text('Save'),

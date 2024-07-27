@@ -1,9 +1,12 @@
+
+
 class Url {
   String baseUrl = "http://192.168.1.2:8000/";
 
   String agentList = "all_agents/";
   String normaluserList = "all_users/";
-  String walletdetails = "wallet/${1}";
+  String updateptofile = "update_profile/";
+  String walletdetails = "wallet/";
   String loginnumber = "login_user/";
   //String getChat = "get_chat/${1}/${2}";
   // Method to construct getChat URL
