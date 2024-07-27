@@ -1,6 +1,8 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/attent_and_end_call.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
+import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -59,11 +61,14 @@ class AudioIncommingUI extends StatelessWidget {
 
   void _acceptCall(BuildContext context) async {
     callAccepted.value = true;
+    await player1.stop();
     await _initAgora();
   }
 
   @override
   Widget build(BuildContext context) {
+    player1.setReleaseMode(ReleaseMode.loop);
+    player1.play(AssetSource("audio/incomming.mp3"));
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
 
@@ -98,7 +103,8 @@ class AudioIncommingUI extends StatelessWidget {
                         onAccept: () {
                           _acceptCall(context);
                         },
-                        onEndCall: () {
+                        onEndCall: () async {
+                          await player1.stop();
                           callAccepted.value = false;
                           Navigator.of(context).pop();
                         },

@@ -53,6 +53,7 @@ class ListViewUI extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
+        //await player1.setSource(AssetSource('assets/audio/Outgoing.mp3'));
         final agentlist = await ApiCallFunctions.instance.getAgentModelList();
         _listAgentNotifier.value = agentlist.toList();
         await _initializeRTMService(context);
@@ -130,9 +131,11 @@ class ListViewUI extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.call, color: Colors.green),
-                onPressed: () {
+                onPressed: () async{
                   log("receiver id : ${item.customerId}");
-                  player1.play("");
+                  await player1.setReleaseMode(ReleaseMode.loop);
+                  await player1.play(AssetSource("audio/Outgoing.mp3"),volume: 70,mode: PlayerMode.mediaPlayer);
+                  player1.resume();
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
                       return AudioOutgoingUI(

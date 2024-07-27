@@ -1,20 +1,30 @@
 import 'dart:developer';
 
 import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddCoinDisplayUIAgent extends StatelessWidget {
   AddCoinDisplayUIAgent({
     super.key,
   });
   final ValueNotifier<WalletDetails?> walletnotifier = ValueNotifier(null);
+  final ValueNotifier<LoginedUser?> logindetailslistcalling =
+      ValueNotifier(null);
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
         try {
-          final wallet = await ApiCallFunctions.instance.getWalletDetails();
+          
+          final phoneno = await SharedPreferences.getInstance();
+          final phoneusernumber = phoneno.getString("phone_number");
+          final loginuserdetail = await ApiCallFunctions.instance
+              .loginWithNumber(phoneusernumber.toString());
+          logindetailslistcalling.value = loginuserdetail;
+          final wallet = await ApiCallFunctions.instance.getWalletDetails("${logindetailslistcalling.value!.customerId}");
           walletnotifier.value = wallet;
         } catch (e) {
           // Handle any errors during fetching

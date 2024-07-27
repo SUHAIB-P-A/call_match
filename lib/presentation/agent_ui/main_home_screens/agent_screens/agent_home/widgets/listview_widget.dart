@@ -1,11 +1,11 @@
 import 'dart:developer';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_incomming.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
-import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:agora_rtm/agora_rtm.dart';
@@ -17,7 +17,7 @@ class ListViewUIAgent extends StatelessWidget {
       ValueNotifier(null);
   final double height;
   final double width;
-
+final player2= AudioPlayer();
   ListViewUIAgent({
     super.key,
     required this.height,
@@ -36,6 +36,7 @@ class ListViewUIAgent extends StatelessWidget {
       log("Private message from $peerId: ${message.text}");
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) {
+          
           return AudioIncommingUI(
             name: peerId,
             userId: loginuserdetail.customerFirstName.toString(),
@@ -52,6 +53,7 @@ class ListViewUIAgent extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
+        //await player2.setSource(AssetSource("assets/audio/Outgoing.mp3"));
         final agentlist = await ApiCallFunctions.instance.getUserModelList();
         _listAgentNotifier.value = agentlist.toList();
         await _initializeRTMService(context);
@@ -131,7 +133,7 @@ class ListViewUIAgent extends StatelessWidget {
                 icon: const Icon(Icons.call, color: Colors.green),
                 onPressed: () {
                   log("receiver id : ${item.customerId}");
-                  player1.play("source");
+                  player2.resume();
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
                       return AudioOutgoingUI(
