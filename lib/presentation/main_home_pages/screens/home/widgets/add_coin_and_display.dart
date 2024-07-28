@@ -23,7 +23,8 @@ class AddCoinDisplayUI extends StatelessWidget {
           final loginuserdetail = await ApiCallFunctions.instance
               .loginWithNumber(phoneusernumber.toString());
           logindetailslistcalling.value = loginuserdetail;
-          final wallet = await ApiCallFunctions.instance.getWalletDetails("${logindetailslistcalling.value!.customerId}");
+          final wallet = await ApiCallFunctions.instance
+              .getWalletDetails("${logindetailslistcalling.value!.customerId}");
           walletnotifier.value = wallet;
         } catch (e) {
           // Handle any errors during fetching

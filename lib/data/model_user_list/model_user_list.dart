@@ -38,8 +38,6 @@ class ModelUserList {
     this.adhaarNo,
   });
 
-  
-
   factory ModelUserList.fromJson(Map<String, dynamic> json) {
     return _$ModelUserListFromJson(json);
   }

@@ -33,7 +33,6 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   final ValueNotifier<bool> localUserJoined = ValueNotifier<bool>(false);
   final ValueNotifier<int?> remoteUid = ValueNotifier<int?>(null);
   late RTMService rtmService;
-  
 
   @override
   void initState() {
@@ -59,7 +58,8 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
           debugPrint("Local user ${connection.localUid} joined");
           localUserJoined.value = true;
         },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) async{
+        onUserJoined:
+            (RtcConnection connection, int remoteUid, int elapsed) async {
           debugPrint("Remote user $remoteUid joined");
           this.remoteUid.value = remoteUid;
           callAcceptedNotifier.value = true;

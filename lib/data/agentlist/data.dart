@@ -5,6 +5,7 @@ import 'package:call_match/data/login_with_number/login_with_number.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
+import 'package:call_match/data/send_chat_model/send_chat_model.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,9 @@ abstract class ApiCalls {
   Future<List<ModelAgentList>> getAgentModelList();
   Future<WalletDetails> getWalletDetails(String data);
   Future<List<ModelUserList>> getUserModelList();
-  Future<List<ChatMessage>> getChatMessages(int user1, int user2);
-  Future<LoginedUser> updateptofile(LoginedUser data , String id);
-  Future<void> sendMessage(int user1, int user2, String messageText);
+  Future<List<ChatMessage>> getChatMessages(String user1, String user2);
+  Future<LoginedUser> updateptofile(LoginedUser data, String id);
+  Future<SendChatModel?> sendMessage(SendChatModel messageText);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -117,7 +118,6 @@ class ApiCallFunctions extends ApiCalls {
 
       // Check if the response is successful
       if (response.statusCode == 200) {
-        
         // Parse the JSON data and convert it to a list of ModelAgentList
         final List<dynamic> data = response.data;
         final listdata = data
@@ -136,16 +136,16 @@ class ApiCallFunctions extends ApiCalls {
   }
 
   @override
-Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
+  Future<List<ChatMessage>> getChatMessages(String user1, String user2) async {
     log('Entering getChatMessages method');
     try {
       log('Fetching chat messages for user1: $user1 and user2: $user2');
-      
+
       final chatUrl = url.getChat(user1, user2);
       final fullUrl = '${url.baseUrl}$chatUrl';
-      
+
       log('Chat URL: $fullUrl'); // Log the full URL for debugging
-      
+
       final response = await dio.get(fullUrl);
 
       if (response.statusCode == 200) {
@@ -163,11 +163,12 @@ Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
       throw Exception('Failed to load chat messages: $e');
     }
   }
-  
+
   @override
-  Future<LoginedUser> updateptofile(LoginedUser data, String id) async{
-     try {
-      final response = await dio.post("${url.baseUrl}${url.updateptofile}$id", data: data.toJson());
+  Future<LoginedUser> updateptofile(LoginedUser data, String id) async {
+    try {
+      final response = await dio.post("${url.baseUrl}${url.updateptofile}$id",
+          data: data.toJson());
       if (response.statusCode == 200) {
         final updatedUser = LoginedUser.fromJson(response.data);
         return updatedUser;
@@ -178,33 +179,22 @@ Future<List<ChatMessage>> getChatMessages(int user1, int user2) async {
       throw Exception('Failed to update profile: $e');
     }
   }
-
-  Future<void> sendMessage(int user1, int user2, String messageText) async {
-  try {
-    final response = await dio.post(
-      '${url.baseUrl}${url.sendMessage}',
-      data: {
-        'user_1': user1,
-        'user_2': user2,
-        'message': messageText,
-      },
-    );
-
-    if (response.statusCode == 200) {
-      // Message sent successfully
-      log('Message sent successfully');
-    } else {
-      // Handle non-successful response
-      throw Exception('Failed to send message');
+  
+  @override
+  Future<SendChatModel?> sendMessage(SendChatModel messageText) async{
+    try {
+      final response = await dio.post("${url.baseUrl}${url.sendMessage}",
+          data: messageText.toJson());
+      if (response.statusCode == 200) {
+        final senddata = SendChatModel.fromJson(response.data);
+        return senddata;
+      } else {
+        throw Exception('Failed to update profile');
+      }
+    } catch (e) {
+      throw Exception('Failed to update profile: $e');
     }
-  } catch (e) {
-    log('Error sending message: $e');
-    rethrow;
   }
+
+  
 }
-}
-
-
-
-   
-

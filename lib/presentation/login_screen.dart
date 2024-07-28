@@ -162,7 +162,6 @@ class LoginScreen extends StatelessWidget {
                                 "phone_number", phonenumber);
                             log('Phone number saved successfully');
 
-                            
                             log('Navigating to the respective home screen');
                             final logindetails = await ApiCallFunctions.instance
                                 .loginWithNumber(numberfieldcontroller.text);

@@ -36,7 +36,7 @@ class LoginedUser {
     this.languages,
     this.isExisting,
     this.adhaarNo,
-    required String username,
+    
   });
   LoginedUser.create({
     this.customerId,

@@ -71,10 +71,14 @@ class UserDetailsPage extends StatelessWidget {
                   label: 'Languages:',
                   value: user?.languages ?? 'N/A',
                 ),
-                const SizedBox(height: 35,),
-                ElevatedButton(onPressed: () {
-                  Navigator.of(context).pop();
-                }, child: const Text("back"))
+                const SizedBox(
+                  height: 35,
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("back"))
               ],
             );
           },

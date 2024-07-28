@@ -1,239 +1,143 @@
-import 'package:flutter/material.dart';
-import 'package:call_match/data/ChatMessage/chat_message.dart';
-import 'package:call_match/data/agentlist/data.dart';
-import 'package:call_match/data/logined_user/logined_user.dart';
-import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer';
 
-class ChatScreenAgent extends StatefulWidget {
-  final String contactName;
-  final int receiverId; // ID of the user
+import 'package:call_match/data/ChatMessage/chat_message.dart';
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/send_chat_model/send_chat_model.dart';
+import 'package:flutter/material.dart';
 
-  const ChatScreenAgent({
+class ChatScreenAgent extends StatelessWidget {
+  final String contactName;
+  final String id1;
+  final String id2;
+
+  final TextEditingController _controller = TextEditingController();
+
+  ChatScreenAgent({
     super.key,
     required this.contactName,
-    required this.receiverId,
+    required this.id1,
+    required this.id2,
   });
 
-  @override
-  _ChatScreenAgentState createState() => _ChatScreenAgentState();
-}
-
-class _ChatScreenAgentState extends State<ChatScreenAgent> {
-  final List<ChatMessage> _messages = [];
-  final TextEditingController _controller = TextEditingController();
-  bool _isComposing = false;
-  int? _loggedInUserId;
-
-  final ApiCallFunctions apiCallFunctions = ApiCallFunctions();
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchLoggedInUserId();
-  }
-
-  Future<void> _fetchLoggedInUserId() async {
+  Future<List<ChatMessage>> fetchMessages() async {
+    log('Calling getChatMessages method');
     try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final phoneNumber = prefs.getString("phone_number");
-      if (phoneNumber != null) {
-        final loginUserDetail = await apiCallFunctions.loginWithNumber(phoneNumber);
-        setState(() {
-          _loggedInUserId = loginUserDetail.customerId;
-        });
-        fetchMessages();
-      } else {
-        log('Phone number not found in shared preferences');
-      }
+      final messages = await ApiCallFunctions.instance.getChatMessages(id1, id2);
+      log('Messages fetched: ${messages.length}');
+      return messages;
     } catch (e) {
-      log('Error fetching logged-in user ID: $e');
+      log('Error fetching messages: $e');
+      return [];
     }
   }
 
-  void fetchMessages() async {
-    if (_loggedInUserId == null) return;
-
-    log('Calling getChatMessages method');
-    try {
-      final messages = await apiCallFunctions.getChatMessages(_loggedInUserId!, widget.receiverId);
-      log('Messages fetched: ${messages.length}');
-      setState(() {
-        _messages.clear(); // Clear old messages
-        _messages.addAll(messages); // Add new messages
-      });
-    } catch (e) {
-      log('Error fetching messages: $e');
+  void sendMessage() async {
+    if (_controller.text.isNotEmpty) {
+      try {
+        final messagemodel = SendChatModel.create(
+          user1: id1,
+          user2: id2,
+          message: _controller.text,
+        );
+        await ApiCallFunctions().sendMessage(messagemodel);
+        _controller.clear();
+        // Rebuild the widget to fetch the new messages
+        fetchMessages();
+      } catch (e) {
+        log('Error sending message: $e');
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      fetchMessages();
+    });
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Text(
-          widget.contactName,
-          style: const TextStyle(color: Colors.white),
-        ),
-        backgroundColor: const Color(0xffb42c44),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.phone, color: Colors.white),
-            onPressed: () {
-              _startVoiceCall();
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.menu, color: Colors.white),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
-          ),
-        ],
+        title: Text(contactName),
       ),
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: _messages.length,
-              reverse: true,
-              itemBuilder: (context, index) {
-                final message = _messages[index];
-                final bool isMe = message.sender?.customerId == _loggedInUserId;
-
-                return Align(
-                  alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    padding: const EdgeInsets.all(12),
-                    constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.7),
-                    decoration: BoxDecoration(
-                      color: isMe ? const Color(0xffb42c44) : Colors.grey[300],
-                      borderRadius: BorderRadius.circular(20).subtract(
-                        BorderRadius.only(
-                          bottomLeft: Radius.circular(isMe ? 0 : 20),
-                          bottomRight: Radius.circular(isMe ? 20 : 0),
+            child: FutureBuilder<List<ChatMessage>>(
+              future: fetchMessages(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return const Center(child: Text('Error fetching messages'));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return const Center(child: Text('No messages'));
+                } else {
+                  final messages = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message = messages[index];
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment:
+                              message.sender?.customerId == int.parse(id1)
+                                  ? Alignment.centerLeft
+                                  : Alignment.centerRight,
+                          child: Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color:
+                                  message.sender?.customerId == int.parse(id1)
+                                      ? Colors.blue[100]
+                                      : Colors.green[100],
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  message.message ?? '',
+                                  style: const TextStyle(fontSize: 16.0),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  message.createdAt ?? '',
+                                  style: const TextStyle(
+                                      fontSize: 12.0, color: Colors.grey),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    child: Text(
-                      message.message ?? '',
-                      style: TextStyle(color: isMe ? Colors.white : Colors.black),
-                    ),
-                  ),
-                );
+                      );
+                    },
+                  );
+                }
               },
             ),
           ),
-          _buildMessageComposer(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMessageComposer() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      color: Colors.white,
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.insert_emoticon, color: Colors.grey),
-                  IconButton(
-                    icon: const Icon(Icons.attach_file, color: Colors.grey),
-                    onPressed: () {
-                      // Implement attachment functionality
-                    },
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.camera_alt, color: Colors.grey),
-                    onPressed: () {
-                      // Implement camera functionality
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      onChanged: (text) {
-                        setState(() {
-                          _isComposing = text.isNotEmpty;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        hintText: 'Type a message',
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(left: 12, right: 8),
-                      ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Type a message',
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.send),
-                    color: _isComposing ? const Color(0xffb42c44) : Colors.grey,
-                    onPressed: _isComposing ? _sendMessage : null,
-                  ),
-                ],
-              ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: () => sendMessage(),
+                ),
+              ],
             ),
           ),
         ],
       ),
-    );
-  }
-
-  void _sendMessage() {
-    final String text = _controller.text.trim();
-    if (text.isNotEmpty) {
-      setState(() {
-        _messages.insert(0, ChatMessage(
-          sender: LoginedUser(customerId: _loggedInUserId!, username: 'me'),
-          message: text,
-          createdAt: DateTime.now().toString(),
-        ));
-      });
-      _controller.clear();
-      // For demo purposes, simulate receiving a message after a short delay
-      Future.delayed(const Duration(seconds: 1), () {
-        setState(() {
-          _messages.insert(0, ChatMessage(
-            sender: LoginedUser(customerId: widget.receiverId, username: widget.contactName),
-            message: 'Hi there!',
-            createdAt: DateTime.now().toString(),
-          ));
-        });
-      });
-    }
-  }
-
-  void _startVoiceCall() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-        return AudioOutgoingUI(
-          contactname: widget.contactName,
-          callerUid: _loggedInUserId.toString(),
-          receiverUid: widget.receiverId.toString(),
-          contactName: widget.contactName,
-        );
-      },
-    ));
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Starting voice call...')),
     );
   }
 }

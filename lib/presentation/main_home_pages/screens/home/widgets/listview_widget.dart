@@ -9,7 +9,9 @@ import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaud
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:agora_rtm/agora_rtm.dart';
+
 final player1 = AudioPlayer();
+
 class ListViewUI extends StatelessWidget {
   final ValueNotifier<List<ModelAgentList>> _listAgentNotifier =
       ValueNotifier([]);
@@ -33,7 +35,6 @@ class ListViewUI extends StatelessWidget {
 
     AgoraRtmClient rtmClient = await AgoraRtmClient.createInstance(appId);
     rtmClient.onMessageReceived = (RtmMessage message, String peerId) {
-      
       log("Private message from $peerId: ${message.text}");
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) {
@@ -131,10 +132,11 @@ class ListViewUI extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.call, color: Colors.green),
-                onPressed: () async{
+                onPressed: () async {
                   log("receiver id : ${item.customerId}");
                   await player1.setReleaseMode(ReleaseMode.loop);
-                  await player1.play(AssetSource("audio/Outgoing.mp3"),volume: 70,mode: PlayerMode.mediaPlayer);
+                  await player1.play(AssetSource("audio/Outgoing.mp3"),
+                      volume: 70, mode: PlayerMode.mediaPlayer);
                   player1.resume();
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {

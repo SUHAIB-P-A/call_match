@@ -152,7 +152,7 @@ class ProfilePage extends StatelessWidget {
                     final String lname = lastnamecontroller.text;
                     final String email = emailcontroller.text;
 
-final updatedUser = LoginedUser.create(
+                    final updatedUser = LoginedUser.create(
                       customerId: logindetailslistcalling.value?.customerId,
                       customerFirstName: fname,
                       customerLastName: lname,
@@ -165,8 +165,9 @@ final updatedUser = LoginedUser.create(
                       isExisting: logindetailslistcalling.value?.isExisting,
                       adhaarNo: logindetailslistcalling.value?.adhaarNo,
                     );
-                   
-                    ApiCallFunctions.instance.updateptofile(updatedUser, "${logindetailslistcalling.value!.customerId}");
+
+                    ApiCallFunctions.instance.updateptofile(updatedUser,
+                        "${logindetailslistcalling.value!.customerId}");
                   },
                   icon: const Icon(Icons.save),
                   label: const Text('Save'),

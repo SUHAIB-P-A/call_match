@@ -11,7 +11,7 @@ class MainHome extends StatelessWidget {
   final _pages = [
     const ProfileHome(),
     const StoreScreen(),
-    const ContactListScreen(),
+    ContactListScreen(),
   ];
   @override
   Widget build(BuildContext context) {

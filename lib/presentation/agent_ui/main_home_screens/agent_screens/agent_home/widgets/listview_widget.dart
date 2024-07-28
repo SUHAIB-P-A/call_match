@@ -17,7 +17,7 @@ class ListViewUIAgent extends StatelessWidget {
       ValueNotifier(null);
   final double height;
   final double width;
-final player2= AudioPlayer();
+  final player2 = AudioPlayer();
   ListViewUIAgent({
     super.key,
     required this.height,
@@ -36,7 +36,6 @@ final player2= AudioPlayer();
       log("Private message from $peerId: ${message.text}");
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) {
-          
           return AudioIncommingUI(
             name: peerId,
             userId: loginuserdetail.customerFirstName.toString(),

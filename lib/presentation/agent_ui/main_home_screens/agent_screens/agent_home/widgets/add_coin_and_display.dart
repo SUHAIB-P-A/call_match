@@ -18,13 +18,13 @@ class AddCoinDisplayUIAgent extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
         try {
-          
           final phoneno = await SharedPreferences.getInstance();
           final phoneusernumber = phoneno.getString("phone_number");
           final loginuserdetail = await ApiCallFunctions.instance
               .loginWithNumber(phoneusernumber.toString());
           logindetailslistcalling.value = loginuserdetail;
-          final wallet = await ApiCallFunctions.instance.getWalletDetails("${logindetailslistcalling.value!.customerId}");
+          final wallet = await ApiCallFunctions.instance
+              .getWalletDetails("${logindetailslistcalling.value!.customerId}");
           walletnotifier.value = wallet;
         } catch (e) {
           // Handle any errors during fetching

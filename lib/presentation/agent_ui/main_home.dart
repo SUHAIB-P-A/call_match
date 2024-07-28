@@ -11,7 +11,7 @@ class MainHomeAgent extends StatelessWidget {
   final _pagesagent = [
     const ProfileHomeAgent(),
     const StoreScreenAgent(),
-    const ContactListScreenAgent(),
+    ContactListScreenAgent(),
   ];
   @override
   Widget build(BuildContext context) {

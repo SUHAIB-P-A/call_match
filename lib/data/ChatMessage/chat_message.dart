@@ -28,8 +28,6 @@ class ChatMessage {
   factory ChatMessage.fromJson(Map<String, dynamic> json) =>
       _$ChatMessageFromJson(json);
 
-  
-
   Map<String, dynamic> toJson() => _$ChatMessageToJson(this);
 
   // Factory method for converting a list of maps to a list of ChatMessage objects
