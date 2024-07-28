@@ -9,10 +9,12 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.sizeOf(context).height;
+    final width = MediaQuery.sizeOf(context).width;
     ValueNotifier<bool> showPaymentScreenNotifier = ValueNotifier(false);
     ValueNotifier<String> coinPriceNotifier = ValueNotifier('');
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xffffdce0),
       body: PopScope(
         canPop: !showPaymentScreenNotifier.value,
         onPopInvoked: (didPop) async {
@@ -54,65 +56,6 @@ class StoreScreen extends StatelessWidget {
                   const SizedBox(
                     height: 40,
                   ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Buy Coins",
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Text("Wallet"),
-                          Text("─────────"),
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Column(
-                        children: [
-                          Text("Earnings"),
-                          Text("─────────"),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("assets/images/coin2.png"),
-                          ),
-                        ),
-                      ),
-                      const Text(
-                        "100 Coins",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(
                     height: 45,
                   ),
@@ -149,6 +92,8 @@ class StoreScreen extends StatelessWidget {
                     height: 40,
                   ),
                   GreenButtonForPayment(
+                      height: height,
+                      width: width,
                       coinPriceNotifier: coinPriceNotifier,
                       showPaymentScreenNotifier: showPaymentScreenNotifier)
                 ],

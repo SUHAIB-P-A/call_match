@@ -1,124 +1,207 @@
-import 'package:call_match/presentation/main_home_pages/screens/store/widget/coin_price.dart';
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/call_package/call_package.dart';
+import 'package:call_match/data/chatpack_age/chatpack_age.dart';
 import 'package:flutter/material.dart';
 
 class GreenButtonForPayment extends StatelessWidget {
-  const GreenButtonForPayment({
+  GreenButtonForPayment({
     super.key,
     required this.coinPriceNotifier,
     required this.showPaymentScreenNotifier,
+    required this.height,
+    required this.width,
   });
 
   final ValueNotifier<String> coinPriceNotifier;
   final ValueNotifier<bool> showPaymentScreenNotifier;
+  final double height;
+  final double width;
+  final ValueNotifier<List<ChatpackAge>> _chatpackNotifier = ValueNotifier([]);
+  final ValueNotifier<List<CallPackage>> _callpackNotifier = ValueNotifier([]);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        CoinPriceUI(
-          coinprice: "499",
-          coins: "500",
-          onPressed: () {
-            coinPriceNotifier.value = "500";
-            showPaymentScreenNotifier.value = true;
-          },
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        //await player2.setSource(AssetSource("assets/audio/Outgoing.mp3"));
+        final chatpacklist = await ApiCallFunctions.instance.chatpackage();
+        _chatpackNotifier.value = chatpacklist.toList();
+        final callpacklist = await ApiCallFunctions.instance.callpackage();
+        _callpackNotifier.value = callpacklist.toList();
+      },
+    );
+    return DefaultTabController(
+      length: 2,
+      child: Container(
+        height: height - 625,
+        width: width - 65,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Column(
+          children: [
+            const TabBar(
+              tabs: [
+                Tab(
+                  text: "call pack",
+                ),
+                Tab(
+                  text: "chat pack",
+                )
+              ],
+            ),
+            Expanded(
+              child: TabBarView(
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        height: 25,
-                        width: 25,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                                "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        "4000 coin",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Container(
-                        height: 40,
-                        width: 60,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("assets/images/POPULAR5.png"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    height: 25,
-                    width: 105,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xff59982B),
-                          Color(0xff99DD43),
-                        ], // Your gradient colors here
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(11),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        coinPriceNotifier.value = "4,000";
-                        showPaymentScreenNotifier.value = true;
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        minimumSize: const Size(
-                          100,
-                          25,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            11,
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        "Rs. 3999",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
+                  _buildCallPackView(),
+                  _buildChatPackView(),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        CoinPriceUI(
-          coinprice: "5999",
-          coins: "6000",
-          onPressed: () {
-            coinPriceNotifier.value = "6,000";
-            showPaymentScreenNotifier.value = true;
+      ),
+    );
+  }
+
+  Widget _buildCallPackView() {
+    return ValueListenableBuilder(
+      valueListenable: _callpackNotifier,
+      builder: (
+        context,
+        callpackages,
+        _,
+      ) {
+        if (callpackages.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return ListView.builder(
+          itemCount: 2,
+          itemBuilder: (context, index) {
+            final callpack = callpackages[index];
+            final packagePrice = callpack.packagePrice ?? "";
+            final totalCoins = callpack.totalCoins ?? "";
+            return ListTile(
+              leading: const CircleAvatar(
+                radius: 15,
+                backgroundImage: AssetImage(
+                    "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
+              ),
+              title: Text("$totalCoins"),
+              trailing: Container(
+                height: 25,
+                width: 105,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xff59982B),
+                      Color(0xff99DD43),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    coinPriceNotifier.value = "$packagePrice";
+                    showPaymentScreenNotifier.value = true;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    minimumSize: const Size(
+                      100,
+                      25,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        11,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    "Rs $packagePrice",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            );
           },
-        ),
-      ],
+        );
+      },
+    );
+  }
+
+  Widget _buildChatPackView() {
+    return ValueListenableBuilder(
+      valueListenable: _chatpackNotifier,
+      builder: (
+        context,
+        chatpack,
+        _,
+      ) {
+        if (chatpack.isEmpty) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return ListView.builder(
+          itemCount: 2,
+          itemBuilder: (context, index) {
+            final chatpacks = chatpack[index];
+            final messagecount = chatpacks.messageCount ?? "";
+            final price = chatpacks.packagePrice ?? "";
+            return ListTile(
+              leading: const CircleAvatar(
+                radius: 15,
+                backgroundImage: AssetImage(
+                    "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
+              ),
+              title: Text("$messagecount"),
+              trailing: Container(
+                height: 25,
+                width: 105,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color(0xff59982B),
+                      Color(0xff99DD43),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(11),
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    coinPriceNotifier.value = "$price";
+                    showPaymentScreenNotifier.value = true;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    minimumSize: const Size(
+                      100,
+                      25,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        11,
+                      ),
+                    ),
+                  ),
+                  child: Text(
+                    "Rs $price",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

@@ -36,7 +36,6 @@ class LoginedUser {
     this.languages,
     this.isExisting,
     this.adhaarNo,
-    
   });
   LoginedUser.create({
     this.customerId,

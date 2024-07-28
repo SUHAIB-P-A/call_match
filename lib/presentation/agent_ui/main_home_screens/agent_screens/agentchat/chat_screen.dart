@@ -22,7 +22,8 @@ class ChatScreenAgent extends StatelessWidget {
   Future<List<ChatMessage>> fetchMessages() async {
     log('Calling getChatMessages method');
     try {
-      final messages = await ApiCallFunctions.instance.getChatMessages(id1, id2);
+      final messages =
+          await ApiCallFunctions.instance.getChatMessages(id1, id2);
       log('Messages fetched: ${messages.length}');
       return messages;
     } catch (e) {

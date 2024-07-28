@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'package:call_match/data/ChatMessage/chat_message.dart';
 import 'package:call_match/data/agentlist/url.dart';
-import 'package:call_match/data/login_with_number/login_with_number.dart';
+import 'package:call_match/data/call_package/call_package.dart';
+import 'package:call_match/data/chatpack_age/chatpack_age.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
@@ -18,6 +19,8 @@ abstract class ApiCalls {
   Future<List<ChatMessage>> getChatMessages(String user1, String user2);
   Future<LoginedUser> updateptofile(LoginedUser data, String id);
   Future<SendChatModel?> sendMessage(SendChatModel messageText);
+  Future<List<ChatpackAge>> chatpackage();
+  Future<List<CallPackage>> callpackage();
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -179,9 +182,9 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to update profile: $e');
     }
   }
-  
+
   @override
-  Future<SendChatModel?> sendMessage(SendChatModel messageText) async{
+  Future<SendChatModel?> sendMessage(SendChatModel messageText) async {
     try {
       final response = await dio.post("${url.baseUrl}${url.sendMessage}",
           data: messageText.toJson());
@@ -196,5 +199,53 @@ class ApiCallFunctions extends ApiCalls {
     }
   }
 
+  @override
+  Future<List<ChatpackAge>> chatpackage() async {
+    try {
+      // Fetch data from the API
+      final response = await dio.get(url.baseUrl + url.chatpackage);
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        // Parse the JSON data and convert it to a list of ModelAgentList
+        final List<dynamic> data = response.data;
+        final chatpackagedata = data
+            .map((item) => ChatpackAge.fromJson(item as Map<String, dynamic>))
+            .toList();
+
+        return chatpackagedata;
+      } else {
+        // Handle non-successful response
+        throw Exception('Failed to load agent list');
+      }
+    } catch (e) {
+      // Handle any errors
+      throw Exception('Failed to load agent list: $e');
+    }
+  }
   
+  @override
+  Future<List<CallPackage>> callpackage() async{
+    try {
+      // Fetch data from the API
+      final response = await dio.get(url.baseUrl + url.callpackage);
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        // Parse the JSON data and convert it to a list of ModelAgentList
+        final List<dynamic> data = response.data;
+        final callpackagedata = data
+            .map((item) => CallPackage.fromJson(item as Map<String, dynamic>))
+            .toList();
+
+        return callpackagedata;
+      } else {
+        // Handle non-successful response
+        throw Exception('Failed to load agent list');
+      }
+    } catch (e) {
+      // Handle any errors
+      throw Exception('Failed to load agent list: $e');
+    }
+  }
 }

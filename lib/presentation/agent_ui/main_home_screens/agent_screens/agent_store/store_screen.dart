@@ -148,9 +148,9 @@ class StoreScreenAgent extends StatelessWidget {
                   const SizedBox(
                     height: 40,
                   ),
-                  GreenButtonForPayment(
-                      coinPriceNotifier: coinPriceNotifier,
-                      showPaymentScreenNotifier: showPaymentScreenNotifier)
+                  //GreenButtonForPayment(
+                  //    coinPriceNotifier: coinPriceNotifier,
+                  //    showPaymentScreenNotifier: showPaymentScreenNotifier)
                 ],
               );
             }
