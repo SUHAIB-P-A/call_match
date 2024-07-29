@@ -21,6 +21,7 @@ abstract class ApiCalls {
   Future<SendChatModel?> sendMessage(SendChatModel messageText);
   Future<List<ChatpackAge>> chatpackage();
   Future<List<CallPackage>> callpackage();
+  Future<void> withdrawal(String id);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -223,9 +224,9 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to load agent list: $e');
     }
   }
-  
+
   @override
-  Future<List<CallPackage>> callpackage() async{
+  Future<List<CallPackage>> callpackage() async {
     try {
       // Fetch data from the API
       final response = await dio.get(url.baseUrl + url.callpackage);
@@ -246,6 +247,23 @@ class ApiCallFunctions extends ApiCalls {
     } catch (e) {
       // Handle any errors
       throw Exception('Failed to load agent list: $e');
+    }
+  }
+
+  @override
+  Future<void> withdrawal(String id) async {
+    try {
+      final response = await dio.post(
+        "${url.baseUrl}${url.withdrawal}$id",
+      );
+      if (response.statusCode == 200) {
+        log("successfully");
+        
+      } else {
+        throw Exception('Failed to update profile');
+      }
+    } catch (e) {
+      throw Exception('Failed to update profile: $e');
     }
   }
 }

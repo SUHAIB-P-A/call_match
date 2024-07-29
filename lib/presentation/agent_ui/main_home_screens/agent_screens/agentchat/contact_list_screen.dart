@@ -3,6 +3,7 @@ import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/chat_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:call_match/presentation/main_home_pages/screens/chat/chat_screen.dart';
 
 class ContactListScreenAgent extends StatelessWidget {
   ContactListScreenAgent({super.key});
@@ -59,6 +60,11 @@ class ContactListScreenAgent extends StatelessWidget {
                     itemCount: value.length, // Replace with your contact count
                     itemBuilder: (context, index) {
                       final item = value[index];
+                      if (value.isEmpty) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
                       final firstName = item.customerFirstName ?? 'N/A';
                       final lastName = item.customerLastName ?? 'N/A';
                       final id = item.customerId ?? 'N/A';
@@ -76,6 +82,7 @@ class ContactListScreenAgent extends StatelessWidget {
                                       "${logindetailslistcalling.value!.customerId}??"
                                       "",
                                   id2: "$id",
+                                  
                                 ),
                               ),
                             );

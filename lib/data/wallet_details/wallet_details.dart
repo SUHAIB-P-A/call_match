@@ -18,6 +18,8 @@ class WalletDetails {
   int? totalMessagesReceived;
   @JsonKey(name: 'total_minutes')
   int? totalMinutes;
+  @JsonKey(name: 'total_amount')
+  int? totalamount;
   @JsonKey(name: 'user')
   int? user;
 
@@ -29,6 +31,7 @@ class WalletDetails {
     this.chatAmount,
     this.totalMessagesReceived,
     this.totalMinutes,
+    this.totalamount,
     this.user,
   });
 

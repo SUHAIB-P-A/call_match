@@ -15,6 +15,7 @@ WalletDetails _$WalletDetailsFromJson(Map<String, dynamic> json) =>
       chatAmount: (json['chat_amount'] as num?)?.toInt(),
       totalMessagesReceived: (json['total_messages_received'] as num?)?.toInt(),
       totalMinutes: (json['total_minutes'] as num?)?.toInt(),
+      totalamount: (json['total_amount'] as num?)?.toInt(),
       user: (json['user'] as num?)?.toInt(),
     );
 
@@ -27,5 +28,6 @@ Map<String, dynamic> _$WalletDetailsToJson(WalletDetails instance) =>
       'chat_amount': instance.chatAmount,
       'total_messages_received': instance.totalMessagesReceived,
       'total_minutes': instance.totalMinutes,
+      'total_amount': instance.totalamount,
       'user': instance.user,
     };

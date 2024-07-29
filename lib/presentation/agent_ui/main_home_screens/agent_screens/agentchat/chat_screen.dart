@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:call_match/data/ChatMessage/chat_message.dart';
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/send_chat_model/send_chat_model.dart';
@@ -9,7 +8,7 @@ class ChatScreenAgent extends StatelessWidget {
   final String contactName;
   final String id1;
   final String id2;
-
+  
   final TextEditingController _controller = TextEditingController();
 
   ChatScreenAgent({
@@ -17,13 +16,14 @@ class ChatScreenAgent extends StatelessWidget {
     required this.contactName,
     required this.id1,
     required this.id2,
+   
   });
 
   Future<List<ChatMessage>> fetchMessages() async {
     log('Calling getChatMessages method');
     try {
       final messages =
-          await ApiCallFunctions.instance.getChatMessages(id1, id2);
+          await ApiCallFunctions.instance.getChatMessages(id2, id1);
       log('Messages fetched: ${messages.length}');
       return messages;
     } catch (e) {
@@ -52,8 +52,9 @@ class ChatScreenAgent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      fetchMessages();
+      await fetchMessages();
     });
     return Scaffold(
       appBar: AppBar(
@@ -77,20 +78,22 @@ class ChatScreenAgent extends StatelessWidget {
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
+                      final senderId = message.sender?.customerId;
+                      final isSender =
+                          senderId != null && senderId == int.parse(id1);
+
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Align(
-                          alignment:
-                              message.sender?.customerId == int.parse(id1)
-                                  ? Alignment.centerLeft
-                                  : Alignment.centerRight,
+                          alignment: isSender
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
                           child: Container(
                             padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
-                              color:
-                                  message.sender?.customerId == int.parse(id1)
-                                      ? Colors.blue[100]
-                                      : Colors.green[100],
+                              color: isSender
+                                  ? Colors.blue[100]
+                                  : Colors.green[100],
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: Column(
@@ -132,7 +135,7 @@ class ChatScreenAgent extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.send),
-                  onPressed: () => sendMessage(),
+                  onPressed: sendMessage,
                 ),
               ],
             ),

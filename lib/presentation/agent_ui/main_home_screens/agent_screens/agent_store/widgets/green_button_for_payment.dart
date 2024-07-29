@@ -1,124 +1,250 @@
-import 'package:call_match/presentation/main_home_pages/screens/store/widget/coin_price.dart';
-import 'package:flutter/material.dart';
+import 'dart:developer';
 
-class GreenButtonForPayment extends StatelessWidget {
-  const GreenButtonForPayment({
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
+import 'package:call_match/data/wallet_details/wallet_details.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class GreenButtonForPaymentAgent extends StatelessWidget {
+  GreenButtonForPaymentAgent({
     super.key,
     required this.coinPriceNotifier,
     required this.showPaymentScreenNotifier,
+    required this.height,
+    required this.width,
   });
 
   final ValueNotifier<String> coinPriceNotifier;
   final ValueNotifier<bool> showPaymentScreenNotifier;
+  final double height;
+  final double width;
+  final ValueNotifier<WalletDetails?> walletnotifier = ValueNotifier(null);
+  final ValueNotifier<LoginedUser?> logindetailslistcalling =
+      ValueNotifier(null);
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        try {
+          final phoneno = await SharedPreferences.getInstance();
+          final phoneusernumber = phoneno.getString("phone_number");
+          final loginuserdetail = await ApiCallFunctions.instance
+              .loginWithNumber(phoneusernumber.toString());
+          logindetailslistcalling.value = loginuserdetail;
+          final wallet = await ApiCallFunctions.instance
+              .getWalletDetails("${logindetailslistcalling.value!.customerId}");
+          walletnotifier.value = wallet;
+        } catch (e) {
+          // Handle any errors during fetching
+          log('Failed to load wallet details 1: $e');
+        }
+      },
+    );
     return Column(
       children: [
-        CoinPriceUI(
-          coinprice: "499",
-          coins: "500",
-          onPressed: () {
-            coinPriceNotifier.value = "500";
-            showPaymentScreenNotifier.value = true;
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
+        DefaultTabController(
+          length: 2,
+          child: Container(
+            height: height - 600,
+            width: width - 65,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Column(
+              children: [
+                const TabBar(
+                  labelStyle: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  tabs: [
+                    Tab(
+                      text: "Call",
+                    ),
+                    Tab(
+                      text: "Chat",
+                    )
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
                     children: [
-                      Container(
-                        height: 25,
-                        width: 25,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                                "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      const Text(
-                        "4000 coin",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Container(
-                        height: 40,
-                        width: 60,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage("assets/images/POPULAR5.png"),
-                          ),
-                        ),
-                      ),
+                      _buildCallPackView(),
+                      _buildChatPackView(),
                     ],
                   ),
-                  Container(
-                    height: 25,
-                    width: 105,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          Color(0xff59982B),
-                          Color(0xff99DD43),
-                        ], // Your gradient colors here
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(11),
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        coinPriceNotifier.value = "4,000";
-                        showPaymentScreenNotifier.value = true;
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        minimumSize: const Size(
-                          100,
-                          25,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                            11,
-                          ),
-                        ),
-                      ),
-                      child: const Text(
-                        "Rs. 3999",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
-        CoinPriceUI(
-          coinprice: "5999",
-          coins: "6000",
-          onPressed: () {
-            coinPriceNotifier.value = "6,000";
-            showPaymentScreenNotifier.value = true;
-          },
+        const SizedBox(
+          height: 10,
+        ),
+        Container(
+          height: height - 570,
+          width: width - 65,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: ValueListenableBuilder<WalletDetails?>(
+            valueListenable: walletnotifier,
+            builder: (context, totalamount, _) {
+              if (totalamount == null) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Total amount for withdrawal",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      "${totalamount.totalamount}",
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final totalamountvalue =
+                            double.parse("${totalamount.totalamount}");
+                        if (totalamountvalue >= 5000) {
+                          await ApiCallFunctions.instance.withdrawal(
+                              "${logindetailslistcalling.value!.customerId}");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  "Withdrawal successful: ${totalamount.totalamount}"),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                  "Insufficient amount to withdraw. Minimum required is 5000."),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text("Withdraw"),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildCallPackView() {
+    return ValueListenableBuilder<WalletDetails?>(
+      valueListenable: walletnotifier,
+      builder: (context, value, _) {
+        if (value == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Call amount: ${value.callAmount}",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Total minutes: ${value.totalMinutes}",
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildChatPackView() {
+    return ValueListenableBuilder<WalletDetails?>(
+      valueListenable: walletnotifier,
+      builder: (context, value, _) {
+        if (value == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Card(
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Chat amount: ${value.chatAmount}",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          "Total messages received: ${value.totalMessagesReceived}",
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
