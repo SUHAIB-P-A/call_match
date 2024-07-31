@@ -12,14 +12,14 @@ import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaud
 class AudioIncommingUI extends StatelessWidget {
   final String name;
   final String userId;
-  //final String channelId;
+  final String channelId;
   final ValueNotifier<bool> callAccepted = ValueNotifier<bool>(false);
 
   AudioIncommingUI({
     super.key,
     required this.name,
     required this.userId,
-    //required this.channelId,
+    required this.channelId,
   });
 
   final RtcEngine engine = createAgoraRtcEngine();
@@ -81,7 +81,7 @@ class AudioIncommingUI extends StatelessWidget {
             ImageAndNameUI(
               height: height,
               width: width,
-              name: name,
+              name: channelId,
               calltype: "Incoming call...",
               callAcceptedNotifier: callAccepted,
               callType: '',

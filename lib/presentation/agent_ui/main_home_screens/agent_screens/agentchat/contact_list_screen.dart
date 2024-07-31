@@ -4,13 +4,15 @@ import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/chat_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ContactListScreenAgent extends StatelessWidget {
   ContactListScreenAgent({super.key});
   final ValueNotifier<List<ModelUserList>> _listAgentNotifier =
       ValueNotifier([]);
-  final ValueNotifier<LoginedUser?> logindetailslistcalling =
-      ValueNotifier(null);
+  final ValueNotifier<List<LoginedUser>> logindetailslistcalling =
+      ValueNotifier([]);
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -72,17 +74,21 @@ class ContactListScreenAgent extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 16.0),
                         child: InkWell(
-                          onTap: () {
+                          onTap: () async {
+                            final phoneno =
+                                await SharedPreferences.getInstance();
+                            final phoneusernumber =
+                                phoneno.getString("phone_number");
+                            final loginuserdetail = await ApiCallFunctions
+                                .instance
+                                .loginWithNumber(phoneusernumber.toString());
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ChatScreenAgent(
                                   contactName: "$firstName $lastName",
-                                  id1:
-                                      "${logindetailslistcalling.value!.customerId}??"
-                                      "",
+                                  id1: "${loginuserdetail.customerId}",
                                   id2: "$id",
-                                  
                                 ),
                               ),
                             );

@@ -1,13 +1,11 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/functions/tokengeneration.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
 import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
-import 'dart:core';
 import 'package:permission_handler/permission_handler.dart';
 
 class AudioOutgoingUI extends StatefulWidget {
@@ -16,12 +14,13 @@ class AudioOutgoingUI extends StatefulWidget {
   final String callerUid;
   final String receiverUid;
 
-  AudioOutgoingUI(
-      {super.key,
-      required this.contactname,
-      required this.callerUid,
-      required this.receiverUid,
-      required String contactName});
+  AudioOutgoingUI({
+    super.key,
+    required this.contactname,
+    required this.callerUid,
+    required this.receiverUid,
+    required String contactName,
+  });
 
   @override
   _AudioOutgoingUIState createState() => _AudioOutgoingUIState();
@@ -38,12 +37,11 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   void initState() {
     super.initState();
     initAgora();
-    startCall(widget.receiverUid); // Start the call and send the RTM message
+    startCall(widget.receiverUid);
   }
 
   Future<void> initAgora() async {
     await [Permission.microphone].request();
-
     _engine = createAgoraRtcEngine();
     await _engine.initialize(
       const RtcEngineContext(
@@ -96,6 +94,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
 
     String callInvitation = "Incoming call from ${widget.contactname}";
     await rtmService.sendMessage(receiverId, callInvitation);
+    print("Start call initiated to $receiverId with message: $callInvitation");
   }
 
   @override
@@ -142,9 +141,9 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   }
 }
 
+
 class RTMService {
   late AgoraRtmClient _rtmClient;
-
   Function(String message, String peerId)? onMessageReceived;
 
   Future<void> initialize(String userId) async {
@@ -157,14 +156,17 @@ class RTMService {
     };
 
     await _rtmClient.login(null, userId);
+    print("RTM client initialized and logged in with user ID: $userId");
   }
 
   Future<void> sendMessage(String peerId, String message) async {
-    RtmMessage rtmMessage = RtmMessage.fromText(message);
-    await _rtmClient.sendMessageToPeer2(
-      peerId,
-      rtmMessage,
-    );
+    try {
+      RtmMessage rtmMessage = RtmMessage.fromText(message);
+      await _rtmClient.sendMessageToPeer2(peerId, rtmMessage);
+      print("Message sent to $peerId: $message");
+    } catch (e) {
+      print("Error sending message to $peerId: $e");
+    }
   }
 
   void setOnMessageReceived(Function(String message, String peerId) callback) {

@@ -2,6 +2,7 @@ import 'package:call_match/data/ChatMessage/chat_message.dart';
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
+import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/chat_screen.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -79,7 +80,7 @@ class ContactListScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ChatScreen(
+                                      builder: (context) => ChatScreenAgent(
                                             contactName:
                                                 "${item.customerFirstName} ${item.customerLastName}",
                                             id1:
