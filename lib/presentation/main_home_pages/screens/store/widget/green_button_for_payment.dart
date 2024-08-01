@@ -33,10 +33,10 @@ class GreenButtonForPayment extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Container(
-        height: height - 625,
+        height: height - 480,
         width: width - 65,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.transparent.withOpacity(0.2),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
@@ -77,7 +77,7 @@ class GreenButtonForPayment extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         return ListView.builder(
-          itemCount: 2,
+          itemCount: callpackages.length,
           itemBuilder: (context, index) {
             final callpack = callpackages[index];
             final packagePrice = callpack.packagePrice ?? "";
@@ -147,7 +147,7 @@ class GreenButtonForPayment extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         return ListView.builder(
-          itemCount: 2,
+          itemCount: chatpack.length,
           itemBuilder: (context, index) {
             final chatpacks = chatpack[index];
             final messagecount = chatpacks.messageCount ?? "";

@@ -66,7 +66,7 @@ class ListViewUI extends StatelessWidget {
         height: height - 370,
         width: width - 85,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.transparent.withOpacity(0.2),
           borderRadius: BorderRadius.circular(30),
         ),
         child: ValueListenableBuilder(
@@ -76,7 +76,7 @@ class ListViewUI extends StatelessWidget {
               children: [
                 const TabBar(
                   labelColor: Colors.black,
-                  unselectedLabelColor: Colors.grey,
+                  unselectedLabelColor: Colors.white,
                   indicatorColor: Color(0xffb42c44),
                   tabs: [
                     Tab(text: "All"),

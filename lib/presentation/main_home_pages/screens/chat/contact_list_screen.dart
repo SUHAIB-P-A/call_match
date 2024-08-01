@@ -57,7 +57,7 @@ class ContactListScreen extends StatelessWidget {
                   height: height - 274,
                   width: width - 85,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Colors.transparent.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: ValueListenableBuilder(

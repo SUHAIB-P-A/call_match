@@ -11,28 +11,42 @@ class ProfileHome extends StatelessWidget {
     double height = MediaQuery.sizeOf(context).height;
     double width = MediaQuery.sizeOf(context).width;
     return Scaffold(
-      backgroundColor: const Color(0xffffdce0),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          CurveShapeUI(width: width),
-          //ADD COIN AND DISPLAY
-          AddCoinDisplayUI(),
-          //USER LISTVIEW UIs with Tabs
-          Expanded(
-            child: DefaultTabController(
-              length: 3, // Number of tabs
-              child: ListViewUI(
-                height: height,
-                width: width,
+        backgroundColor: Colors.transparent,
+        //const Color(0xffffdce0),
+        body: Stack(
+          children: [
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                      "assets/images/pexels-karolina-grabowska-4197491.jpg"),
+                ),
               ),
+              child: SizedBox.expand(),
             ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-        ],
-      ),
-    );
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CurveShapeUI(width: width),
+                //ADD COIN AND DISPLAY
+                AddCoinDisplayUI(),
+                //USER LISTVIEW UIs with Tabs
+                Expanded(
+                  child: DefaultTabController(
+                    length: 3, // Number of tabs
+                    child: ListViewUI(
+                      height: height,
+                      width: width,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
+            ),
+          ],
+        ));
   }
 }
