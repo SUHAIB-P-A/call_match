@@ -7,6 +7,7 @@ import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaud
 import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:uuid/uuid.dart';
 
 class AudioOutgoingUI extends StatefulWidget {
   static const routeName = "outgoing-screen";
@@ -36,6 +37,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   @override
   void initState() {
     super.initState();
+    channelIdfocall = const Uuid().v4(); // Generate a unique channel ID
     initAgora();
     startCall(widget.receiverUid);
   }
@@ -76,13 +78,13 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
       ),
     );
 
-    final token = generateToken("test-channel", widget.callerUid);
+    final token = generateToken(channelIdfocall, widget.callerUid);
 
     await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await _engine.joinChannelWithUserAccount(
       token: token,
       channelId:
-          "test-channel", // Ensure the channel name is unique for each call
+          channelIdfocall, // Ensure the channel name is unique for each call
       userAccount: widget.callerUid,
       options: const ChannelMediaOptions(),
     );

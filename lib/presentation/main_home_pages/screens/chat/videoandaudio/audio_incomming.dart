@@ -48,12 +48,12 @@ class AudioIncommingUI extends StatelessWidget {
       ),
     );
 
-    final token = generateToken("test-channel", userId);
+    final token = generateToken(channelIdfocall, userId);
 
     await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await engine.joinChannelWithUserAccount(
       token: token,
-      channelId: "test-channel",
+      channelId: channelIdfocall,
       userAccount: userId,
       options: const ChannelMediaOptions(),
     );
