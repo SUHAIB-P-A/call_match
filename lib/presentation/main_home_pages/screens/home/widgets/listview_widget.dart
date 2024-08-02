@@ -137,7 +137,7 @@ class ListViewUI extends StatelessWidget {
                   await player1.setReleaseMode(ReleaseMode.loop);
                   await player1.play(AssetSource("audio/Outgoing.mp3"),
                       volume: 70, mode: PlayerMode.mediaPlayer);
-                  player1.resume();
+                  
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
                       return AudioOutgoingUI(
@@ -145,7 +145,7 @@ class ListViewUI extends StatelessWidget {
                         callerUid:
                             "${logindetailslistcalling.value!.customerId}",
                         receiverUid: "${item.customerId}",
-                        contactName: '', // Receiver UID
+                        //contactName: '', // Receiver UID
                       );
                     },
                   ));

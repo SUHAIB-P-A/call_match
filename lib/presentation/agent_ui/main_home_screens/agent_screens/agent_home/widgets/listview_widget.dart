@@ -18,6 +18,7 @@ class ListViewUIAgent extends StatelessWidget {
   final double height;
   final double width;
   final player2 = AudioPlayer();
+
   ListViewUIAgent({
     super.key,
     required this.height,
@@ -34,15 +35,21 @@ class ListViewUIAgent extends StatelessWidget {
     AgoraRtmClient rtmClient = await AgoraRtmClient.createInstance(appId);
     rtmClient.onMessageReceived = (RtmMessage message, String peerId) {
       log("Private message from $peerId: ${message.text}");
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) {
-          return AudioIncommingUI(
-            name: peerId,
-            userId: loginuserdetail.customerFirstName.toString(),
-            channelId: "name",
-          );
-        },
-      ));
+
+      // Extract channel ID from the message
+      final parts = message.text.split(', Channel ID: ');
+      if (parts.length == 2) {
+        final channelId = parts[1];
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) {
+            return AudioIncommingUI(
+              name: peerId,
+              userId: loginuserdetail.customerFirstName.toString(),
+              channelId: channelId, // Pass the extracted channel ID
+            );
+          },
+        ));
+      }
     };
 
     await rtmClient.login(null, loginuserdetail.customerId.toString());
@@ -52,7 +59,6 @@ class ListViewUIAgent extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
-        //await player2.setSource(AssetSource("assets/audio/Outgoing.mp3"));
         final agentlist = await ApiCallFunctions.instance.getUserModelList();
         _listAgentNotifier.value = agentlist.toList();
         await _initializeRTMService(context);
@@ -140,7 +146,6 @@ class ListViewUIAgent extends StatelessWidget {
                         callerUid:
                             "${logindetailslistcalling.value!.customerId}",
                         receiverUid: "${item.customerId}",
-                        contactName: '', // Receiver UID
                       );
                     },
                   ));

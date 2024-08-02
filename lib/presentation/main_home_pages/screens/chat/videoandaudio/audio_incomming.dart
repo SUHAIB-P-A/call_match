@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:audioplayers/audioplayers.dart';
+import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_outgoing.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/attent_and_end_call.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
@@ -48,18 +51,19 @@ class AudioIncommingUI extends StatelessWidget {
       ),
     );
 
-    final token = generateToken(channelIdfocall, userId);
+    final token = generateToken(channelId, userId);
 
     await engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await engine.joinChannelWithUserAccount(
       token: token,
-      channelId: channelIdfocall,
+      channelId: channelId,
       userAccount: userId,
       options: const ChannelMediaOptions(),
     );
   }
 
   void _acceptCall(BuildContext context) async {
+    log(channelId.toString());
     callAccepted.value = true;
     await player1.stop();
     await _initAgora();
@@ -67,6 +71,7 @@ class AudioIncommingUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log(channelId.toString());
     player1.setReleaseMode(ReleaseMode.loop);
     player1.play(AssetSource("audio/incomming.mp3"));
     double height = MediaQuery.sizeOf(context).height;
@@ -81,7 +86,7 @@ class AudioIncommingUI extends StatelessWidget {
             ImageAndNameUI(
               height: height,
               width: width,
-              name: channelId,
+              name: "name",
               calltype: "Incoming call...",
               callAcceptedNotifier: callAccepted,
               callType: '',

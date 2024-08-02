@@ -1,13 +1,13 @@
+import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
+import 'package:uuid/uuid.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:agora_rtm/agora_rtm.dart';
 import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/functions/tokengeneration.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
-import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:uuid/uuid.dart';
 
 class AudioOutgoingUI extends StatefulWidget {
   static const routeName = "outgoing-screen";
@@ -20,7 +20,6 @@ class AudioOutgoingUI extends StatefulWidget {
     required this.contactname,
     required this.callerUid,
     required this.receiverUid,
-    required String contactName,
   });
 
   @override
@@ -34,10 +33,11 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   final ValueNotifier<int?> remoteUid = ValueNotifier<int?>(null);
   late RTMService rtmService;
 
+  final String channelIdforcall = const Uuid().v4(); // Unique channel ID
+
   @override
   void initState() {
     super.initState();
-    channelIdfocall = const Uuid().v4(); // Generate a unique channel ID
     initAgora();
     startCall(widget.receiverUid);
   }
@@ -62,8 +62,8 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
             (RtcConnection connection, int remoteUid, int elapsed) async {
           debugPrint("Remote user $remoteUid joined");
           this.remoteUid.value = remoteUid;
-          callAcceptedNotifier.value = true;
           await player1.stop();
+          callAcceptedNotifier.value = true;
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
             UserOfflineReasonType reason) {
@@ -78,13 +78,12 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
       ),
     );
 
-    final token = generateToken(channelIdfocall, widget.callerUid);
+    final token = generateToken(channelIdforcall, widget.callerUid);
 
     await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
     await _engine.joinChannelWithUserAccount(
       token: token,
-      channelId:
-          channelIdfocall, // Ensure the channel name is unique for each call
+      channelId: channelIdforcall, // Use unique channel ID
       userAccount: widget.callerUid,
       options: const ChannelMediaOptions(),
     );
@@ -94,7 +93,8 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
     rtmService = RTMService();
     await rtmService.initialize(widget.callerUid);
 
-    String callInvitation = "Incoming call from ${widget.contactname}";
+    String callInvitation =
+        "Incoming call from ${widget.contactname}, Channel ID: $channelIdforcall";
     await rtmService.sendMessage(receiverId, callInvitation);
     print("Start call initiated to $receiverId with message: $callInvitation");
   }
@@ -122,14 +122,12 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
                     ? AfterAcceptCall(
                         callAccepted: callAcceptedNotifier,
                         onEnd: () async {
-                          await player1.stop();
                           await _engine.leaveChannel();
                           await _engine.release();
                           Navigator.of(context).pop();
                         },
                       )
                     : AfterAcceptCall(onEnd: () async {
-                        await player1.stop();
                         await _engine.leaveChannel();
                         await _engine.release();
                         Navigator.of(context).pop();
@@ -142,7 +140,6 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
     );
   }
 }
-
 
 class RTMService {
   late AgoraRtmClient _rtmClient;
