@@ -6,6 +6,7 @@ import 'package:call_match/data/chatpack_age/chatpack_age.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
+import 'package:call_match/data/rating_agent/rating_agent.dart';
 import 'package:call_match/data/send_chat_model/send_chat_model.dart';
 import 'package:call_match/data/start_call/start_call.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
@@ -25,6 +26,7 @@ abstract class ApiCalls {
   Future<void> withdrawal(String id);
   Future<String> startcall(StartCall data);
   Future<void> endcall(String id);
+  Future<void> rateagent(RatingAgent data);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -268,21 +270,22 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to update profile: $e');
     }
   }
-  
+
   @override
-  Future<String> startcall(StartCall data) async{
-  try {
+  Future<String> startcall(StartCall data) async {
+    try {
       final response =
           await dio.post('${url.baseUrl}${url.startcall}', data: data.toJson());
 
       if (response.statusCode == 200) {
-        // Assuming the response data is a List
-        final List<dynamic> ids = response.data as List<dynamic>;
-        // Convert the List<dynamic> to List<String>
-        final List<String> idStrings = ids.map((id) => id.toString()).toList();
-        // Join the IDs into a single string, separated by commas (or any separator you prefer)
-        final String joinedIds = idStrings.join(',');
-        return joinedIds;
+        // Parse the response data as a Map
+        final Map<String, dynamic> responseData =
+            response.data as Map<String, dynamic>;
+
+        // Extract the 'call_id' from the response data
+        final String callId = responseData['call_id']?.toString() ?? '';
+
+        return callId;
       } else {
         throw Exception('Failed to start call');
       }
@@ -291,13 +294,12 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to start call: $e');
     }
   }
-  
+
   @override
-  Future<void> endcall(String id) async{
+  Future<void> endcall(String id) async {
     try {
-      final response = await dio.post(
-        "${url.baseUrl}${url.endcall}$id",
-      );
+      final response =
+          await dio.post("${url.baseUrl}${url.endcall}", data: {"call_id": id});
       if (response.statusCode == 200) {
         log("successfully");
       } else {
@@ -305,6 +307,23 @@ class ApiCallFunctions extends ApiCalls {
       }
     } catch (e) {
       throw Exception('Failed to update profile: $e');
+    }
+  }
+  
+  @override
+  Future<void> rateagent(RatingAgent data) async{
+    try {
+      final response =
+          await dio.post('${url.baseUrl}${url.rateagent}', data: data.toJson());
+
+      if (response.statusCode == 200) {
+        log("successfully");
+      } else {
+        throw Exception('Failed to start call');
+      }
+    } catch (e) {
+      log('Error in startcall: $e');
+      throw Exception('Failed to start call: $e');
     }
   }
 }

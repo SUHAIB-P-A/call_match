@@ -6,6 +6,8 @@ part 'model_agent_list.g.dart';
 class ModelAgentList {
   @JsonKey(name: 'customer_id')
   int? customerId;
+  @JsonKey(name: 'rating')
+  int? rating;
   @JsonKey(name: 'customer_first_name')
   String? customerFirstName;
   @JsonKey(name: 'customer_last_name')
@@ -20,9 +22,12 @@ class ModelAgentList {
   bool? isOnline;
   @JsonKey(name: 'languages')
   String? languages;
+  @JsonKey(name: 'terms_conditions')
+  bool? termsConditions;
 
   ModelAgentList({
     this.customerId,
+    this.rating,
     this.customerFirstName,
     this.customerLastName,
     this.customerEmail,
@@ -30,6 +35,7 @@ class ModelAgentList {
     this.status,
     this.isOnline,
     this.languages,
+    this.termsConditions,
   });
 
   factory ModelAgentList.fromJson(Map<String, dynamic> json) {

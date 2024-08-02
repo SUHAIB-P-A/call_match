@@ -119,7 +119,7 @@ class ListViewUI extends StatelessWidget {
             style: const TextStyle(fontFamily: "Poppins-Regular"),
           ),
           subtitle: Text(
-            "${item.customerEmail}",
+            "❤️ ${item.rating}",
             style: const TextStyle(fontFamily: "Poppins-Regular"),
           ),
           leading: const CircleAvatar(
@@ -137,7 +137,7 @@ class ListViewUI extends StatelessWidget {
                   await player1.setReleaseMode(ReleaseMode.loop);
                   await player1.play(AssetSource("audio/Outgoing.mp3"),
                       volume: 70, mode: PlayerMode.mediaPlayer);
-                  
+
                   Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) {
                       return AudioOutgoingUI(

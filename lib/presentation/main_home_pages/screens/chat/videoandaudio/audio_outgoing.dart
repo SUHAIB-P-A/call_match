@@ -1,3 +1,8 @@
+import 'dart:developer';
+
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/rating_agent/rating_agent.dart';
+import 'package:call_match/data/start_call/start_call.dart';
 import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:uuid/uuid.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -32,6 +37,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   final ValueNotifier<bool> localUserJoined = ValueNotifier<bool>(false);
   final ValueNotifier<int?> remoteUid = ValueNotifier<int?>(null);
   late RTMService rtmService;
+  late String ids;
 
   final String channelIdforcall = const Uuid().v4(); // Unique channel ID
 
@@ -63,6 +69,14 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
           debugPrint("Remote user $remoteUid joined");
           this.remoteUid.value = remoteUid;
           await player1.stop();
+          final model = StartCall.create(
+            callerId: widget.callerUid,
+            agentId: widget.receiverUid,
+            agoraChannelName: channelIdforcall,
+          );
+          final String id = await ApiCallFunctions.instance.startcall(model);
+          ids = id;
+          log(id);
           callAcceptedNotifier.value = true;
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
@@ -124,13 +138,50 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
                         onEnd: () async {
                           await _engine.leaveChannel();
                           await _engine.release();
+                          ApiCallFunctions.instance.endcall(ids);
                           Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return RatingDialog(
+                                onRatingSubmitted: (rating) {
+                                  final ratemodel = RatingAgent.create(
+                                    agent: widget.receiverUid,
+                                    user: widget.callerUid,
+                                    ratings: rating,
+                                  );
+                                  ApiCallFunctions.instance
+                                      .rateagent(ratemodel);
+                                  print('Rating selected: $rating');
+                                },
+                              );
+                            },
+                          );
                         },
                       )
                     : AfterAcceptCall(onEnd: () async {
                         await _engine.leaveChannel();
                         await _engine.release();
+                        ApiCallFunctions.instance.endcall(ids);
                         Navigator.of(context).pop();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return RatingDialog(
+                              onRatingSubmitted: (rating) {
+                                final ratemodel = RatingAgent.create(
+                                  agent: widget.receiverUid,
+                                  user: widget.callerUid,
+                                  ratings: rating,
+                                );
+                                ApiCallFunctions.instance.rateagent(ratemodel);
+                                print('Rating selected: $rating');
+                              },
+                             
+                                
+                            );
+                          },
+                        );
                       });
               },
             ),
@@ -170,5 +221,51 @@ class RTMService {
 
   void setOnMessageReceived(Function(String message, String peerId) callback) {
     onMessageReceived = callback;
+  }
+}
+
+
+class RatingDialog extends StatefulWidget {
+  final Function(int) onRatingSubmitted;
+
+  RatingDialog({required this.onRatingSubmitted});
+
+  @override
+  _RatingDialogState createState() => _RatingDialogState();
+}
+
+class _RatingDialogState extends State<RatingDialog> {
+  int _rating = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Rate the Call'),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: List.generate(5, (index) {
+          return GestureDetector(
+            onTap: () {
+              setState(() {
+                _rating = index + 1;
+              });
+            },
+            child: Icon(
+              index < _rating ? Icons.favorite : Icons.favorite_border,
+              color: index < _rating ? Colors.red : Colors.grey,
+            ),
+          );
+        }),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            widget.onRatingSubmitted(_rating);
+            Navigator.of(context).pop();
+          },
+          child: Text('Submit'),
+        ),
+      ],
+    );
   }
 }
