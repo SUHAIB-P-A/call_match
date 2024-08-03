@@ -83,6 +83,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
             UserOfflineReasonType reason) {
           debugPrint("Remote user $remoteUid left channel");
           this.remoteUid.value = null;
+          ApiCallFunctions.instance.endcall(ids);
           callAcceptedNotifier.value = false;
         },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
@@ -138,7 +139,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
                         onEnd: () async {
                           await _engine.leaveChannel();
                           await _engine.release();
-                          ApiCallFunctions.instance.endcall(ids);
+                          await player1.stop();
                           Navigator.of(context).pop();
                           showDialog(
                             context: context,
@@ -162,7 +163,8 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
                     : AfterAcceptCall(onEnd: () async {
                         await _engine.leaveChannel();
                         await _engine.release();
-                        ApiCallFunctions.instance.endcall(ids);
+
+                        player1.stop();
                         Navigator.of(context).pop();
                         showDialog(
                           context: context,
@@ -177,8 +179,6 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
                                 ApiCallFunctions.instance.rateagent(ratemodel);
                                 print('Rating selected: $rating');
                               },
-                             
-                                
                             );
                           },
                         );
@@ -223,7 +223,6 @@ class RTMService {
     onMessageReceived = callback;
   }
 }
-
 
 class RatingDialog extends StatefulWidget {
   final Function(int) onRatingSubmitted;

@@ -5,6 +5,7 @@ import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
 import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/chat_screen.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/chat_screen.dart';
+import 'package:call_match/presentation/main_home_pages/screens/home/widgets/add_coin_and_display.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -89,17 +90,33 @@ class ContactListScreen extends StatelessWidget {
                                   vertical: 8.0, horizontal: 16.0),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ChatScreenAgent(
-                                              contactName:
-                                                  "${item.customerFirstName} ${item.customerLastName}",
-                                              id1:
-                                                  "${logindetailslistcalling.value!.customerId}",
-                                              id2: "${item.customerId}",
-                                            )),
-                                  );
+                                  if (item.isOnline == true &&
+                                      walletnotifier.value!.messagesRemaining !=
+                                          null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ChatScreenAgent(
+                                                contactName:
+                                                    "${item.customerFirstName} ${item.customerLastName}",
+                                                id1:
+                                                    "${logindetailslistcalling.value!.customerId}",
+                                                id2: "${item.customerId}",
+                                              )),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          item.isOnline == false
+                                              ? "${item.customerFirstName} is offline and cannot have conversation."
+                                              : "You don't have enough coins to make a chat.",
+                                        ),
+                                        backgroundColor: Colors.red,
+                                        duration: const Duration(seconds: 3),
+                                      ),
+                                    );
+                                  }
                                 },
                                 child: Row(
                                   children: [

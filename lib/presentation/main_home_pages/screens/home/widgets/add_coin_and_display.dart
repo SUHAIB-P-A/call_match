@@ -5,12 +5,12 @@ import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+final ValueNotifier<WalletDetails?> walletnotifier = ValueNotifier(null);
 class AddCoinDisplayUI extends StatelessWidget {
   AddCoinDisplayUI({
     super.key,
   });
-  final ValueNotifier<WalletDetails?> walletnotifier = ValueNotifier(null);
+  
   final ValueNotifier<LoginedUser?> logindetailslistcalling =
       ValueNotifier(null);
   @override
