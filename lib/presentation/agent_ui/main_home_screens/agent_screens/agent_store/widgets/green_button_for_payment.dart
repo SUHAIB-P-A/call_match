@@ -82,7 +82,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 10,
+          height: 40,
         ),
         Container(
           height: height - 570,
@@ -94,12 +94,12 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
           child: ValueListenableBuilder<WalletDetails?>(
             valueListenable: walletnotifier,
             builder: (context, walletList, _) {
-              if (walletList==null) {
+              if (walletList == null) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              
+
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -162,10 +162,10 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
     return ValueListenableBuilder<WalletDetails?>(
       valueListenable: walletnotifier,
       builder: (context, walletList, _) {
-        if (walletList==null) {
+        if (walletList == null) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(
@@ -208,10 +208,10 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
     return ValueListenableBuilder<WalletDetails?>(
       valueListenable: walletnotifier,
       builder: (context, walletList, _) {
-        if (walletList==null) {
+        if (walletList == null) {
           return const Center(child: CircularProgressIndicator());
         }
-        
+
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(

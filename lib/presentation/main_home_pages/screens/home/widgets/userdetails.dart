@@ -1,5 +1,6 @@
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
+import 'package:call_match/presentation/home_screen.dart';
 import 'package:call_match/presentation/main_home_pages/screens/home/widgets/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -75,10 +76,14 @@ class UserDetailsPage extends StatelessWidget {
                   height: 35,
                 ),
                 ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      SharedPreferences preferences =
+                          await SharedPreferences.getInstance();
+                      await preferences.clear();
+                      Navigator.of(context)
+                          .pushReplacementNamed(HomeScreen.routename);
                     },
-                    child: const Text("back"))
+                    child: const Text("Logout"))
               ],
             );
           },
