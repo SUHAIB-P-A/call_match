@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 class PaymentScreenUI extends StatelessWidget {
   static const routename = "payment-screen";
+  static int? packageId; // Add this line
+  static String? package;
   final String coinpriceone;
   final VoidCallback onBack;
   const PaymentScreenUI(
@@ -43,6 +45,8 @@ class PaymentScreenUI extends StatelessWidget {
                 height: 20,
               ),
               GatewayList(
+                package: package,
+                packageId: packageId,
                 coins: coinpriceone,
               ),
               //const SizedBox(height: 10,),

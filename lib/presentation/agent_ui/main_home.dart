@@ -10,7 +10,7 @@ class MainHomeAgent extends StatelessWidget {
   MainHomeAgent({super.key});
   final _pagesagent = [
     //const ProfileHomeAgent(),
-     StoreScreenAgent(),
+    StoreScreenAgent(),
     ContactListScreenAgent(),
   ];
   @override

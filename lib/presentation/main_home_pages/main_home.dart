@@ -10,7 +10,7 @@ class MainHome extends StatelessWidget {
   MainHome({super.key});
   final _pages = [
     const ProfileHome(),
-    const StoreScreen(),
+     StoreScreen(),
     ContactListScreen(),
   ];
   @override

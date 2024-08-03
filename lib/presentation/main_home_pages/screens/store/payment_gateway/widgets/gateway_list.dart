@@ -4,8 +4,10 @@ import 'package:call_match/presentation/main_home_pages/screens/store/payment_ga
 import 'package:flutter/material.dart';
 
 class GatewayList extends StatelessWidget {
+  final String? package;
   final String coins;
-  const GatewayList({super.key, required this.coins});
+  final int? packageId; // Add this line
+  const GatewayList({super.key, required this.coins, this.packageId,this.package});
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +57,15 @@ class GatewayList extends StatelessWidget {
               ),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: PaymentOption(
+              package: package,
+              packageId: packageId,
+              price: double.parse(coins),
               imgpath: "assets/images/AI_Image8.png",
               title: "UPI",
-              subOptions: [
+              subOptions: const [
                 {
                   'imgpath': 'assets/images/AI_Image7.png',
                   'name': 'Google Pay',
@@ -78,23 +83,23 @@ class GatewayList extends StatelessWidget {
                   'name': 'Others',
                 }
               ],
-              child: Text("Pay with installed app, or use others"),
+              child: const Text("Pay with installed app, or use others"),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: PaymentOption(
               imgpath: "assets/images/AI_Image3_1.png",
               title: "Netbanking",
-              child: Text("All Indian banks"),
+              child: const Text("All Indian banks"),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+           Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: PaymentOption(
               imgpath: "assets/images/AI_Image 2.png",
               title: "Wallet",
-              child: Text("Paytm & Freecharge"),
+              child: const Text("Paytm & Freecharge"),
             ),
           ),
           PayButtonCoins(

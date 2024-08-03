@@ -36,9 +36,7 @@ class SplashScreen extends StatelessWidget {
         Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
       }
 
-      
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
-      
+      Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
     });
 
     return Container(

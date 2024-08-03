@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:call_match/data/ChatMessage/chat_message.dart';
 import 'package:call_match/data/agentlist/url.dart';
 import 'package:call_match/data/call_package/call_package.dart';
+import 'package:call_match/data/call_purchase/call_purchase.dart';
+import 'package:call_match/data/chat_purchase/chat_purchase.dart';
 import 'package:call_match/data/chatpack_age/chatpack_age.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_agent_list/model_agent_list.dart';
@@ -28,6 +30,8 @@ abstract class ApiCalls {
   Future<void> endcall(String id);
   Future<void> rateagent(RatingAgent data);
   Future<void> terms(String id);
+  Future<void> chatPurchase(ChatPurchase data);
+  Future<void> callPurchase(CallPurchase data);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -310,9 +314,9 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to update profile: $e');
     }
   }
-  
+
   @override
-  Future<void> rateagent(RatingAgent data) async{
+  Future<void> rateagent(RatingAgent data) async {
     try {
       final response =
           await dio.post('${url.baseUrl}${url.rateagent}', data: data.toJson());
@@ -327,12 +331,13 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to start call: $e');
     }
   }
-  
+
   @override
-  Future<void> terms(String id) async{
+  Future<void> terms(String id) async {
     try {
-      final response =
-          await dio.post("${url.baseUrl}${url.terms}/$id", );
+      final response = await dio.post(
+        "${url.baseUrl}${url.terms}/$id",
+      );
       if (response.statusCode == 200) {
         log("successfully");
       } else {
@@ -340,6 +345,40 @@ class ApiCallFunctions extends ApiCalls {
       }
     } catch (e) {
       throw Exception('Failed to update profile: $e');
+    }
+  }
+  
+  @override
+  Future<void> callPurchase(CallPurchase data) async{
+    try {
+      final response =
+          await dio.post('${url.baseUrl}${url.callPurchase}', data: data.toJson());
+
+      if (response.statusCode == 200) {
+        log("successfully");
+      } else {
+        throw Exception('Failed to start call');
+      }
+    } catch (e) {
+      log('Error in startcall: $e');
+      throw Exception('Failed to start call: $e');
+    }
+  }
+  
+  @override
+  Future<void> chatPurchase(ChatPurchase data) async{
+    try {
+      final response =
+          await dio.post('${url.baseUrl}${url.chatPurchase}', data: data.toJson());
+
+      if (response.statusCode == 200) {
+        log("successfully");
+      } else {
+        throw Exception('Failed to start call');
+      }
+    } catch (e) {
+      log('Error in startcall: $e');
+      throw Exception('Failed to start call: $e');
     }
   }
 }

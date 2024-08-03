@@ -37,8 +37,8 @@ III. നിങ്ങൾ ജോലിയിൽ പ്രവേശിക്കു�
 IV. തലേ ദിവസം അപ്ഡേറ്റ് ചെയ്‌ത സമയങ്ങളിൽ എന്തെങ്കിലും മാറ്റം വരുത്തണമെങ്കിൽ അതും നിങ്ങള്ക്ക് ചെയ്യാവുന്നതാണ്.
 V. നിങ്ങള്ക്ക് സ്വന്തമായി Googlepay/Phonepay ഉണ്ടായിരിക്കണം. അതിലേക്കു മാത്രമായിരിക്കും സാലറി അയക്കുന്നത്. മുകളിൽ പറഞ്ഞിരിക്കുന്ന കാര്യങ്ങൾ ഓരോരുത്തരും നിർബന്ധമായും പാലിക്കേണ്ടതാണ്.
 ''';
-final String id;
-  const TermsAndConditionsScreen({super.key,required this.id});
+  final String id;
+  const TermsAndConditionsScreen({super.key, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +76,11 @@ final String id;
                 ElevatedButton(
                   onPressed: () {
                     ApiCallFunctions.instance.terms(id);
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) {
-                      return MainHomeAgent(); 
-                    },));
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                      builder: (context) {
+                        return MainHomeAgent();
+                      },
+                    ));
                     // Handle the agree action
                   },
                   style: ElevatedButton.styleFrom(

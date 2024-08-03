@@ -1,7 +1,9 @@
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/call_package/call_package.dart';
 import 'package:call_match/data/chatpack_age/chatpack_age.dart';
+import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/payment.dart';
 import 'package:flutter/material.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 class GreenButtonForPayment extends StatelessWidget {
   GreenButtonForPayment({
@@ -18,9 +20,11 @@ class GreenButtonForPayment extends StatelessWidget {
   final double width;
   final ValueNotifier<List<ChatpackAge>> _chatpackNotifier = ValueNotifier([]);
   final ValueNotifier<List<CallPackage>> _callpackNotifier = ValueNotifier([]);
-
+  final Razorpay razorpay = Razorpay();
   @override
   Widget build(BuildContext context) {
+    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
         //await player2.setSource(AssetSource("assets/audio/Outgoing.mp3"));
@@ -115,6 +119,8 @@ class GreenButtonForPayment extends StatelessWidget {
                   onPressed: () {
                     coinPriceNotifier.value = "$packagePrice";
                     showPaymentScreenNotifier.value = true;
+                    PaymentScreenUI.packageId = callpack.coinId;
+                    PaymentScreenUI.package = "call";
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
@@ -160,6 +166,7 @@ class GreenButtonForPayment extends StatelessWidget {
             final chatpacks = chatpack[index];
             final messagecount = chatpacks.messageCount ?? "";
             final price = chatpacks.packagePrice ?? "";
+            
             return ListTile(
               leading: const CircleAvatar(
                 radius: 15,
@@ -189,8 +196,21 @@ class GreenButtonForPayment extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
+                    // var options = {
+                    //   'key': '<YOUR_KEY_HERE>',
+                    //   'amount': 100,
+                    //   'name': 'Acme Corp.',
+                    //   'description': 'Fine T-Shirt',
+                    //   'prefill': {
+                    //     'contact': '8888888888',
+                    //     'email': 'test@razorpay.com'
+                    //   }
+                    // };
                     coinPriceNotifier.value = "$price";
                     showPaymentScreenNotifier.value = true;
+                     PaymentScreenUI.packageId = chatpacks.chatId;
+                     PaymentScreenUI.package = "chat";
+                         // Pass the packageId
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
@@ -217,5 +237,13 @@ class GreenButtonForPayment extends StatelessWidget {
         );
       },
     );
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    // Do something when payment succeeds
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    // Do something when payment fails
   }
 }
