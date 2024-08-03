@@ -86,6 +86,9 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
           ApiCallFunctions.instance.endcall(ids);
           callAcceptedNotifier.value = false;
         },
+        onLeaveChannel: (connection, stats) {
+          ApiCallFunctions.instance.endcall(ids);
+        },
         onTokenPrivilegeWillExpire: (RtcConnection connection, String token) {
           debugPrint(
               '[onTokenPrivilegeWillExpire] connection: ${connection.toJson()}, token: $token');
