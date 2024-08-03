@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:call_match/data/ChatMessage/chat_message.dart';
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/send_chat_model/send_chat_model.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class ChatScreenAgent extends StatelessWidget {
@@ -11,6 +11,8 @@ class ChatScreenAgent extends StatelessWidget {
   final String id2;
 
   final TextEditingController _controller = TextEditingController();
+  final ValueNotifier<List<ChatMessage>> _messagesNotifier = ValueNotifier([]);
+  Timer? _pollingTimer;
 
   ChatScreenAgent({
     super.key,
@@ -19,16 +21,16 @@ class ChatScreenAgent extends StatelessWidget {
     required this.id2,
   });
 
-  Future<List<ChatMessage>> fetchMessages() async {
+  Future<void> fetchMessages() async {
     log('Calling getChatMessages method');
     try {
       final messages =
           await ApiCallFunctions.instance.getChatMessages(id1, id2);
       log('Messages fetched: ${messages.length}');
-      return messages;
+      _messagesNotifier.value = messages;
     } catch (e) {
       log('Error fetching messages: $e');
-      return [];
+      _messagesNotifier.value = [];
     }
   }
 
@@ -42,19 +44,31 @@ class ChatScreenAgent extends StatelessWidget {
         );
         await ApiCallFunctions().sendMessage(messagemodel);
         _controller.clear();
-        // Rebuild the widget to fetch the new messages
-        fetchMessages();
+        // Re-fetch messages to update the list
+        await fetchMessages();
       } catch (e) {
         log('Error sending message: $e');
       }
     }
   }
 
+  void startPolling() {
+    _pollingTimer = Timer.periodic(Duration(seconds: 2), (timer) async {
+      await fetchMessages();
+    });
+  }
+
+  void stopPolling() {
+    _pollingTimer?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await fetchMessages();
+      startPolling();
     });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -65,6 +79,7 @@ class ChatScreenAgent extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
           onPressed: () {
+            stopPolling();
             Navigator.pop(context);
           },
         ),
@@ -72,70 +87,63 @@ class ChatScreenAgent extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: FutureBuilder<List<ChatMessage>>(
-              future: fetchMessages(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Error fetching messages'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            child: ValueListenableBuilder<List<ChatMessage>>(
+              valueListenable: _messagesNotifier,
+              builder: (context, messages, _) {
+                if (messages.isEmpty) {
                   return const Center(child: Text('No messages'));
-                } else {
-                  final messages = snapshot.data!;
-                  return ListView.builder(
-                    reverse: false,
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
-                      final senderId = message.sender?.customerId;
-                      final isSender =
-                          senderId != null && senderId == int.parse(id1);
+                }
+                return ListView.builder(
+                  reverse: false,
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    final senderId = message.sender?.customerId;
+                    final isSender =
+                        senderId != null && senderId == int.parse(id1);
 
-                      return Align(
-                        alignment: isSender
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
-                          padding: const EdgeInsets.all(12),
-                          constraints: BoxConstraints(
-                              maxWidth:
-                                  MediaQuery.of(context).size.width * 0.7),
-                          decoration: BoxDecoration(
-                            color: isSender
-                                ? const Color(0xffb42c44)
-                                : Colors.grey[300],
-                            borderRadius: BorderRadius.circular(20).subtract(
-                              BorderRadius.only(
-                                bottomLeft: Radius.circular(isSender ? 0 : 20),
-                                bottomRight: Radius.circular(isSender ? 20 : 0),
-                              ),
+                    return Align(
+                      alignment: isSender
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        padding: const EdgeInsets.all(12),
+                        constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 0.7),
+                        decoration: BoxDecoration(
+                          color: isSender
+                              ? const Color(0xffb42c44)
+                              : Colors.grey[300],
+                          borderRadius: BorderRadius.circular(20).subtract(
+                            BorderRadius.only(
+                              bottomLeft: Radius.circular(isSender ? 0 : 20),
+                              bottomRight: Radius.circular(isSender ? 20 : 0),
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                message.message ?? '',
-                                style: TextStyle(
-                                    color:
-                                        isSender ? Colors.white : Colors.black),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                message.createdAt ?? '',
-                                style: const TextStyle(
-                                    fontSize: 12.0, color: Colors.grey),
-                              ),
-                            ],
-                          ),
                         ),
-                      );
-                    },
-                  );
-                }
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              message.message ?? '',
+                              style: TextStyle(
+                                  color:
+                                      isSender ? Colors.white : Colors.black),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              message.createdAt ?? '',
+                              style: const TextStyle(
+                                  fontSize: 12.0, color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ),

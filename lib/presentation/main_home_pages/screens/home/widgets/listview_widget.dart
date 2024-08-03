@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:call_match/core/agoraconfig.dart';
@@ -20,6 +21,7 @@ class ListViewUI extends StatelessWidget {
       ValueNotifier(null);
   final double height;
   final double width;
+  Timer? _pollingTimer;
 
   ListViewUI({
     super.key,
@@ -50,7 +52,20 @@ class ListViewUI extends StatelessWidget {
 
     await rtmClient.login(null, loginuserdetail.customerId.toString());
   }
+Future<void> _fetchAgentList() async {
+    final agentlist = await ApiCallFunctions.instance.getAgentModelList();
+    _listAgentNotifier.value = agentlist.toList();
+  }
 
+  void startPolling() {
+    _pollingTimer = Timer.periodic(const Duration(seconds: 2), (timer) async {
+      await _fetchAgentList();
+    });
+  }
+
+  void stopPolling() {
+    _pollingTimer?.cancel();
+  }
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(

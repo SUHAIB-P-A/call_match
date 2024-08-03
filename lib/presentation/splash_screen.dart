@@ -10,6 +10,12 @@ class SplashScreen extends StatelessWidget {
   SplashScreen({super.key});
   final ValueNotifier<LoginedUser?> logindetailslistcalling =
       ValueNotifier(null);
+
+  Future<bool> checkPreferenceValue(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey(key);
+  }
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -22,7 +28,7 @@ class SplashScreen extends StatelessWidget {
       },
     );
     //delay fuction
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () async {
       if (logindetailslistcalling.value!.isExisting == true &&
           logindetailslistcalling.value!.status == "Agent User") {
         Navigator.of(context).pushReplacementNamed(MainHomeAgent.routeName);
@@ -35,8 +41,24 @@ class SplashScreen extends StatelessWidget {
           logindetailslistcalling.value!.status == "Agent User") {
         Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
       }
-
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
+      bool valueExists = await checkPreferenceValue('phone_number');
+      if (valueExists &&
+          logindetailslistcalling.value!.status == "Agent User") {
+        Navigator.of(context).pushReplacementNamed(MainHomeAgent.routeName);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Value exists in SharedPreferences')),
+        );
+      } else if (valueExists &&
+          logindetailslistcalling.value!.status == "Normal User") {
+        Navigator.of(context).pushReplacementNamed(MainHome.routeName);
+      } else {
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Value does not exist in SharedPreferences')),
+        );
+      }
+      //Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
     });
 
     return Container(
