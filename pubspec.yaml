@@ -104,6 +104,7 @@ flutter:
     - assets/images/avatarImage.png
     - assets/images/PROTOTYPE CALLMATCH 03-04red.png
     - assets/images/pexels-karolina-grabowska-4197491.jpg
+    - assets/images/backgroundimage.jpg
     - assets/audio/Outgoing.mp3
     - assets/audio/incomming.mp3
   # An image asset can refer to one or more resolution-specific "variants", see

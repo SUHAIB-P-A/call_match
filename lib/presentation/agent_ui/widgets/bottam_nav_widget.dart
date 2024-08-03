@@ -26,21 +26,21 @@ class BottomNavWidgetAgent extends StatelessWidget {
           selectedIconTheme: const IconThemeData(color: Colors.red),
           unselectedIconTheme: const IconThemeData(color: Colors.red),
           items: [
-            BottomNavigationBarItem(
-                tooltip: "Home",
-                icon: Container(
-                  height: 30,
-                  width: 30,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        "assets/images/home.png",
-                      ),
-                    ),
-                  ),
-                ),
-                label: ""),
+            // BottomNavigationBarItem(
+            //     tooltip: "Home",
+            //     icon: Container(
+            //       height: 30,
+            //       width: 30,
+            //       decoration: const BoxDecoration(
+            //         image: DecorationImage(
+            //           fit: BoxFit.cover,
+            //           image: AssetImage(
+            //             "assets/images/home.png",
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //     label: ""),
             BottomNavigationBarItem(
                 tooltip: "Store",
                 icon: Container(

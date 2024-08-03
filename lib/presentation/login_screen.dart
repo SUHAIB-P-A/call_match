@@ -4,6 +4,7 @@ import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/presentation/agent_ui/main_home.dart';
 import 'package:call_match/presentation/main_home_pages/main_home.dart';
+import 'package:call_match/terms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -176,7 +177,20 @@ class LoginScreen extends StatelessWidget {
                                 log('LoginedUser status: ${logindetailslist.value?.status}');
 
                                 // Ensure data is saved and available before navigation
-
+                                if (logindetailslist.value!.isExisting ==
+                                        false &&
+                                    logindetailslist.value!.status ==
+                                        "Agent User") {
+                                  final String id = logindetailslist
+                                      .value!.customerId
+                                      .toString();
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        TermsAndConditionsScreen(
+                                      id: id,
+                                    ),
+                                  ));
+                                }
                                 if (logindetailslist.value!.status ==
                                     "Normal User") {
                                   Navigator.of(context)

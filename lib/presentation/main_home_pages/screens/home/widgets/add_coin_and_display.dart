@@ -104,7 +104,8 @@ class AddCoinDisplayUI extends StatelessWidget {
                       value,
                       _,
                     ) {
-                      if (value != null) {
+                    
+                      if (value!=null) {
                         return Text(
                           '${value.walletCoins}',
                           style: const TextStyle(

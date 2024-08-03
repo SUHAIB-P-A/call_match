@@ -66,7 +66,7 @@ class ListViewUI extends StatelessWidget {
         height: height - 370,
         width: width - 85,
         decoration: BoxDecoration(
-          color: Colors.transparent.withOpacity(0.2),
+          color: Colors.transparent.withOpacity(0.30),
           borderRadius: BorderRadius.circular(30),
         ),
         child: ValueListenableBuilder(
@@ -75,7 +75,7 @@ class ListViewUI extends StatelessWidget {
             return Column(
               children: [
                 const TabBar(
-                  labelColor: Colors.black,
+                  labelColor: Colors.grey,
                   unselectedLabelColor: Colors.white,
                   indicatorColor: Color(0xffb42c44),
                   tabs: [
@@ -116,11 +116,17 @@ class ListViewUI extends StatelessWidget {
         return ListTile(
           title: Text(
             "${item.customerFirstName}",
-            style: const TextStyle(fontFamily: "Poppins-Regular"),
+            style: const TextStyle(
+              fontFamily: "Poppins-Regular",
+              color: Colors.white,
+            ),
           ),
           subtitle: Text(
             "❤️ ${item.rating}",
-            style: const TextStyle(fontFamily: "Poppins-Regular"),
+            style: const TextStyle(
+              fontFamily: "Poppins-Regular",
+              color: Colors.white,
+            ),
           ),
           leading: const CircleAvatar(
             backgroundColor: Colors.white,

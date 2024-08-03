@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/wallet_details/wallet_details.dart';
@@ -33,9 +32,10 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
           final loginuserdetail = await ApiCallFunctions.instance
               .loginWithNumber(phoneusernumber.toString());
           logindetailslistcalling.value = loginuserdetail;
-          final wallet = await ApiCallFunctions.instance
+
+          final walletList = await ApiCallFunctions.instance
               .getWalletDetails("${logindetailslistcalling.value!.customerId}");
-          walletnotifier.value = wallet;
+          walletnotifier.value = walletList;
         } catch (e) {
           // Handle any errors during fetching
           log('Failed to load wallet details 1: $e');
@@ -93,12 +93,13 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
           ),
           child: ValueListenableBuilder<WalletDetails?>(
             valueListenable: walletnotifier,
-            builder: (context, totalamount, _) {
-              if (totalamount == null) {
+            builder: (context, walletList, _) {
+              if (walletList==null) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
+              
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -114,7 +115,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "${totalamount.totalamount}",
+                      "${walletList.totalamount}",
                       style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w500,
@@ -126,14 +127,14 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () async {
                         final totalamountvalue =
-                            double.parse("${totalamount.totalamount}");
+                            double.parse("${walletList.totalamount}");
                         if (totalamountvalue >= 5000) {
                           await ApiCallFunctions.instance.withdrawal(
                               "${logindetailslistcalling.value!.customerId}");
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text(
-                                  "Withdrawal successful: ${totalamount.totalamount}"),
+                                  "Withdrawal successful: ${walletList.totalamount}"),
                             ),
                           );
                         } else {
@@ -160,10 +161,11 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
   Widget _buildCallPackView() {
     return ValueListenableBuilder<WalletDetails?>(
       valueListenable: walletnotifier,
-      builder: (context, value, _) {
-        if (value == null) {
+      builder: (context, walletList, _) {
+        if (walletList==null) {
           return const Center(child: CircularProgressIndicator());
         }
+        
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(
@@ -179,7 +181,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Call amount: ${value.callAmount}",
+                          "Call amount: ${walletList.callAmount}",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -187,7 +189,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Total minutes: ${value.totalMinutes}",
+                          "Total minutes: ${walletList.totalMinutes}",
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -205,10 +207,11 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
   Widget _buildChatPackView() {
     return ValueListenableBuilder<WalletDetails?>(
       valueListenable: walletnotifier,
-      builder: (context, value, _) {
-        if (value == null) {
+      builder: (context, walletList, _) {
+        if (walletList==null) {
           return const Center(child: CircularProgressIndicator());
         }
+        
         return Padding(
           padding: const EdgeInsets.all(16.0),
           child: Center(
@@ -225,7 +228,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Chat amount: ${value.chatAmount}",
+                          "Chat amount: ${walletList.chatAmount}",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -233,7 +236,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          "Total messages received: ${value.totalMessagesReceived}",
+                          "Total messages received: ${walletList.totalMessagesReceived}",
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],

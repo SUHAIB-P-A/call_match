@@ -27,6 +27,7 @@ abstract class ApiCalls {
   Future<String> startcall(StartCall data);
   Future<void> endcall(String id);
   Future<void> rateagent(RatingAgent data);
+  Future<void> terms(String id);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -83,16 +84,16 @@ class ApiCallFunctions extends ApiCalls {
       // Check if the response is successful
       if (response.statusCode == 200) {
         // Parse the JSON data and convert it to a WalletDetails object
-        final Map<String, dynamic> data = response.data;
-        final walletDetails = WalletDetails.fromJson(data);
+        final walletDetails = WalletDetails.fromJson(response.data);
         return walletDetails;
       } else {
         // Handle non-successful response
-        throw Exception('Failed to load wallet details4');
+        throw Exception('Failed to load wallet details');
       }
     } catch (e) {
       // Handle any errors
-      throw Exception('Failed to load wallet details2: $e');
+      log('Failed to load wallet details: $e');
+      throw Exception('Failed to load wallet details');
     }
   }
 
@@ -324,6 +325,21 @@ class ApiCallFunctions extends ApiCalls {
     } catch (e) {
       log('Error in startcall: $e');
       throw Exception('Failed to start call: $e');
+    }
+  }
+  
+  @override
+  Future<void> terms(String id) async{
+    try {
+      final response =
+          await dio.post("${url.baseUrl}${url.terms}/$id", );
+      if (response.statusCode == 200) {
+        log("successfully");
+      } else {
+        throw Exception('Failed to update profile');
+      }
+    } catch (e) {
+      throw Exception('Failed to update profile: $e');
     }
   }
 }

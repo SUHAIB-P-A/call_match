@@ -6,6 +6,8 @@ part 'logined_user.g.dart';
 class LoginedUser {
   @JsonKey(name: 'customer_id')
   int? customerId;
+  @JsonKey(name: 'rating')
+  int? rating;
   @JsonKey(name: 'customer_first_name')
   String? customerFirstName;
   @JsonKey(name: 'customer_last_name')
@@ -24,6 +26,8 @@ class LoginedUser {
   bool? isExisting;
   @JsonKey(name: 'adhaar_no')
   String? adhaarNo;
+  @JsonKey(name: 'terms_conditions')
+  bool? termsConditions;
 
   LoginedUser({
     this.customerId,
@@ -39,6 +43,7 @@ class LoginedUser {
   });
   LoginedUser.create({
     this.customerId,
+    this.rating,
     required this.customerFirstName,
     required this.customerLastName,
     required this.customerEmail,
@@ -48,6 +53,7 @@ class LoginedUser {
     this.languages,
     this.isExisting,
     this.adhaarNo,
+    this.termsConditions,
   });
   factory LoginedUser.fromJson(Map<String, dynamic> json) {
     return _$LoginedUserFromJson(json);

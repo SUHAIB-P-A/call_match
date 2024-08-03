@@ -1,3 +1,4 @@
+import 'package:call_match/core/imagepath.dart';
 import 'package:call_match/data/ChatMessage/chat_message.dart';
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
@@ -32,145 +33,158 @@ class ContactListScreen extends StatelessWidget {
     final height = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
-      backgroundColor: const Color(0xffffdce0),
-      body: Center(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Chats",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontFamily: "MyriadPro",
-                      fontWeight: FontWeight.w700,
+        //backgroundColor: const Color(0xffffdce0),
+        body: Stack(
+      children: [
+        DecoratedBox(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage(backgroundimage),
+            ),
+          ),
+          child: const SizedBox.expand(),
+        ),
+        Center(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      "Chats",
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: "MyriadPro",
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+                Center(
+                  child: Container(
+                    height: height - 274,
+                    width: width - 85,
+                    decoration: BoxDecoration(
+                      color: Colors.transparent.withOpacity(0.30),
+                      borderRadius: BorderRadius.circular(30),
                     ),
-                  )
-                ],
-              ),
-              Center(
-                child: Container(
-                  height: height - 274,
-                  width: width - 85,
-                  decoration: BoxDecoration(
-                    color: Colors.transparent.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: ValueListenableBuilder(
-                    valueListenable: _listAgentNotifier,
-                    builder: (
-                      context,
-                      value,
-                      _,
-                    ) {
-                      return ListView.builder(
-                        itemCount:
-                            value.length, // Replace with your contact count
-                        itemBuilder: (context, index) {
-                          final item = value[index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 16.0),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ChatScreenAgent(
-                                            contactName:
-                                                "${item.customerFirstName} ${item.customerLastName}",
-                                            id1:
-                                                "${logindetailslistcalling.value!.customerId}",
-                                            id2: "${item.customerId}",
-                                          )),
-                                );
-                              },
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    radius: 30,
-                                    backgroundColor: const Color(0xffd1d1d1),
-                                    child: Text(
-                                      'C${index + 1}',
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
+                    child: ValueListenableBuilder(
+                      valueListenable: _listAgentNotifier,
+                      builder: (
+                        context,
+                        value,
+                        _,
+                      ) {
+                        return ListView.builder(
+                          itemCount:
+                              value.length, // Replace with your contact count
+                          itemBuilder: (context, index) {
+                            final item = value[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 16.0),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatScreenAgent(
+                                              contactName:
+                                                  "${item.customerFirstName} ${item.customerLastName}",
+                                              id1:
+                                                  "${logindetailslistcalling.value!.customerId}",
+                                              id2: "${item.customerId}",
+                                            )),
+                                  );
+                                },
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 30,
+                                      backgroundColor: const Color(0xffd1d1d1),
+                                      child: Text(
+                                        'C${index + 1}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    const SizedBox(width: 15),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '${item.customerFirstName} ${item.customerLastName}',
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18.0,
+                                                color: Colors.white),
+                                          ),
+                                          const SizedBox(height: 5),
+                                          const Text(
+                                            'Last message preview', // Replace with actual last message
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          '${item.customerFirstName} ${item.customerLastName}',
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18.0,
+                                        const Text(
+                                          '12:30 PM', // Replace with actual timestamp
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 12.0,
                                           ),
                                         ),
                                         const SizedBox(height: 5),
-                                        Text(
-                                          'Last message preview', // Replace with actual last message
-                                          style: TextStyle(
-                                            color: Colors.grey[600],
-                                            fontSize: 14.0,
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 6, vertical: 2),
+                                          decoration: BoxDecoration(
+                                            color: const Color(
+                                                0xffb42c44), // Primary color of the app
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Text(
+                                            '${item.languages}', // Replace with actual unread message count
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        '12:30 PM', // Replace with actual timestamp
-                                        style: TextStyle(
-                                          color: Colors.grey[600],
-                                          fontSize: 12.0,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6, vertical: 2),
-                                        decoration: BoxDecoration(
-                                          color: const Color(
-                                              0xffb42c44), // Primary color of the app
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Text(
-                                          '${item.languages}', // Replace with actual unread message count
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      );
-                    },
+                            );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-              )
-            ],
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      ],
+    ));
   }
 }

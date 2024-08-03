@@ -1,6 +1,7 @@
 import 'package:call_match/core/routemap.dart';
 //import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_incomming.dart';
 import 'package:call_match/presentation/splash_screen.dart';
+import 'package:call_match/terms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:call_match/core/agora_chat_initializer.dart'; // Import Agora Chat Initializer
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home:  SplashScreen(),
       routes: routers,
     );
   }

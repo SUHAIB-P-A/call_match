@@ -9,8 +9,8 @@ class MainHomeAgent extends StatelessWidget {
   static const routeName = "screen-agent";
   MainHomeAgent({super.key});
   final _pagesagent = [
-    const ProfileHomeAgent(),
-    const StoreScreenAgent(),
+    //const ProfileHomeAgent(),
+     StoreScreenAgent(),
     ContactListScreenAgent(),
   ];
   @override

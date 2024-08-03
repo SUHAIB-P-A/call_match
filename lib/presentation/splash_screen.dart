@@ -1,14 +1,44 @@
+import 'package:call_match/data/agentlist/data.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
+import 'package:call_match/presentation/agent_ui/main_home.dart';
 import 'package:call_match/presentation/home_screen.dart';
+import 'package:call_match/presentation/main_home_pages/main_home.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
+  SplashScreen({super.key});
+  final ValueNotifier<LoginedUser?> logindetailslistcalling =
+      ValueNotifier(null);
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        final phoneno = await SharedPreferences.getInstance();
+        final phoneusernumber = phoneno.getString("phone_number");
+        final loginuserdetail = await ApiCallFunctions.instance
+            .loginWithNumber(phoneusernumber.toString());
+        logindetailslistcalling.value = loginuserdetail;
+      },
+    );
     //delay fuction
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
+      if (logindetailslistcalling.value!.isExisting == true &&
+          logindetailslistcalling.value!.status == "Agent User") {
+        Navigator.of(context).pushReplacementNamed(MainHomeAgent.routeName);
+      } else if (logindetailslistcalling.value!.isExisting == true &&
+          logindetailslistcalling.value!.status == "Normal User") {
+        Navigator.of(context).pushReplacementNamed(MainHome.routeName);
+      }
+
+      if (logindetailslistcalling.value!.isExisting == false &&
+          logindetailslistcalling.value!.status == "Agent User") {
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
+      }
+
+      
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
+      
     });
 
     return Container(

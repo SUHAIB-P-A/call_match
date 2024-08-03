@@ -15,6 +15,7 @@ class Url {
   String startcall = "start-call/";
   String endcall = "end-call/";
   String rateagent = "give_rating/";
+  String terms = "terms/";
   //String getChat = "get_chat/${1}/${2}";
   // Method to construct getChat URL
   String getChat(String user1, String user2) => "get_chat/$user1/$user2";

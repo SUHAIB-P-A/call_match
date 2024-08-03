@@ -6,13 +6,14 @@ import 'package:call_match/data/wallet_details/wallet_details.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AddCoinDisplayUIAgent extends StatelessWidget {
-  AddCoinDisplayUIAgent({
+class AddCoinDisplayUI extends StatelessWidget {
+  AddCoinDisplayUI({
     super.key,
   });
   final ValueNotifier<WalletDetails?> walletnotifier = ValueNotifier(null);
   final ValueNotifier<LoginedUser?> logindetailslistcalling =
       ValueNotifier(null);
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -28,7 +29,7 @@ class AddCoinDisplayUIAgent extends StatelessWidget {
           walletnotifier.value = wallet;
         } catch (e) {
           // Handle any errors during fetching
-          log('Failed to load wallet details3: $e');
+          log('Failed to load wallet details 1: $e');
         }
       },
     );
@@ -97,7 +98,7 @@ class AddCoinDisplayUIAgent extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  ValueListenableBuilder(
+                  ValueListenableBuilder<WalletDetails?>(
                     valueListenable: walletnotifier,
                     builder: (
                       context,

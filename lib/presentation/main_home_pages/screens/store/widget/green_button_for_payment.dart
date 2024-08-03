@@ -36,18 +36,20 @@ class GreenButtonForPayment extends StatelessWidget {
         height: height - 480,
         width: width - 65,
         decoration: BoxDecoration(
-          color: Colors.transparent.withOpacity(0.2),
+          color: Colors.transparent.withOpacity(0.30),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(
           children: [
             const TabBar(
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white,
               tabs: [
                 Tab(
-                  text: "call pack",
+                  text: "Call Pack",
                 ),
                 Tab(
-                  text: "chat pack",
+                  text: "Chat Pack",
                 )
               ],
             ),
@@ -88,7 +90,13 @@ class GreenButtonForPayment extends StatelessWidget {
                 backgroundImage: AssetImage(
                     "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
               ),
-              title: Text("$totalCoins"),
+              title: Text(
+                "$totalCoins Coins",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
               trailing: Container(
                 height: 25,
                 width: 105,
@@ -158,7 +166,13 @@ class GreenButtonForPayment extends StatelessWidget {
                 backgroundImage: AssetImage(
                     "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"),
               ),
-              title: Text("$messagecount"),
+              title: Text(
+                "$messagecount Coins",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
               trailing: Container(
                 height: 25,
                 width: 105,
