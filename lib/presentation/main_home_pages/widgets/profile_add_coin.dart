@@ -10,25 +10,7 @@ class ProfileUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          height: 40,
-          width: 40,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Color(0xFFD93755),
-          ),
-          child: const Icon(
-            Icons.account_circle,
-            size: 40,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(
-          width: 15,
-        ),
-        AddCoinDisplayUI()
-      ],
+      children: [AddCoinDisplayUI()],
     );
   }
 }

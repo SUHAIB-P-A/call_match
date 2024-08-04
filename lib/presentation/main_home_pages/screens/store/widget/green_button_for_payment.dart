@@ -166,7 +166,7 @@ class GreenButtonForPayment extends StatelessWidget {
             final chatpacks = chatpack[index];
             final messagecount = chatpacks.messageCount ?? "";
             final price = chatpacks.packagePrice ?? "";
-            
+
             return ListTile(
               leading: const CircleAvatar(
                 radius: 15,
@@ -208,9 +208,9 @@ class GreenButtonForPayment extends StatelessWidget {
                     // };
                     coinPriceNotifier.value = "$price";
                     showPaymentScreenNotifier.value = true;
-                     PaymentScreenUI.packageId = chatpacks.chatId;
-                     PaymentScreenUI.package = "chat";
-                         // Pass the packageId
+                    PaymentScreenUI.packageId = chatpacks.chatId;
+                    PaymentScreenUI.package = "chat";
+                    // Pass the packageId
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
