@@ -37,34 +37,78 @@ class AddCoinDisplayUI extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all<Color>(
-              const Color(0xffD02D4E),
-            ),
-          ),
-          onPressed: () {},
-          child: Row(
-            children: [
-              Container(
-                height: 20,
-                width: 20,
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                            "assets/images/Gold_Coin_Transparent_PNG_Clipart7.png"))),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            return Container(
+              //height: 39,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(179, 236, 235, 235),
+                borderRadius: BorderRadius.all(
+                  Radius.elliptical(20, 20),
+                ),
               ),
-              const SizedBox(
-                width: 10,
+              child: Column(
+                children: [
+                  const Text(
+                    "Chat",
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                                "assets/images/PROTOTYPE CALLMATCH 003-03.png"),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: walletnotifier,
+                        builder: (
+                          context,
+                          value,
+                          _,
+                        ) {
+                          if (value != null) {
+                            return Text(
+                              '${value.messagesRemaining}',
+                              style: const TextStyle(
+                                fontFamily: "Poppins-Regular",
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            );
+                          } else {
+                            return const Text(
+                              '',
+                              style: TextStyle(
+                                fontFamily: "Poppins-Regular",
+                                fontSize: 16,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              const Text(
-                "ADD COIN",
-                style: TextStyle(color: Color.fromARGB(255, 245, 245, 245)),
-              ),
-            ],
-          ),
+            );
+          },
         ),
         const SizedBox(
           width: 15,
@@ -72,61 +116,69 @@ class AddCoinDisplayUI extends StatelessWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             return Container(
-              height: 39,
+              //height: 39,
               decoration: const BoxDecoration(
                 color: Color.fromARGB(179, 236, 235, 235),
                 borderRadius: BorderRadius.all(
                   Radius.elliptical(20, 20),
                 ),
               ),
-              child: Row(
+              child: Column(
                 children: [
-                  const SizedBox(
-                    width: 10,
+                  const Text(
+                    "Call",
+                    style: TextStyle(fontWeight: FontWeight.w600),
                   ),
-                  Container(
-                    height: 30,
-                    width: 30,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                            "assets/images/PROTOTYPE CALLMATCH 003-03.png"),
+                  Row(
+                    children: [
+                      const SizedBox(
+                        width: 10,
                       ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  ValueListenableBuilder(
-                    valueListenable: walletnotifier,
-                    builder: (
-                      context,
-                      value,
-                      _,
-                    ) {
-                      if (value != null) {
-                        return Text(
-                          '${value.walletCoins}',
-                          style: const TextStyle(
-                            fontFamily: "Poppins-Regular",
-                            fontSize: 16,
+                      Container(
+                        height: 30,
+                        width: 30,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage(
+                                "assets/images/PROTOTYPE CALLMATCH 003-03.png"),
                           ),
-                        );
-                      } else {
-                        return const Text(
-                          '',
-                          style: TextStyle(
-                            fontFamily: "Poppins-Regular",
-                            fontSize: 16,
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    width: 15,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      ValueListenableBuilder(
+                        valueListenable: walletnotifier,
+                        builder: (
+                          context,
+                          value,
+                          _,
+                        ) {
+                          if (value != null) {
+                            return Text(
+                              '${value.walletCoins}',
+                              style: const TextStyle(
+                                  fontFamily: "Poppins-Regular",
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400),
+                            );
+                          } else {
+                            return const Text(
+                              '',
+                              style: TextStyle(
+                                fontFamily: "Poppins-Regular",
+                                fontSize: 16,
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                    ],
                   ),
                 ],
               ),
