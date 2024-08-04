@@ -120,17 +120,33 @@ class ContactListScreen extends StatelessWidget {
                                 },
                                 child: Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 30,
-                                      backgroundColor: const Color(0xffd1d1d1),
-                                      child: Text(
-                                        'C${index + 1}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20.0,
-                                          fontWeight: FontWeight.bold,
+                                    Stack(
+                                      children: [
+                                        const CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          backgroundImage: AssetImage(
+                                              "assets/images/avatarImage.png"),
+                                          radius: 30,
                                         ),
-                                      ),
+                                        Positioned(
+                                          left: 45,
+                                          top: 40,
+                                          child: Container(
+                                            height: 16,
+                                            width: 16,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: AssetImage(item
+                                                            .isOnline ==
+                                                        true
+                                                    ? "assets/images/online.png"
+                                                    : "assets/images/offline.png"),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     const SizedBox(width: 15),
                                     Expanded(
@@ -186,6 +202,9 @@ class ContactListScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ],
+                                    ),
+                                    const SizedBox(
+                                      width: 8,
                                     ),
                                   ],
                                 ),
