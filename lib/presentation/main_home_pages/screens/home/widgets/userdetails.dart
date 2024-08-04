@@ -50,40 +50,63 @@ class UserDetailsPage extends StatelessWidget {
           valueListenable: logindetailslistcalling,
           builder: (context, user, child) {
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DetailRow(
-                  label: 'First Name:',
-                  value: user?.customerFirstName ?? 'N/A',
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  elevation: 5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DetailRow(
+                          label: 'First Name:',
+                          value: user?.customerFirstName ?? 'N/A',
+                        ),
+                        DetailRow(
+                          label: 'Last Name:',
+                          value: user?.customerLastName ?? 'N/A',
+                        ),
+                        DetailRow(
+                          label: 'Email:',
+                          value: user?.customerEmail ?? 'N/A',
+                        ),
+                        DetailRow(
+                          label: 'Contact:',
+                          value: user?.customerContact ?? 'N/A',
+                        ),
+                        DetailRow(
+                          label: 'Languages:',
+                          value: user?.languages ?? 'N/A',
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                DetailRow(
-                  label: 'Last Name:',
-                  value: user?.customerLastName ?? 'N/A',
-                ),
-                DetailRow(
-                  label: 'Email:',
-                  value: user?.customerEmail ?? 'N/A',
-                ),
-                DetailRow(
-                  label: 'Contact:',
-                  value: user?.customerContact ?? 'N/A',
-                ),
-                DetailRow(
-                  label: 'Languages:',
-                  value: user?.languages ?? 'N/A',
-                ),
-                const SizedBox(
-                  height: 35,
-                ),
+                const Spacer(),
                 ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences preferences =
-                          await SharedPreferences.getInstance();
-                      await preferences.clear();
-                      Navigator.of(context)
-                          .pushReplacementNamed(HomeScreen.routename);
-                    },
-                    child: const Text("Logout"))
+                  onPressed: () async {
+                    SharedPreferences preferences =
+                        await SharedPreferences.getInstance();
+                    await preferences.clear();
+                    Navigator.of(context)
+                        .pushReplacementNamed(HomeScreen.routename);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFD93755),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 15),
+                  ),
+                  child: const Text(
+                    "Logout",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
               ],
             );
           },
@@ -112,6 +135,7 @@ class DetailRow extends StatelessWidget {
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
+                color: Colors.grey,
               ),
             ),
           ),
@@ -121,6 +145,7 @@ class DetailRow extends StatelessWidget {
               value,
               style: const TextStyle(
                 fontSize: 16.0,
+                color: Colors.black87,
               ),
             ),
           ),
