@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 
 class AfterAcceptCall extends StatelessWidget {
-  const AfterAcceptCall({super.key, this.callAccepted, required this.onEnd});
+  const AfterAcceptCall({
+    super.key,
+    this.callAccepted,
+    required this.onEnd,
+    required this.onToggleLoudspeaker,
+    required this.onToggleMute,
+    required this.isLoudspeakerOn,
+    required this.isMuted,
+  });
 
   final ValueNotifier<bool>? callAccepted;
   final VoidCallback onEnd;
+  final VoidCallback onToggleLoudspeaker;
+  final VoidCallback onToggleMute;
+  final ValueNotifier<bool> isLoudspeakerOn;
+  final ValueNotifier<bool> isMuted;
 
   @override
   Widget build(BuildContext context) {
@@ -22,21 +34,40 @@ class AfterAcceptCall extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircleAvatar(
-              radius: 25,
-              backgroundColor: Colors.black,
-              child: Icon(
-                color: Colors.grey,
-                Icons.speaker_phone,
+            GestureDetector(
+              onTap: onToggleLoudspeaker,
+              child: ValueListenableBuilder<bool>(
+                valueListenable: isLoudspeakerOn,
+                builder: (context, isOn, child) {
+                  return CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.black,
+                    child: Icon(
+                      color: isOn ? Colors.green : Colors.grey,
+                      Icons.speaker_phone,
+                    ),
+                  );
+                },
               ),
             ),
             const SizedBox(
               width: 10,
             ),
-            const CircleAvatar(
-              radius: 25,
-              backgroundColor: Colors.black,
-              child: Icon(color: Colors.grey, Icons.mic_external_off),
+            GestureDetector(
+              onTap: onToggleMute,
+              child: ValueListenableBuilder<bool>(
+                valueListenable: isMuted,
+                builder: (context, isMuted, child) {
+                  return CircleAvatar(
+                    radius: 25,
+                    backgroundColor: Colors.black,
+                    child: Icon(
+                      color: isMuted ? Colors.red : Colors.grey,
+                      Icons.mic_off,
+                    ),
+                  );
+                },
+              ),
             ),
             const SizedBox(
               width: 10,
@@ -45,7 +76,6 @@ class AfterAcceptCall extends StatelessWidget {
             InkWell(
               onTap: () {
                 onEnd();
-
                 callAccepted!.value = false;
               },
               child: const CircleAvatar(

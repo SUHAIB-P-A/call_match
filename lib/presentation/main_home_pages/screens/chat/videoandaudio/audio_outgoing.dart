@@ -40,7 +40,8 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
   late String ids;
 
   final String channelIdforcall = const Uuid().v4(); // Unique channel ID
-
+  final ValueNotifier<bool> isLoudspeakerOn = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> isMuted = ValueNotifier<bool>(false);
   @override
   void initState() {
     super.initState();
@@ -121,6 +122,16 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
     print("Start call initiated to $receiverId with message: $callInvitation");
   }
 
+  void _toggleLoudspeaker() {
+    isLoudspeakerOn.value = !isLoudspeakerOn.value;
+    _engine.setEnableSpeakerphone(isLoudspeakerOn.value);
+  }
+
+  void _toggleMute() {
+    isMuted.value = !isMuted.value;
+    _engine.muteLocalAudioStream(isMuted.value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,30 +177,41 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
                             },
                           );
                         },
+                        onToggleLoudspeaker: _toggleLoudspeaker,
+                        onToggleMute: _toggleMute,
+                        isLoudspeakerOn: isLoudspeakerOn,
+                        isMuted: isMuted,
                       )
-                    : AfterAcceptCall(onEnd: () async {
-                        await _engine.leaveChannel();
-                        await _engine.release();
+                    : AfterAcceptCall(
+                        onEnd: () async {
+                          await _engine.leaveChannel();
+                          await _engine.release();
 
-                        player1.stop();
-                        Navigator.of(context).pop();
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return RatingDialog(
-                              onRatingSubmitted: (rating) {
-                                final ratemodel = RatingAgent.create(
-                                  agent: widget.receiverUid,
-                                  user: widget.callerUid,
-                                  ratings: rating,
-                                );
-                                ApiCallFunctions.instance.rateagent(ratemodel);
-                                print('Rating selected: $rating');
-                              },
-                            );
-                          },
-                        );
-                      });
+                          player1.stop();
+                          Navigator.of(context).pop();
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return RatingDialog(
+                                onRatingSubmitted: (rating) {
+                                  final ratemodel = RatingAgent.create(
+                                    agent: widget.receiverUid,
+                                    user: widget.callerUid,
+                                    ratings: rating,
+                                  );
+                                  ApiCallFunctions.instance
+                                      .rateagent(ratemodel);
+                                  print('Rating selected: $rating');
+                                },
+                              );
+                            },
+                          );
+                        },
+                        onToggleLoudspeaker: _toggleLoudspeaker,
+                        onToggleMute: _toggleMute,
+                        isLoudspeakerOn: isLoudspeakerOn,
+                        isMuted: isMuted,
+                      );
               },
             ),
           ],

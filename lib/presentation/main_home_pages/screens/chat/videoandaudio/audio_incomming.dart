@@ -17,6 +17,9 @@ class AudioIncommingUI extends StatelessWidget {
   final String userId;
   final String channelId;
   final ValueNotifier<bool> callAccepted = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> isLoudspeakerOn = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> isMuted = ValueNotifier<bool>(false);
+
 
   AudioIncommingUI({
     super.key,
@@ -72,7 +75,15 @@ class AudioIncommingUI extends StatelessWidget {
     await player1.stop();
     await _initAgora(context);
   }
+  void _toggleLoudspeaker() {
+    isLoudspeakerOn.value = !isLoudspeakerOn.value;
+    engine.setEnableSpeakerphone(isLoudspeakerOn.value);
+  }
 
+  void _toggleMute() {
+    isMuted.value = !isMuted.value;
+    engine.muteLocalAudioStream(isMuted.value);
+  }
   @override
   Widget build(BuildContext context) {
     log(channelId.toString());
@@ -105,6 +116,10 @@ class AudioIncommingUI extends StatelessWidget {
                           await engine.leaveChannel();
                           Navigator.of(context).pop();
                         },
+                        onToggleLoudspeaker: _toggleLoudspeaker,
+                        onToggleMute: _toggleMute,
+                        isLoudspeakerOn: isLoudspeakerOn,
+                        isMuted: isMuted,
                       )
                     : AttentAndEndCall(
                         height: height,
