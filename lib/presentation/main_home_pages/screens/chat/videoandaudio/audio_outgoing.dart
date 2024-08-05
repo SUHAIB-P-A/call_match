@@ -80,10 +80,14 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
           callAcceptedNotifier.value = true;
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
+            UserOfflineReasonType reason) async {
           debugPrint("Remote user $remoteUid left channel");
           this.remoteUid.value = null;
           ApiCallFunctions.instance.endcall(ids);
+          await _engine.leaveChannel();
+          await _engine.release();
+          await player1.stop();
+          Navigator.of(context).pop();
           callAcceptedNotifier.value = false;
         },
         onLeaveChannel: (connection, stats) {

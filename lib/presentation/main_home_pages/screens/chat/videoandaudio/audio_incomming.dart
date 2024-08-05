@@ -26,7 +26,7 @@ class AudioIncommingUI extends StatelessWidget {
   });
 
   final RtcEngine engine = createAgoraRtcEngine();
-  Future<void> _initAgora() async {
+  Future<void> _initAgora(BuildContext context) async {
     await [Permission.microphone].request();
 
     await engine.initialize(
@@ -45,8 +45,12 @@ class AudioIncommingUI extends StatelessWidget {
           debugPrint("Remote user $remoteUid joined");
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) {
+            UserOfflineReasonType reason) async{
           debugPrint("Remote user $remoteUid left channel");
+          await engine.leaveChannel();
+          await engine.release();
+          await player1.stop();
+          Navigator.of(context).pop();
         },
       ),
     );
@@ -66,7 +70,7 @@ class AudioIncommingUI extends StatelessWidget {
     log(channelId.toString());
     callAccepted.value = true;
     await player1.stop();
-    await _initAgora();
+    await _initAgora(context);
   }
 
   @override

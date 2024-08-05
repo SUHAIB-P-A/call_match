@@ -29,36 +29,19 @@ class SplashScreen extends StatelessWidget {
     );
     //delay fuction
     Future.delayed(const Duration(seconds: 3), () async {
-      if (logindetailslistcalling.value!.isExisting == true &&
-          logindetailslistcalling.value!.status == "Agent User") {
-        Navigator.of(context).pushReplacementNamed(MainHomeAgent.routeName);
-      } else if (logindetailslistcalling.value!.isExisting == true &&
-          logindetailslistcalling.value!.status == "Normal User") {
-        Navigator.of(context).pushReplacementNamed(MainHome.routeName);
-      }
-
-      if (logindetailslistcalling.value!.isExisting == false &&
-          logindetailslistcalling.value!.status == "Agent User") {
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
-      }
       bool valueExists = await checkPreferenceValue('phone_number');
-      if (valueExists &&
-          logindetailslistcalling.value!.status == "Agent User") {
-        Navigator.of(context).pushReplacementNamed(MainHomeAgent.routeName);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Value exists in SharedPreferences')),
-        );
-      } else if (valueExists &&
-          logindetailslistcalling.value!.status == "Normal User") {
-        Navigator.of(context).pushReplacementNamed(MainHome.routeName);
+      if (valueExists && logindetailslistcalling.value != null) {
+        if (logindetailslistcalling.value!.isExisting == false &&
+            logindetailslistcalling.value!.status == "Agent User") {
+          Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
+        } else if (logindetailslistcalling.value!.status == "Agent User") {
+          Navigator.of(context).pushReplacementNamed(MainHomeAgent.routeName);
+        } else if (logindetailslistcalling.value!.status == "Normal User") {
+          Navigator.of(context).pushReplacementNamed(MainHome.routeName);
+        }
       } else {
         Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Value does not exist in SharedPreferences')),
-        );
       }
-      //Navigator.of(context).pushReplacementNamed(HomeScreen.routename);
     });
 
     return Container(
