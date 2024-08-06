@@ -27,7 +27,7 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Profile'),
+        title: const Text('Update Profile',style: TextStyle(color: Colors. white),),
         backgroundColor: const Color(0xFFD93755),
       ),
       body: SingleChildScrollView(
@@ -101,8 +101,8 @@ class ProfilePage extends StatelessWidget {
                     ApiCallFunctions.instance.updateptofile(updatedUser,
                         "${logindetailslistcalling.value!.customerId}");
                   },
-                  icon: const Icon(Icons.save),
-                  label: const Text('Save'),
+                  icon: const Icon(Icons.save,color: Colors.white,),
+                  label: const Text('Save',style: TextStyle(color: Colors.white),),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFD93755),
                     padding: const EdgeInsets.symmetric(

@@ -97,16 +97,20 @@ class StoreScreenAgent extends StatelessWidget {
     rtmClient.onMessageReceived = (RtmMessage message, String peerId) {
       log("Private message from $peerId: ${message.text}");
 
-      // Extract channel ID from the message
-      final parts = message.text.split(', Channel ID: ');
-      if (parts.length == 2) {
-        final channelId = parts[1];
+      // Extract caller name and channel ID from the message
+      final messagePattern =
+          RegExp(r'Incoming call from (.*), Channel ID: (.*)');
+      final match = messagePattern.firstMatch(message.text);
+      if (match != null) {
+        final callerName = match.group(1);
+        final channelId = match.group(2);
+
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) {
             return AudioIncommingUI(
-              name: peerId,
+              name: callerName ?? "Unknown",
               userId: loginuserdetail.customerFirstName.toString(),
-              channelId: channelId, // Pass the extracted channel ID
+              channelId: channelId ?? "Unknown",
             );
           },
         ));

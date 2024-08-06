@@ -122,7 +122,7 @@ class PaymentOption extends StatelessWidget {
 
     transaction = await upiindia.startTransaction(
       app: upiapp!, // Or use UpiIndiaApp.GooglePay, UpiIndiaApp.PhonePe, etc.
-      receiverUpiId: "pt4557996605@okicici",
+      receiverUpiId: "pk82405@okicici",
       receiverName: 'CALL MATCH',
       transactionRefId: 'ksdbchshjcjckhcv225wnxbsd',
       transactionNote: 'Payment for order TXN123456',

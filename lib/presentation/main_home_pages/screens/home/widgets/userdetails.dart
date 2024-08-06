@@ -40,7 +40,7 @@ class UserDetailsPage extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.edit),
+            icon: const Icon(Icons.edit,color: Colors.white,),
           ),
         ],
       ),
@@ -104,7 +104,7 @@ class UserDetailsPage extends StatelessWidget {
                   ),
                   child: const Text(
                     "Logout",
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 16,color: Colors.white),
                   ),
                 ),
               ],

@@ -19,12 +19,14 @@ class AudioOutgoingUI extends StatefulWidget {
   final String contactname;
   final String callerUid;
   final String receiverUid;
+  final String? callerName;
 
   AudioOutgoingUI({
     super.key,
     required this.contactname,
     required this.callerUid,
     required this.receiverUid,
+    this.callerName
   });
 
   @override
@@ -117,7 +119,7 @@ class _AudioOutgoingUIState extends State<AudioOutgoingUI> {
     await rtmService.initialize(widget.callerUid);
 
     String callInvitation =
-        "Incoming call from ${widget.contactname}, Channel ID: $channelIdforcall";
+        "Incoming call from ${widget.callerName}, Channel ID: $channelIdforcall";
     await rtmService.sendMessage(receiverId, callInvitation);
     print("Start call initiated to $receiverId with message: $callInvitation");
   }

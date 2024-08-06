@@ -1,7 +1,12 @@
+import 'dart:developer';
+
+import 'package:agora_rtm/agora_rtm.dart';
+import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/data/model_user_list/model_user_list.dart';
 import 'package:call_match/presentation/agent_ui/main_home_screens/agent_screens/agentchat/chat_screen.dart';
+import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/audio_incomming.dart';
 import 'package:flutter/material.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,6 +24,7 @@ class ContactListScreenAgent extends StatelessWidget {
       (timeStamp) async {
         final agentlist = await ApiCallFunctions.instance.getUserModelList();
         _listAgentNotifier.value = agentlist.toList();
+        _initializeRTMService(context);
       },
     );
 
@@ -172,5 +178,34 @@ class ContactListScreenAgent extends StatelessWidget {
         ],
       ),
     );
+  }
+  Future<void> _initializeRTMService(BuildContext context) async {
+    final phoneno = await SharedPreferences.getInstance();
+    final phoneusernumber = phoneno.getString("phone_number");
+    final loginuserdetail = await ApiCallFunctions.instance
+        .loginWithNumber(phoneusernumber.toString());
+    //logindetailslistcalling.value = loginuserdetail;
+
+    AgoraRtmClient rtmClient = await AgoraRtmClient.createInstance(appId);
+    rtmClient.onMessageReceived = (RtmMessage message, String peerId) {
+      log("Private message from $peerId: ${message.text}");
+
+      // Extract channel ID from the message
+      final parts = message.text.split(', Channel ID: ');
+      if (parts.length == 2) {
+        final channelId = parts[1];
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) {
+            return AudioIncommingUI(
+              name: peerId,
+              userId: loginuserdetail.customerFirstName.toString(),
+              channelId: channelId, // Pass the extracted channel ID
+            );
+          },
+        ));
+      }
+    };
+
+    await rtmClient.login(null, loginuserdetail.customerId.toString());
   }
 }

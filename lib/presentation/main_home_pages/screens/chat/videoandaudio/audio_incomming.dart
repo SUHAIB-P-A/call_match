@@ -1,3 +1,5 @@
+import 'dart:async'; // Import Timer
+
 import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -5,7 +7,6 @@ import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaud
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/after_call_accept_ui.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/attent_and_end_call.dart';
 import 'package:call_match/presentation/main_home_pages/screens/chat/videoandaudio/widgets/imageandname.dart';
-import 'package:call_match/presentation/main_home_pages/screens/home/widgets/listview_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
@@ -19,7 +20,8 @@ class AudioIncommingUI extends StatelessWidget {
   final ValueNotifier<bool> callAccepted = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isLoudspeakerOn = ValueNotifier<bool>(false);
   final ValueNotifier<bool> isMuted = ValueNotifier<bool>(false);
-
+  Timer? _timeoutTimer; // Timer to handle call acceptance timeout
+  int counter = 0;
 
   AudioIncommingUI({
     super.key,
@@ -29,6 +31,8 @@ class AudioIncommingUI extends StatelessWidget {
   });
 
   final RtcEngine engine = createAgoraRtcEngine();
+  final AudioPlayer player1 = AudioPlayer();
+
   Future<void> _initAgora(BuildContext context) async {
     await [Permission.microphone].request();
 
@@ -43,13 +47,21 @@ class AudioIncommingUI extends StatelessWidget {
       RtcEngineEventHandler(
         onJoinChannelSuccess: (RtcConnection connection, int elapsed) {
           debugPrint("Local user ${connection.localUid} joined");
+          counter++;
+          Future.delayed(const Duration(seconds: 3), () async {
+          _checkCounter(context);
+          });
         },
-        onUserJoined: (RtcConnection connection, int remoteUid, int elapsed) {
+        onUserJoined:
+            (RtcConnection connection, int remoteUid, int elapsed) async {
           debugPrint("Remote user $remoteUid joined");
+          counter++;
+          //_checkCounter(context);
         },
         onUserOffline: (RtcConnection connection, int remoteUid,
-            UserOfflineReasonType reason) async{
+            UserOfflineReasonType reason) async {
           debugPrint("Remote user $remoteUid left channel");
+          counter--;
           await engine.leaveChannel();
           await engine.release();
           await player1.stop();
@@ -67,14 +79,39 @@ class AudioIncommingUI extends StatelessWidget {
       userAccount: userId,
       options: const ChannelMediaOptions(),
     );
+
+    // Start the timeout timer
+  }
+void _checkCounter(BuildContext context) async {
+    if (counter == 1) {
+      await engine.leaveChannel();
+      await engine.release();
+      await player1.stop();
+      Navigator.of(context).pop();
+    }
+  }
+  void _startTimeoutTimer(BuildContext context) {
+    _timeoutTimer = Timer(Duration(seconds: 15), () {
+      if (!callAccepted.value) {
+        player1.stop();
+        // If call is not accepted within 15 seconds, pop the page
+        Navigator.of(context).pop();
+      }
+    });
+  }
+
+  void _cancelTimeoutTimer() {
+    _timeoutTimer?.cancel();
   }
 
   void _acceptCall(BuildContext context) async {
     log(channelId.toString());
     callAccepted.value = true;
+    _cancelTimeoutTimer(); // Cancel the timer when call is accepted
     await player1.stop();
     await _initAgora(context);
   }
+
   void _toggleLoudspeaker() {
     isLoudspeakerOn.value = !isLoudspeakerOn.value;
     engine.setEnableSpeakerphone(isLoudspeakerOn.value);
@@ -84,8 +121,10 @@ class AudioIncommingUI extends StatelessWidget {
     isMuted.value = !isMuted.value;
     engine.muteLocalAudioStream(isMuted.value);
   }
+
   @override
   Widget build(BuildContext context) {
+    _startTimeoutTimer(context);
     log(channelId.toString());
     player1.setReleaseMode(ReleaseMode.loop);
     player1.play(AssetSource("audio/incomming.mp3"));
@@ -101,7 +140,7 @@ class AudioIncommingUI extends StatelessWidget {
             ImageAndNameUI(
               height: height,
               width: width,
-              name: "name",
+              name: name,
               calltype: "Incoming call...",
               callAcceptedNotifier: callAccepted,
               callType: '',
