@@ -1,7 +1,7 @@
 
 class Url {
-  //String baseUrl = "http://159.65.145.124/";
-  String baseUrl = "http://192.168.1.2:8000/";
+  String baseUrl = "http://159.65.145.124/";
+  //String baseUrl = "http://192.168.1.2:8000/";
 
   String agentList = "all_agents/";
   String normaluserList = "all_users/";
@@ -16,8 +16,8 @@ class Url {
   String endcall = "end-call/";
   String rateagent = "give_rating/";
   String terms = "terms/";
-  String chatPurchase = "chat_package/";
-  String callPurchase = "call_package/";
+  String chatPurchase = "chat_purchase/";
+  String callPurchase = "call_purchase/";
   String checkuser = "check_user/";
   
   //String getChat = "get_chat/${1}/${2}";

@@ -93,10 +93,13 @@ class ListViewUI extends StatelessWidget {
             return Column(
               children: [
                 const TabBar(
+                  indicatorSize: TabBarIndicatorSize.label,
+                  //isScrollable: true,
                   labelStyle: TextStyle(fontSize: 20),
                   labelColor: Colors.grey,
                   unselectedLabelColor: Colors.white,
                   indicatorColor: Color(0xffb42c44),
+
                   tabs: [
                     Tab(text: "All"),
                     Tab(text: 'Malayalam'),

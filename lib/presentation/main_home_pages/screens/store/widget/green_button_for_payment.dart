@@ -261,6 +261,7 @@
 //   }
 // }
 
+import 'package:call_match/core/agoraconfig.dart';
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/call_package/call_package.dart';
 import 'package:call_match/data/call_purchase/call_purchase.dart';
@@ -298,7 +299,7 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
   final Razorpay _razorpay = Razorpay();
 
   bool isseleted = false;
-  
+
   int? chatids;
   int? callids;
 
@@ -407,15 +408,14 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    isseleted =true;
+                  onPressed: () async {
+                    isseleted = true;
                     final callid = callpack.coinId;
                     callids = callid;
-                    //isseletedcall = true;
+
                     var options = {
-                      'key': 'rzp_live_LtqaZhUYh7bgOH',
-                      'amount': 0.1,
-                      //packagePrice*   100, // Convert to paise
+                      'key': razorapaykey,
+                      'amount': packagePrice * 100, //Convert to paise
                       'name': 'call match.',
                       'description': '',
                       'prefill': {
@@ -489,23 +489,22 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: ElevatedButton(
-                  onPressed: () async{
-                    
+                  onPressed: () async {
                     final idchat = chatpack.chatId;
                     chatids = idchat;
+
                     isseleted = false;
-                     var options = {
-                       'key': 'rzp_live_LtqaZhUYh7bgOH',
-                       'amount': 0.1,
-                       //price* 100,  Convert to paise
-                       'name': 'call match.',
-                       'description': '',
-                       'prefill': {
-                         'contact': '8888888888',
-                         'email': 'test@razorpay.com'
-                       }
-                     };
-                     _razorpay.open(options);
+                    var options = {
+                      'key': razorapaykey,
+                      'amount': price * 100, //Convert to paise
+                      'name': 'call match.',
+                      'description': '',
+                      'prefill': {
+                        'contact': '8888888888',
+                        'email': 'test@razorpay.com'
+                      }
+                    };
+                    _razorpay.open(options);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
@@ -561,6 +560,4 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
     );
     // Add further actions based on the error response
   }
-
-  
 }
