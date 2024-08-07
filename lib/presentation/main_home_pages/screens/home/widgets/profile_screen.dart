@@ -1,5 +1,7 @@
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
+import 'package:call_match/presentation/agent_ui/main_home.dart';
+import 'package:call_match/presentation/main_home_pages/main_home.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -27,7 +29,10 @@ class ProfilePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update Profile',style: TextStyle(color: Colors. white),),
+        title: const Text(
+          'Update Profile',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: const Color(0xFFD93755),
       ),
       body: SingleChildScrollView(
@@ -100,9 +105,17 @@ class ProfilePage extends StatelessWidget {
 
                     ApiCallFunctions.instance.updateptofile(updatedUser,
                         "${logindetailslistcalling.value!.customerId}");
+
+                    Navigator.of(context).pop();
                   },
-                  icon: const Icon(Icons.save,color: Colors.white,),
-                  label: const Text('Save',style: TextStyle(color: Colors.white),),
+                  icon: const Icon(
+                    Icons.save,
+                    color: Colors.white,
+                  ),
+                  label: const Text(
+                    'Save',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFD93755),
                     padding: const EdgeInsets.symmetric(

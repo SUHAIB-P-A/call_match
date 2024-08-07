@@ -223,43 +223,7 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(
                           height:
                               0), // Adjust spacing between Button and "--or--" text
-                      const Center(
-                        child: Text(
-                          '⎯⎯⎯⎯  or ⎯⎯⎯⎯',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color:
-                                Color.fromARGB(255, 101, 99, 99), // Text color
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Image.asset(
-                              'assets/images/search.png',
-                              width: 120.0,
-                              height: 120.0,
-                            ),
-                            onPressed: () {
-                              // Add functionality for the search icon button here
-                            },
-                          ),
-                          const SizedBox(
-                            width: 50,
-                          ),
-                          IconButton(
-                            icon: Image.asset(
-                              'assets/images/fb.png',
-                              width: 120.0,
-                              height: 120.0,
-                            ),
-                            onPressed: () {
-                              // Add functionality for the fb icon button here
-                            },
-                          ),
-                        ],
-                      ),
+
                       Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: RichText(

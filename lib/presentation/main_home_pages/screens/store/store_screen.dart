@@ -61,16 +61,12 @@ class StoreScreen extends StatelessWidget {
                   } else {
                     return Column(
                       children: [
-                        const SearchAndMenu(),
                         const SizedBox(
-                          height: 20,
+                          height: 40,
                         ),
                         const ProfileUI(),
                         const SizedBox(
                           height: 40,
-                        ),
-                        const SizedBox(
-                          height: 45,
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 45),

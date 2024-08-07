@@ -47,7 +47,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
         DefaultTabController(
           length: 2,
           child: Container(
-            height: height - 600,
+            height: height - 540,
             width: width - 65,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -82,10 +82,10 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 40,
+          height: 20,
         ),
         Container(
-          height: height - 570,
+          height: height - 600,
           width: width - 65,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -128,15 +128,12 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
                       onPressed: () async {
                         final totalamountvalue =
                             double.parse("${walletList.totalamount}");
-                        if (totalamountvalue >= 5000) {
-                          await ApiCallFunctions.instance.withdrawal(
-                              "${logindetailslistcalling.value!.customerId}");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  "Withdrawal successful: ${walletList.totalamount}"),
-                            ),
-                          );
+                        if (totalamountvalue >= 10) {
+                          final totalamountvalue =
+                              double.parse("${walletList.totalamount}");
+                          if (totalamountvalue >= 10) {
+                            _showUPIDialog(context, walletList);
+                          }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -170,7 +167,7 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Card(
                   elevation: 4,
@@ -246,6 +243,56 @@ class GreenButtonForPaymentAgent extends StatelessWidget {
               ],
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _showUPIDialog(BuildContext context, WalletDetails walletList) {
+    final TextEditingController _upiController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Enter UPI ID"),
+          content: TextField(
+            controller: _upiController,
+            decoration: const InputDecoration(
+              hintText: "Enter your UPI ID",
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                final upiId = _upiController.text.trim();
+                if (upiId.isNotEmpty) {
+                  await ApiCallFunctions.instance.withdrawal(
+                      "${logindetailslistcalling.value!.customerId}");
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          "Withdrawal request submitted. Money will reach your account within 24 hours."),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Please enter a valid UPI ID."),
+                    ),
+                  );
+                }
+              },
+              child: const Text("Confirm"),
+            ),
+          ],
         );
       },
     );

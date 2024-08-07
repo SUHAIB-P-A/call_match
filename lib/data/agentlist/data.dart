@@ -32,6 +32,7 @@ abstract class ApiCalls {
   Future<void> terms(String id);
   Future<void> chatPurchase(ChatPurchase data);
   Future<void> callPurchase(CallPurchase data);
+  Future<LoginedUser?> checkuser(String number);
 }
 
 class ApiCallFunctions extends ApiCalls {
@@ -347,12 +348,12 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to update profile: $e');
     }
   }
-  
+
   @override
-  Future<void> callPurchase(CallPurchase data) async{
+  Future<void> callPurchase(CallPurchase data) async {
     try {
-      final response =
-          await dio.post('${url.baseUrl}${url.callPurchase}', data: data.toJson());
+      final response = await dio.post('${url.baseUrl}${url.callPurchase}',
+          data: data.toJson());
 
       if (response.statusCode == 200) {
         log("successfully");
@@ -364,12 +365,12 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to start call: $e');
     }
   }
-  
+
   @override
-  Future<void> chatPurchase(ChatPurchase data) async{
+  Future<void> chatPurchase(ChatPurchase data) async {
     try {
-      final response =
-          await dio.post('${url.baseUrl}${url.chatPurchase}', data: data.toJson());
+      final response = await dio.post('${url.baseUrl}${url.chatPurchase}',
+          data: data.toJson());
 
       if (response.statusCode == 200) {
         log("successfully");
@@ -381,4 +382,55 @@ class ApiCallFunctions extends ApiCalls {
       throw Exception('Failed to start call: $e');
     }
   }
+
+  @override
+  Future<LoginedUser?> checkuser(String number) async {
+    try {
+      final urls = '${url.baseUrl}${url.checkuser}$number';
+      log('Requesting URL: $urls'); // Log the URL
+
+      final response = await dio.get(
+        urls,
+        options: Options(
+          validateStatus: (status) {
+            // Accept status codes from 200 to 400, inclusive.
+            return status != null && status <= 400;
+          },
+        ),
+      );
+
+      log('Response received with status code: ${response.statusCode}');
+      log('Response data: ${response.data}'); // Log the entire response data
+
+      if (response.statusCode == 200) {
+        if (response.data.containsKey('message')) {
+          // Handle the case where the user does not exist
+          log('Message: ${response.data['message']}');
+          return null; // or handle accordingly
+        } else {
+          // Parse the JSON response and return the LoginedUser object
+          final loginedUser = LoginedUser.fromJson(response.data);
+          log('User ID: ${loginedUser.customerId}');
+          return loginedUser;
+        }
+      } else if (response.statusCode == 400 &&
+          response.data.containsKey('message')) {
+        log('Message: ${response.data['message']}');
+        return null;
+      } else {
+        log('Failed with status code: ${response.statusCode}');
+        throw Exception('Failed to log in with number');
+      }
+    } catch (e) {
+      if (e is DioException && e.response != null) {
+        log('DioException caught: ${e.message}');
+        log('Response data: ${e.response!.data}');
+      } else {
+        log('Error in checkuser: $e');
+      }
+      rethrow;
+    }
+
+}
+
 }

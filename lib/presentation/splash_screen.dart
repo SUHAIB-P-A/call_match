@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/presentation/agent_ui/main_home.dart';
@@ -20,12 +22,34 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) async {
-        final phoneno = await SharedPreferences.getInstance();
-        final phoneusernumber = phoneno.getString("phone_number");
-        final loginuserdetail = await ApiCallFunctions.instance
-            .loginWithNumber(phoneusernumber.toString());
-        logindetailslistcalling.value = loginuserdetail;
-      },
+          try {
+        // Get the shared preferences instance
+        final prefs = await SharedPreferences.getInstance();
+        log('SharedPreferences instance obtained.');
+
+        // Retrieve the phone number from shared preferences
+        String? phoneUserNumber = prefs.getString("phone_number");
+        log('Retrieved phone number: $phoneUserNumber');
+
+        // If phone number is null or invalid, handle accordingly
+        if (phoneUserNumber == null || phoneUserNumber.isEmpty) {
+          log('Invalid phone number: $phoneUserNumber');
+          // Handle the invalid phone number case, e.g., notify the user or set a default value
+          phoneUserNumber = "0000000000"; // or handle appropriately
+        }
+
+        // Call the checkuser function with the retrieved phone number
+        final loginUserDetail = await ApiCallFunctions.instance
+            .checkuser(phoneUserNumber.toString());
+        log('checkuser function called. User details: $loginUserDetail');
+
+        // Assign the returned user details to a value notifier
+        logindetailslistcalling.value = loginUserDetail;
+        log('User details assigned to value notifier.');
+      } catch (e) {
+        log('Error in someFunction: $e');
+      }
+    }
     );
     //delay fuction
     Future.delayed(const Duration(seconds: 3), () async {

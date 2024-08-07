@@ -1,3 +1,4 @@
+
 class Url {
   String baseUrl = "http://159.65.145.124/";
   //String baseUrl = "http://192.168.1.2:8000/";
@@ -17,6 +18,7 @@ class Url {
   String terms = "terms/";
   String chatPurchase = "chat_package/";
   String callPurchase = "call_package/";
+  String checkuser = "check_user/";
   
   //String getChat = "get_chat/${1}/${2}";
   // Method to construct getChat URL

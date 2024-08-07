@@ -26,35 +26,34 @@ class CurveShapeUI extends StatelessWidget {
           ),
         ),
         Positioned(
-          left: 250,
-          top: 60,
+          left: 330,
+          top: 55,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => UserDetailsPage(),
                     ),
                   );
                 },
                 child: Container(
-                  height: 40,
-                  width: 40,
+                  height: 55,
+                  width: 55,
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Color(0xFFD93755),
                   ),
                   child: const Icon(
                     Icons.account_circle,
-                    size: 40,
+                    size: 55,
                     color: Colors.white,
                   ),
                 ),
               ),
               const SizedBox(width: 10), // Adjust spacing if necessary
-              const SearchAndMenu(),
             ],
           ),
         ),
