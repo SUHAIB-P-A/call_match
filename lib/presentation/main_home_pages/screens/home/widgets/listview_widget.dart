@@ -52,7 +52,8 @@ class ListViewUI extends StatelessWidget {
 
     await rtmClient.login(null, loginuserdetail.customerId.toString());
   }
-Future<void> _fetchAgentList() async {
+
+  Future<void> _fetchAgentList() async {
     final agentlist = await ApiCallFunctions.instance.getAgentModelList();
     _listAgentNotifier.value = agentlist.toList();
   }
@@ -66,6 +67,7 @@ Future<void> _fetchAgentList() async {
   void stopPolling() {
     _pollingTimer?.cancel();
   }
+
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback(
@@ -91,6 +93,7 @@ Future<void> _fetchAgentList() async {
             return Column(
               children: [
                 const TabBar(
+                  labelStyle: TextStyle(fontSize: 20),
                   labelColor: Colors.grey,
                   unselectedLabelColor: Colors.white,
                   indicatorColor: Color(0xffb42c44),
@@ -169,7 +172,8 @@ Future<void> _fetchAgentList() async {
                           callerUid:
                               "${logindetailslistcalling.value!.customerId}",
                           receiverUid: "${item.customerId}",
-                          callerName: '${logindetailslistcalling.value!.customerFirstName}', // Receiver UID
+                          callerName:
+                              '${logindetailslistcalling.value!.customerFirstName}', // Receiver UID
                         );
                       },
                     ));

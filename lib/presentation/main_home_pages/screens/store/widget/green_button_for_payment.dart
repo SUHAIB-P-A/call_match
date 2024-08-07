@@ -261,14 +261,16 @@
 //   }
 // }
 
-
-
 import 'package:call_match/data/agentlist/data.dart';
 import 'package:call_match/data/call_package/call_package.dart';
+import 'package:call_match/data/call_purchase/call_purchase.dart';
+import 'package:call_match/data/chat_purchase/chat_purchase.dart';
 import 'package:call_match/data/chatpack_age/chatpack_age.dart';
+import 'package:call_match/data/logined_user/logined_user.dart';
 import 'package:call_match/presentation/main_home_pages/screens/store/payment_gateway/payment.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GreenButtonForPayment extends StatefulWidget {
   GreenButtonForPayment({
@@ -291,7 +293,14 @@ class GreenButtonForPayment extends StatefulWidget {
 class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
   final ValueNotifier<List<ChatpackAge>> _chatpackNotifier = ValueNotifier([]);
   final ValueNotifier<List<CallPackage>> _callpackNotifier = ValueNotifier([]);
+  final ValueNotifier<LoginedUser?> logindetailslistcalling =
+      ValueNotifier(null);
   final Razorpay _razorpay = Razorpay();
+
+  bool isseleted = false;
+  
+  int? chatids;
+  int? callids;
 
   @override
   void initState() {
@@ -318,6 +327,15 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        final phoneno = await SharedPreferences.getInstance();
+        final phoneusernumber = phoneno.getString("phone_number");
+        final loginuserdetail = await ApiCallFunctions.instance
+            .loginWithNumber(phoneusernumber.toString());
+        logindetailslistcalling.value = loginuserdetail;
+      },
+    );
     return DefaultTabController(
       length: 2,
       child: Container(
@@ -390,10 +408,14 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
+                    isseleted =true;
+                    final callid = callpack.coinId;
+                    callids = callid;
+                    //isseletedcall = true;
                     var options = {
-                      'key': 'rzp_test_aC9DPAWjju4j9Q',
-                      'amount':
-                       packagePrice*   100, // Convert to paise
+                      'key': 'rzp_live_LtqaZhUYh7bgOH',
+                      'amount': 0.1,
+                      //packagePrice*   100, // Convert to paise
                       'name': 'call match.',
                       'description': '',
                       'prefill': {
@@ -461,25 +483,29 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
                       Color(0xff59982B),
                       Color(0xff99DD43),
                     ],
-
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(11),
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
-                    var options = {
-                      'key': 'rzp_test_aC9DPAWjju4j9Q',
-                      'amount': price* 100, // Convert to paise
-                      'name': 'call match.',
-                      'description': '',
-                      'prefill': {
-                        'contact': '8888888888',
-                        'email': 'test@razorpay.com'
-                      }
-                    };
-                    _razorpay.open(options);
+                  onPressed: () async{
+                    
+                    final idchat = chatpack.chatId;
+                    chatids = idchat;
+                    isseleted = false;
+                     var options = {
+                       'key': 'rzp_live_LtqaZhUYh7bgOH',
+                       'amount': 0.1,
+                       //price* 100,  Convert to paise
+                       'name': 'call match.',
+                       'description': '',
+                       'prefill': {
+                         'contact': '8888888888',
+                         'email': 'test@razorpay.com'
+                       }
+                     };
+                     _razorpay.open(options);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.transparent,
@@ -503,7 +529,26 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
     );
   }
 
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    String? paymentid = response.paymentId;
+    // Show the payment ID in a dialog box
+    //_showPaymentIdDialog(paymentid!);
+
+    if (isseleted == true) {
+      final modelcall = CallPurchase.create(
+          userId: "${logindetailslistcalling.value!.customerId}",
+          packageId: "$callids",
+          razorpayPaymentId: paymentid);
+
+      await ApiCallFunctions.instance.callPurchase(modelcall);
+    } else {
+      final modelchat = ChatPurchase.create(
+          userId: "${logindetailslistcalling.value!.customerId}",
+          packageId: "$chatids",
+          razorpayPaymentId: paymentid);
+
+      await ApiCallFunctions.instance.chatPurchase(modelchat);
+    }
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Transaction Successful!')),
     );
@@ -516,4 +561,6 @@ class _GreenButtonForPaymentState extends State<GreenButtonForPayment> {
     );
     // Add further actions based on the error response
   }
+
+  
 }
